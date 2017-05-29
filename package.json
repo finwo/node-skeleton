@@ -1,0 +1,26 @@
+{
+  "name": "trackthis-new",
+  "version": "0.0.1",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ratus/trackthis.git"
+  },
+  "author": "Robin Bron <robin@finwo.nl>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ratus/trackthis/issues"
+  },
+  "homepage": "https://github.com/ratus/trackthis#readme",
+  "dependencies": {
+    "bluebird": "^3.5.0",
+    "fs": "0.0.1-security",
+    "google-cloud": "^0.54.0",
+    "path": "^0.12.7"
+  }
+}

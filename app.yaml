@@ -1,0 +1,5 @@
+runtime: nodjes
+env: flex
+
+skip_files:
+  - ^(.*/)?\.bak$
