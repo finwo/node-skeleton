@@ -6,20 +6,20 @@ var fs   = require('fs'),
 function readdir( dir ) {
   var output = [];
   try {
-    fs.readdirSync( dir )
-      .forEach(function( entry ) {
-        if( dir == __dirname && entry == 'index.js' ) {
+    fs.readdirSync(dir)
+      .forEach(function ( entry ) {
+        if ( dir == __dirname && entry == 'index.js' ) {
           return;
         }
-        var fullPath = path.join( dir, entry ),
-            stat     = fs.statSync( fullPath );
+        var fullPath = path.join(dir, entry),
+            stat     = fs.statSync(fullPath);
         if ( stat.isDirectory() ) {
-          output = output.concat(readdir( fullPath ));
+          output = output.concat(readdir(fullPath));
         } else if ( stat.isFile() ) {
-          output.push( fullPath );
+          output.push(fullPath);
         }
       });
-  } catch(e) {
+  } catch ( e ) {
     return;
   }
   return output;
@@ -33,28 +33,28 @@ function setDeep( subject, key, value ) {
     return;
   }
   var part;
-  while(key.length) {
+  while ( key.length ) {
     part = key.shift();
     if ( key.length ) {
-      subject = (subject[part]=subject[part]||{});
+      subject = (subject[ part ] = subject[ part ] || {});
     } else {
-      subject[part] = value;
+      subject[ part ] = value;
     }
   }
 }
 
 readdir(__dirname)
-  .forEach(function( file ) {
-    file = file.split('.');
+  .forEach(function ( file ) {
+    file    = file.split('.');
     var ext = file.pop();
     if ( ext !== 'js' ) {
       return;
     }
-    file = file.join('.');
+    file     = file.join('.');
     var name = file;
-    if ( name.substr( 0, __dirname.length ) == __dirname ) {
-      name = name.substr( __dirname.length + 1 );
+    if ( name.substr(0, __dirname.length) == __dirname ) {
+      name = name.substr(__dirname.length + 1);
       name = name.split(path.sep).join('.');
     }
-    setDeep(module.exports,name,require(file));
+    setDeep(module.exports, name, require(file));
   });

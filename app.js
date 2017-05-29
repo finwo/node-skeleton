@@ -1,4 +1,6 @@
 var Promise = require('bluebird');
-global.config = require('./config');
+
+global.approot = __dirname;
+global.config  = require('./config');
 
 console.log(config);
