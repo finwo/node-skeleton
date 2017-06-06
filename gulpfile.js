@@ -8,8 +8,7 @@ var bower       = require('bower'),
     runSequence = require('run-sequence');
 
 // Helpers
-global.set_deep = require('./src/helpers/set_deep');
-global.readdir  = require('./src/helpers/readdir');
+require('./src/helpers');
 
 // Initialize config
 global.approot = __dirname;
@@ -55,6 +54,7 @@ gulp.task('html', function(done) {
   (function next() {
     var language = languages.shift();
     if(!language) return done();
+    if(language=='default') return next();
     i18n.setLocale(language);
     engine.data({
       config  : config,

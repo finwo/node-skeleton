@@ -1,6 +1,6 @@
 module.exports = {};
 
-var path = require('path');
+var path   = require('path');
 
 readdir(__dirname)
   .forEach(function ( file ) {
@@ -8,8 +8,8 @@ readdir(__dirname)
     var ext  = file.pop(),
         name = file.join('.');
     switch(ext) {
-      case 'json': file.push(ext);
-      case 'js'  : break;
+      case 'json': 
+      case 'js'  : file.push(ext); break;
       default    : return;
     }
     file     = file.join('.');

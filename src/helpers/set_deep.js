@@ -1,3 +1,5 @@
+var extend = require('extend');
+
 module.exports = function ( subject, key, value ) {
   if ( 'string' === typeof key ) {
     key = key.split('.');
@@ -11,7 +13,11 @@ module.exports = function ( subject, key, value ) {
     if ( key.length ) {
       subject = (subject[ part ] = subject[ part ] || {});
     } else {
-      subject[ part ] = value;
+      if ( subject[part] && 'object' == typeof value ) {
+        extend(subject[part], value);
+      } else {
+        subject[ part ] = value;
+      }
     }
   }
 };
