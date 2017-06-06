@@ -7,12 +7,9 @@ gulp.task('clean', function(done) {
 });
 
 gulp.task('bower', function(done) {
-  var orgDir = process.cwd();
-  process.chdir('./client');
   bower.commands
     .install()
     .on('end', function() {
-      process.chdir(orgDir);
       done();
     });
 });
