@@ -57,8 +57,8 @@ gulp.task('html', function(done) {
     if(language=='default') return next();
     i18n.setLocale(language);
     engine.data({
-      config  : config,
-      language: language
+      _config: config,
+      _lang  : language
     });
     gulp
       .src(sourceDir + '/*.hbs')

@@ -3,8 +3,7 @@ var http   = require('http'),
     Q      = require('q');
 
 // Helpers
-global.set_deep = require('./src/helpers/set_deep');
-global.readdir  = require('./src/helpers/readdir');
+require('./src/helpers');
 
 // Initialize config
 global.approot = __dirname;

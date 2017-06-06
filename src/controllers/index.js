@@ -18,6 +18,27 @@ Q.fcall(Q.async(function* () {
 
   // Fetch router
   var router = yield service('router');
+  
+  // Register new 405 handler
+  router.__405 = router._405;
+  router._405  = function( req, res, route ) {
+    var files = config.http.default_home.map(function(filename) {
+      return path.join( route, filename );
+    }).filter(function(shortname) {
+      try {
+        var stat = fs.statSync(path.join(config.http.static_route, shortname));
+        return stat.isFile();
+      } catch(e) {
+        return false;
+      }
+    });
+    
+    if(files.length) {
+      return router.static(files.shift(), req, res);
+    }
+    
+    return router.__405(req, res, route);
+  };
 
   // Fetch file list
   var filelist = yield readdir(__dirname),
