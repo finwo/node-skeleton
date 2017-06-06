@@ -7,10 +7,10 @@ module.exports = {
   admin_user : 'admin',
 
   // Static
-  default_home : ['index.html', 'index.htm', 'default.htm'],
+  default_home : [ 'index.html', 'index.htm' ],
   list_dir     : false,
   serve_static : true,
-  static_dir   : path.join(approot, 'web'),
+  static_route : path.join(approot, 'web'),
 
   // CGI
   cgi_dir   : "cgi-bin",
@@ -23,8 +23,9 @@ module.exports = {
 
   // HTTP
   port          : parseInt(process.env.PORT || 3000),
-  served_by     : 'TrackThis V2',
+  served_by     : 'TrackThis',
   software_name : require(path.join(approot,'package.json')).name,
+  version       : require('../package.json').version,
 
   // Sessions
   //avail_nsr_session_handlers: ['dispatch.memory_store', 'dispatch.text_store'],

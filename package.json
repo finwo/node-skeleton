@@ -20,17 +20,27 @@
   "homepage": "https://github.com/ratus/trackthis#readme",
   "dependencies": {
     "bower": "^1.8.0",
+    "extend": "^3.0.1",
+    "fs": "0.0.1-security",
     "fs-extra": "^3.0.1",
+    "globby": "^6.1.0",
     "google-cloud": "^0.54.0",
     "gulp": "^3.9.1",
+    "gulp-clean-css": "^3.4.1",
+    "gulp-htmlmin": "^3.0.0",
+    "gulp-less": "^3.3.0",
+    "gulp-util": "^3.0.8",
     "handlebars": "^4.0.10",
+    "i18n": "^0.8.3",
     "node-simple-router": "^0.10.1",
+    "object.reduce": "^1.0.1",
     "path": "^0.12.7",
     "q": "^1.5.0",
     "run-sequence": "^1.2.2",
     "thinodium": "^1.2.2",
     "thinodium-knex": "^1.2.0",
     "thinodium-mongodb": "^1.2.0",
-    "thinodium-rethinkdb": "^1.2.0"
+    "thinodium-rethinkdb": "^1.2.0",
+    "through2": "^2.0.3"
   }
 }
