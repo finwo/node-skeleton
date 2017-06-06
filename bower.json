@@ -1,0 +1,11 @@
+{
+  "name": "trackthis-client",
+  "homepage": "https://github.com/finwo/trackthis",
+  "authors": [
+    "Robin Bron <robin@finwo.nl>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "private": true
+}

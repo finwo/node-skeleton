@@ -1,6 +1,6 @@
 module.exports = {};
 
-var fs   = require('fs'),
+var fs   = require('fs-extra'),
     path = require('path');
 
 function readdir( dir ) {
@@ -25,24 +25,6 @@ function readdir( dir ) {
   return output;
 }
 
-function setDeep( subject, key, value ) {
-  if ( 'string' === typeof key ) {
-    key = key.split('.');
-  }
-  if ( !Array.isArray(key) ) {
-    return;
-  }
-  var part;
-  while ( key.length ) {
-    part = key.shift();
-    if ( key.length ) {
-      subject = (subject[ part ] = subject[ part ] || {});
-    } else {
-      subject[ part ] = value;
-    }
-  }
-}
-
 readdir(__dirname)
   .forEach(function ( file ) {
     file    = file.split('.');
@@ -56,5 +38,5 @@ readdir(__dirname)
       name = name.substr(__dirname.length + 1);
       name = name.split(path.sep).join('.');
     }
-    setDeep(module.exports, name, require(file));
+    set_deep(module.exports, name, require(file));
   });
