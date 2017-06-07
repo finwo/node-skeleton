@@ -46,12 +46,22 @@ gulp.task('bower', function(done) {
     });
 });
 
-gulp.task('css', function() {
-  gulp
-    .src(sourceDir + '/assets/styles/*.less')
-    .pipe(less({}))
-    .pipe(cleanCss())
-    .pipe(gulp.dest(targetDir + '/assets/css'))
+gulp.task('css', function(done) {
+  var maps = {
+    '/assets/styles/*.less': '/assets/css',
+    '/assets/styles/pages/*.less': '/assets/css/pages'
+  };
+  var mapKeys = Object.keys(maps);
+  (function next() {
+    var mapKey = mapKeys.shift();
+    if(!mapKey) return done();
+    gulp
+      .src( sourceDir + mapKey )
+      .pipe(less({}))
+      .pipe(cleanCss())
+      .pipe(gulp.dest( targetDir + maps[mapKey] ))
+      .on('end', next)
+  })();
 });
 
 gulp.task('html', function(done) {

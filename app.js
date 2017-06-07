@@ -27,11 +27,11 @@ var server = http.createServer(Q.async(function*(req, res) {
   var hooks = yield service('middleware'),
       keys  = Object.keys(hooks),
       key;
-
+  req.response = res;
+  res.request  = req;
   while(key = keys.shift()) {
     yield hooks[key](req, res);
   }
-
   return router(req, res);
 }));
 server.listen(config.http.port);

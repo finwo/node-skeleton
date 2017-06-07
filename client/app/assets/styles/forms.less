@@ -1,0 +1,12 @@
+@import "./colors.less";
+
+form, .form {
+  .input, input, select, textarea {
+    background-color: @color-back;
+    border          : solid 1px transparent;
+    color           : @color-text;
+    &:focus {
+      border-color: @color-theme;
+    }
+  }
+}
