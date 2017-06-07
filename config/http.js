@@ -25,7 +25,7 @@ module.exports = {
   port          : parseInt(process.env.PORT || 3000),
   served_by     : 'TrackThis',
   software_name : require(path.join(approot,'package.json')).name,
-  version       : require('../package.json').version,
+  version       : require(path.join(approot,'package.json')).version,
 
   // Sessions
   //avail_nsr_session_handlers: ['dispatch.memory_store', 'dispatch.text_store'],

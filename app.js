@@ -12,6 +12,9 @@ global.config  = require('./config');
 // Initialize service registry
 require('./src/service');
 
+// Initialize middleware
+require('./src/hooks');
+
 // Setup router
 var router = new Router( config.http );
 service.register( 'router', router );
@@ -20,6 +23,20 @@ service.register( 'router', router );
 require('./src/controllers');
 
 // Start the server
-var server = http.createServer(router);
+var server = http.createServer(Q.async(function*(req, res) {
+  var hooks = yield service('middleware'),
+      keys  = Object.keys(hooks),
+      key;
+
+  while(key = keys.shift()) {
+    yield hooks[key](req, res);
+  }
+
+  Object.keys(hooks).forEach(function( hookName ) {
+
+  });
+
+  return router(req, res);
+}));
 server.listen(config.http.port);
 console.log('Server running on port', config.http.port);

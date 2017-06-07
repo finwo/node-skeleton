@@ -1,8 +1,6 @@
 module.exports = {
   "get /": function* (req, res) {
     
-    var router = yield service('router');
-    
     var requested = (req.headers['accept-language'] || '').split(',');
     requested.push(config.languages.default);
     

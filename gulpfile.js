@@ -16,7 +16,7 @@ global.config  = require('./config');
 
 // Build settings
 var sourceDir = __dirname + '/client/app',
-    targetDir = __dirname + '/web';
+    targetDir = config.http.static_route;
 
 // Configure i18n
 i18n.configure({

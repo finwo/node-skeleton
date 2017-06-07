@@ -21,3 +21,21 @@ module.exports = function ( subject, key, value ) {
     }
   }
 };
+
+
+/* obj = { foo  : "bar",
+ *   hello: {
+ *     "target": "world"
+ *   }
+ * }
+ *
+ * set_deep( obj, "hello.target", "people" );
+ * set_deep( obj, "hello.source", 1337 );
+ *
+ * obj = { foo  : "bar",
+ *   hello: {
+ *     "target": "people",
+ *     "source": 1337
+ *   }
+ * }
+ */
