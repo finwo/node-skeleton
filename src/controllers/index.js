@@ -18,6 +18,26 @@ Q.fcall(Q.async(function* () {
 
   // Fetch router
   var router = yield service('router');
+
+  // Register new 404 handler
+  router.__404 = router._404;
+  router._404  = function( req, res, route ) {
+    var files = {};
+    files[path.join(route+'.html')]            = 200;
+    files[path.join(req.language, '404.html')] = 404;
+    var keys = Object.keys(files);
+    (function next() {
+      var filename = keys.shift();
+      if (!filename) return router.__404( req, res, route );
+      fs.readFile( path.join(config.http.static_route, filename), function(err, data) {
+        if ( err ) return next();
+        res.writeHead( files[filename], {
+          'Content-Type': router.utils.mime_types[ '.' + filename.split('.').pop() ] || router.utils.mime_types['']
+        });
+        res.end(data);
+      });
+    })();
+  };
   
   // Register new 405 handler
   router.__405 = router._405;

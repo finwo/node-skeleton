@@ -13,7 +13,7 @@ global.config  = require('./config');
 require('./src/service');
 
 // Initialize middleware
-require('./src/hooks');
+require('./src/middleware');
 
 // Setup router
 var router = new Router( config.http );
@@ -31,10 +31,6 @@ var server = http.createServer(Q.async(function*(req, res) {
   while(key = keys.shift()) {
     yield hooks[key](req, res);
   }
-
-  Object.keys(hooks).forEach(function( hookName ) {
-
-  });
 
   return router(req, res);
 }));

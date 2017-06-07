@@ -1,6 +1,7 @@
 var bower       = require('bower'),
     cleanCss    = require('gulp-clean-css'),
     engine      = require('./client/lib/template-engine'),
+    fs          = require('fs-extra'),
     gulp        = require('gulp'),
     htmlmin     = require('gulp-htmlmin'),
     i18n        = require('i18n'),
@@ -29,7 +30,12 @@ i18n.configure({
 engine.enableI18n(i18n);
     
 gulp.task('clean', function(done) {
-  done();
+  fs.remove(targetDir, function(err) {
+    if(!err) {
+      return done();
+    }
+    throw err;
+  });
 });
 
 gulp.task('bower', function(done) {
@@ -69,8 +75,20 @@ gulp.task('html', function(done) {
   })();
 });
 
+gulp.task('images', function(done) {
+  var extensions = [ 'gif', 'ico', 'png' ];
+  (function next() {
+    var extension = extensions.shift();
+    if (!extension) return done();
+    gulp
+      .src( sourceDir + '/assets/images/**/*.' + extension )
+      .pipe(gulp.dest(targetDir + '/assets/img'))
+      .on('end', next)
+  })();
+});
+
 gulp.task('build', function(done) {
-  runSequence('clean', 'bower', 'css', 'html', done);
+  runSequence('clean', 'bower', 'css', 'html', 'images', done);
 });
 
 gulp.task('default', ['build']);
