@@ -1,4 +1,4 @@
-runtime: custom
+runtime: nodejs
 env: flex
 application: trackthis-169509
 api_version: 1
