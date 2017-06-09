@@ -1,10 +1,10 @@
-FROM launcher.gcr.io/google/nodejs
+FROM gcr.io/google_appengine/nodejs
 
 # Copy application code.
 COPY . /app/
 
 # Install dependencies.
 RUN npm --unsafe-perm install
-EXPOSE 3000
 
-CMD [ "npm", "start" ]
+# Start
+CMD npm start
