@@ -9,7 +9,7 @@ machine:
 dependencies:
   pre:
     # Authenticate with gcloud
-    - echo $GCLOUD_SERVICE_KEY | base64 --decode > ${HOME}/client-secret.json
+    - echo $GCLOUD_SERVICE_KEY | base64 -di > ${HOME}/client-secret.json
     - gcloud --quiet components update app
     - gcloud auth activate-service-account --key-file ${HOME}/client-secret.json
     - gcloud config set project $GCLOUD_PROJECT
