@@ -1,0 +1,10 @@
+general:
+  branches:
+    only:
+      - v2
+dependencies:
+  cache_directories:
+    - "node_modules"
+    - "bower_components"
+  override:
+    - npm install
