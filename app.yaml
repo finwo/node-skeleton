@@ -1,6 +1,9 @@
 runtime: nodejs
 env: flex
 application: trackthis
+api_version: 1
+service: default
+version: v2
 
 skip_files:
   - ^(.*/)?\.bak$
