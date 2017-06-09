@@ -12,6 +12,7 @@ dependencies:
     - echo $GCLOUD_SERVICE_KEY | base64 -di > ${HOME}/client-secret.json
     - gcloud auth activate-service-account --key-file ${HOME}/client-secret.json
     - gcloud config set project $GCLOUD_PROJECT
+    - gcloud --quiet components update
   cache_directories:
     - "node_modules"
     - "bower_components"
@@ -22,4 +23,4 @@ deployment:
   production:
     branch: v2
     commands:
-      - gcloud -q app deploy app.yaml --version=v2
+      - gcloud -q app deploy app.yaml --promote --version=v2
