@@ -24,10 +24,10 @@ deployment:
       - echo $GCLOUD_SERVICE_KEY | base64 -di > ${HOME}/client-secret.json
       - sudo /opt/google-cloud-sdk/bin/gcloud auth activate-service-account --key-file ${HOME}/client-secret.json
       - sudo /opt/google-cloud-sdk/bin/gcloud config set project $GCLOUD_PROJECT
-      - sudo /opt/google-cloud-sdk/bin/gcloud --quiet config set container/cluster $CLUSTER_NAME
+      - sudo /opt/google-cloud-sdk/bin/gcloud -q config set container/cluster $CLUSTER_NAME
       - sudo /opt/google-cloud-sdk/bin/gcloud config set compute/zone ${COMPUTE_ZONE}
-      - sudo /opt/google-cloud-sdk/bin/gcloud components install kubectl
-      - sudo /opt/google-cloud-sdk/bin/gcloud --quiet container clusters get-credentials $CLUSTER_NAME
+      - sudo /opt/google-cloud-sdk/bin/gcloud -q components install kubectl
+      - sudo /opt/google-cloud-sdk/bin/gcloud -q container clusters get-credentials $CLUSTER_NAME
 
       # Deploy
       - sudo /opt/google-cloud-sdk/bin/gcloud docker -- push us.gcr.io/${GCLOUD_PROJECT}/hello
