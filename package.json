@@ -3,6 +3,9 @@
   "version": "0.0.1",
   "description": "",
   "main": "app.js",
+  "engines": {
+    "node": "^6.10.x"
+  },
   "scripts": {
     "postinstall": "gulp",
     "test": "echo \"Error: no test specified\" && exit 1",
