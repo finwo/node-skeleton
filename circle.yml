@@ -11,7 +11,6 @@ dependencies:
     # Authenticate with gcloud
     - echo $GCLOUD_SERVICE_KEY | base64 -di > ${HOME}/client-secret.json
     - gcloud auth activate-service-account --key-file ${HOME}/client-secret.json
-    - gcloud --quiet components update
     - gcloud config set project $GCLOUD_PROJECT
   cache_directories:
     - "node_modules"
