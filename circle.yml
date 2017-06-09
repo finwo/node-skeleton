@@ -5,6 +5,8 @@ general:
 machine:
   environment:
     GCLOUD_PROJECT: trackthis-169509
+    CLUSTER_NAME: cluster-1
+    COMPUTE_ZONE: europe-west1-b
 
 dependencies:
   pre:
@@ -18,13 +20,13 @@ deployment:
   production:
     branch: v2
     commands:
-    # Authenticate with gcloud
-    - echo $GCLOUD_SERVICE_KEY | base64 -di > ${HOME}/client-secret.json
-    - gcloud auth activate-service-account --key-file ${HOME}/client-secret.json
+      # Authenticate & Settings
+      - echo $GCLOUD_SERVICE_KEY | base64 -di > ${HOME}/client-secret.json
+      - sudo gcloud auth activate-service-account --key-file ${HOME}/client-secret.json
+      - sudo gcloud config set project $GCLOUD_PROJECT
+      - sudo gcloud --quiet config set container/cluster $CLUSTER_NAME
+      - sudo gcloud config set compute/zone ${COMPUTE_ZONE}
+      - sudo gcloud --quiet container clusters get-credentials $CLUSTER_NAME
 
-    # Updates
-    - yes | gcloud components update
-
-    # Select project & deploy
-    - gcloud config set project $GCLOUD_PROJECT
-    - gcloud -q app deploy app.yaml --promote --version=v2
+      # Deploy
+      - sudo gcloud docker -- push us.gcr.io/${GCLOUD_PROJECT}/hello
