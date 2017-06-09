@@ -22,11 +22,11 @@ deployment:
     commands:
       # Authenticate & Settings
       - echo $GCLOUD_SERVICE_KEY | base64 -di > ${HOME}/client-secret.json
-      - sudo gcloud auth activate-service-account --key-file ${HOME}/client-secret.json
-      - sudo gcloud config set project $GCLOUD_PROJECT
-      - sudo gcloud --quiet config set container/cluster $CLUSTER_NAME
-      - sudo gcloud config set compute/zone ${COMPUTE_ZONE}
-      - sudo gcloud --quiet container clusters get-credentials $CLUSTER_NAME
+      - sudo /opt/google-cloud-sdk/bin/gcloud auth activate-service-account --key-file ${HOME}/client-secret.json
+      - sudo /opt/google-cloud-sdk/bin/gcloud config set project $GCLOUD_PROJECT
+      - sudo /opt/google-cloud-sdk/bin/gcloud --quiet config set container/cluster $CLUSTER_NAME
+      - sudo /opt/google-cloud-sdk/bin/gcloud config set compute/zone ${COMPUTE_ZONE}
+      - sudo /opt/google-cloud-sdk/bin/gcloud --quiet container clusters get-credentials $CLUSTER_NAME
 
       # Deploy
-      - sudo gcloud docker -- push us.gcr.io/${GCLOUD_PROJECT}/hello
+      - sudo /opt/google-cloud-sdk/bin/gcloud docker -- push us.gcr.io/${GCLOUD_PROJECT}/hello
