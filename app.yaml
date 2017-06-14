@@ -1,8 +1,0 @@
-runtime: nodjes
-env: flex
-application: trackthis
-service: default
-version: v2
-
-skip_files:
-  - ^(.*/)?\.bak$
