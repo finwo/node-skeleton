@@ -1,0 +1,28 @@
+{
+  "name": "node-skeleton",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "postinstall": "gulp",
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/finwo/node-skeleton.git"
+  },
+  "author": "Robin Bron <robin@finwo.nl>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/finwo/node-skeleton/issues"
+  },
+  "homepage": "https://github.com/finwo/node-skeleton#readme",
+  "dependencies": {
+    "co": "^4.6.0",
+    "fs-extra": "^3.0.1",
+    "gulp": "^3.9.1",
+    "http": "0.0.0",
+    "run-sequence": "^1.2.2"
+  }
+}
