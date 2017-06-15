@@ -17,7 +17,7 @@ module.exports = co(function*() {
     // Logging
     log: {
       handler : console.log,
-      template: '[ {date} ] {method} {path}'
+      template: '[ {year}-{month}-{day} {hour}:{minute}:{seconds}.{milliseconds} Z ] {method} {path}'
     },
 
     // Cache

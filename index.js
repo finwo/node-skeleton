@@ -23,8 +23,8 @@ co(function*() {
     router.register(yield require('./src/middleware'));
     router.register(yield require('./src/controller'));
 
-    //// HTTP daemon
-    //var server = http.createServer(router);
-    //server.listen(config.http.port);
-    //console.log('Server running on port', config.http.port);
+    // HTTP daemon
+    var server = http.createServer(router);
+    server.listen(config.http.port);
+    console.log('Server running on port', config.http.port);
   }));
