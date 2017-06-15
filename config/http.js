@@ -4,7 +4,7 @@ var co   = require('co'),
 module.exports = co(function*() {
   return {
 
-    //// Static
+    // Static
     default_home: [ 'index.html', 'index.htm' ],
     static_route: path.join(approot, 'web'),
 
@@ -25,7 +25,18 @@ module.exports = co(function*() {
       enabled   : true,
       extensions: [ 'js', 'css' ],
       ttl       : 3600
+    },
+
+    // Other settings
+    globalAgent  : {
+      maxSockets: 20
+    },
+    mimetypes : {
+      'css' : 'text/css',
+      'htm' : 'text/html',
+      'html': 'text/html',
+      'js'  : 'text/javascript'
     }
 
-  }
+  };
 });

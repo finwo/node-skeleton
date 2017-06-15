@@ -1,6 +1,6 @@
-var co   = require('co'),
-    fs   = require('fs-extra'),
-    http = require('http');
+var co     = require('co'),
+    extend = require('extend'),
+    http   = require('http');
 
 // Initialize services & config
 co(function*() {
@@ -8,6 +8,7 @@ co(function*() {
   require('./src/service');
   global.approot = __dirname;
   global.config  = yield require('./config');
+  extend( http.globalAgent, config.http.globalAgent || {});
 })
 
   // Bootstrap code

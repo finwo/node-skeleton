@@ -1,11 +1,12 @@
 module.exports = {
-  "get *": function*( req, res ) {
-    if ( !config.http.cache.enabled ) return;
-    var ext = req.url.split('?').shift().split('.').pop();
-    if ( config.http.cache.extensions.indexOf(ext) < 0 ) return;
-    var date    = new Date(),
-        expires = new Date(date.getTime() + (config.http.cache.ttl * 1000));
-    res.setHeader('date'   , date    );
-    res.setHeader('expires', expires );
+  "any *": function*( req, res ) {
+    var requested = (req.headers[ 'accept-language' ] || '').split(',');
+    requested.push(config.language.default);
+    req.language = requested
+      .map(function ( language ) {
+        return language.split(';').shift();
+      })
+      .intersect(Object.keys(config.language))
+      .shift();
   }
 };
