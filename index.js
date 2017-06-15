@@ -1,4 +1,5 @@
 var co     = require('co'),
+    colors = require('colors'),
     extend = require('extend'),
     http   = require('http'),
     sockjs = require('sockjs');
@@ -31,17 +32,20 @@ co(function*() {
     console.log('Server running on port', config.http.port);
 
     // Websockets
-    var echo = sockjs.createServer({
-      log       : config.http.log,
-      prefix    : '/socket',
-      sockjs_url: 'http://cdn.jsdelivr.net/sockjs/1.0.1/sockjs.min.js'
-    });
-    echo.on('connection', function ( conn ) {
-      conn.on('data', function ( message ) {
-        conn.write(message);
+    var ws = sockjs.createServer(config.http.ws);
+    ws.installHandlers(server);
+    ws.on('connection', function(conn) {
+      conn.on('data', function(message) {
+        // Message structure: "uid json"
       });
-      conn.on('close', function () {});
     });
-    echo.installHandlers(server, {prefix: '/socket'});
+    //echo.on('connection', function ( conn ) {
+    //  conn.on('data', function ( message ) {
+    //    console.log(message);
+    //    conn.write(message);
+    //  });
+    //  conn.on('close', function () {});
+    //});
+    //echo.installHandlers(server, {prefix: '/socket'});
 
   }));

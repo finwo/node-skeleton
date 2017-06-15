@@ -1,5 +1,5 @@
-var co   = require('co'),
-    path = require('path');
+var co     = require('co'),
+    path   = require('path');
 
 /**
  * Pad & cut a string to the given length
@@ -29,7 +29,7 @@ function explodeDate(src) {
 }
 
 module.exports = co(function*() {
-  return {
+  var http = {
 
     // Static
     default_home: [ 'index.html', 'index.htm' ],
@@ -44,11 +44,22 @@ module.exports = co(function*() {
     // Logging
     log: function() {
       var args         = arguments,
-          dateTemplate = '[ {year}-{month}-{day} {hour}:{minute}:{seconds}.{milliseconds} Z ]',
+          dateTemplate = '[' + '{year}-{month}-{day} {hour}:{minute}:{seconds}.{milliseconds} Z'.gray + ']',
           data         = explodeDate(new Date());
-      return console.log.apply(console, [ dateTemplate.format(data) ].concat(Object.keys(args).map(function ( key ) {
+      args = Object.keys(args).map(function(key) {
+        return args[key];
+      });
+      var severity = args.shift();
+      return console.log.apply(console, [ dateTemplate.format(data), severity.cyan ].concat(Object.keys(args).map(function ( key ) {
         return args[ key ];
       })));
+    },
+
+    // WebSocket
+    ws: {
+      log       : function(){},
+      prefix    : '/socket',
+      sockjs_url: '/assets/bower/sockjs-client/dist/sockjs.min.js'
     },
 
     // Cache
@@ -70,4 +81,7 @@ module.exports = co(function*() {
     }
 
   };
+
+  http.ws.log = http.log;
+  return http;
 });

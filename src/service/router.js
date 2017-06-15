@@ -1,7 +1,9 @@
-var co   = require('co'),
-    fs   = require('fs-extra'),
-    path = require('path'),
-    url  = require('url');
+var co       = require('co'),
+    fs       = require('fs-extra'),
+    path     = require('path'),
+    Request  = require('../lib/request'),
+    Response = require('../lib/response'),
+    url      = require('url');
 
 module.exports = co(function*() {
 
@@ -83,8 +85,8 @@ module.exports = co(function*() {
   };
 
   router.internal = function ( options ) {
-    var req    = options.request || {},
-        res    = options.response || {},
+    var req    = options.request || new Request(options),
+        res    = options.response || new Response(options),
         method = (options.method || req.method || 'get').toLowerCase(),
         parsed = url.parse(options.url || req.url || '/'),
         parts  = parsed.pathname.split('/').filter(function ( token ) {return !!token;}),

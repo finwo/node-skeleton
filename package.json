@@ -24,6 +24,7 @@
   "dependencies": {
     "bower": "^1.8.0",
     "co": "^4.6.0",
+    "colors": "^1.1.2",
     "extend": "^3.0.1",
     "fs": "0.0.1-security",
     "fs-extra": "^3.0.1",

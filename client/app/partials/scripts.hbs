@@ -1,5 +1,6 @@
 <script src="/assets/js/lib/req.js"></script>
 <script>
+    var translations = { {{#each _config.language}}"{{@key}}":{ {{#each this}}"{{@key}}": "{{this}}",{{/each}} },{{/each}} };
     require.baseUri = '/assets/';
     require.paths   = {
         'api'             : 'js/lib/api.js',
@@ -8,7 +9,7 @@
         'data-script'     : 'js/helpers/data-script.js',
         'jquery'          : 'bower/jquery/dist/jquery.min.js',
         'jquery-watch-dom': 'bower/jquery-watch-dom/jquery-watch.min.js',
-        'sockjs'          : 'https://cdn.jsdelivr.net/sockjs/1/sockjs.min.js',
+        'sockjs'          : 'bower/sockjs-client/dist/sockjs.min.js',
         'uid'             : 'js/lib/uid.js'
     };
     require.getter['data-script']      = function() { return true;                    };
