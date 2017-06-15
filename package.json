@@ -22,10 +22,22 @@
   },
   "homepage": "https://github.com/finwo/node-skeleton#readme",
   "dependencies": {
+    "bower": "^1.8.0",
     "co": "^4.6.0",
+    "extend": "^3.0.1",
+    "fs": "0.0.1-security",
     "fs-extra": "^3.0.1",
+    "globby": "^6.1.0",
     "gulp": "^3.9.1",
+    "gulp-clean-css": "^3.4.2",
+    "gulp-less": "^3.3.0",
+    "gulp-util": "^3.0.8",
+    "handlebars": "^4.0.10",
     "http": "0.0.0",
-    "run-sequence": "^1.2.2"
+    "i18n": "^0.8.3",
+    "object.reduce": "^1.0.1",
+    "path": "^0.12.7",
+    "run-sequence": "^1.2.2",
+    "through2": "^2.0.3"
   }
 }

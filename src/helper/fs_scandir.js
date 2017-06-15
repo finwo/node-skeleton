@@ -1,8 +1,7 @@
-var co   = require('co'),
-    fs   = require('fs-extra'),
+var fs   = require('fs-extra'),
     path = require('path');
 
-fs.scandir = co.wrap(function*( dir ) {
+fs.scandir = require('co').wrap(function*( dir ) {
   var stat, filename, i, src = yield fs.readdir(dir);
   var output = [];
   for ( i in src ) {

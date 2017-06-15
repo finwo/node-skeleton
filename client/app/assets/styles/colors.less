@@ -1,0 +1,16 @@
+@color-edge  : rgba(0,0,0,0.8);
+@color-theme : #5AF;
+@color-text  : #555;
+@color-back  : #FFF;
+
+.color-primary {
+  background-color : transparent;
+  color            : @color-text;
+}
+.color-secundary {
+  background-color : @color-theme;
+  color            : @color-back;
+  .color-primary {
+    background-color: @color-back;
+  }
+}

@@ -12,7 +12,7 @@ module.exports = co(function*() {
   files = files.filter(function(filename) {
     return (filename != __filename) && ( extensions.indexOf( filename.split('.').pop() ) >= 0 );
   });
-  
+
   // Load them all
   var name, file;
   while(file=files.shift()) {

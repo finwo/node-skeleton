@@ -1,0 +1,14 @@
+{
+  "name": "trackthis-client",
+  "description": "",
+  "main": "",
+  "authors": [
+    "Robin Bron <robin@finwo.nl>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/finwo/node-skeleton",
+  "private": true,
+  "dependencies": {
+    "jquery": "~2.2.0"
+  }
+}

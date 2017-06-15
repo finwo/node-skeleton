@@ -1,0 +1,19 @@
+@import "./alignment.less";
+@import "./colors.less";
+@import "./edges.less";
+
+nav {
+  .color-secundary;
+  .shadow;
+  a {
+    .padded;
+    display : inline-block;
+    &:hover {
+      background-color: @color-back;
+      color           : @color-theme;
+    }
+  }
+  > .container {
+    padding: 0;
+  }
+}
