@@ -40,14 +40,7 @@ gulp.task('bower', function(done) {
   bower.commands
     .install()
     .on('end', function() {
-      fs.ensureSymlink( approot + '/bower_components', targetDir + '/assets/bower')
-        .then(function() {
-          done();
-        })
-        .catch(function(e) {
-          gutil.log.error(e);
-          process.exit(1);
-        });
+      fs.copy( approot + '/bower_components', targetDir + '/assets/bower', done);
     });
 });
 
