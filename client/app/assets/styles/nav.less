@@ -2,18 +2,49 @@
 @import "./colors.less";
 @import "./edges.less";
 
+// Desktop
 nav {
   .color-secundary;
   .shadow;
+
   a {
     .padded;
     display : inline-block;
     &:hover {
-      background-color: @color-back;
-      color           : @color-theme;
+      background-color : @color-back;
+      color            : @color-theme;
+    }
+
+    &.icon {
+      display : none;
     }
   }
+
+  &:after {
+    clear   : both;
+    content : "";
+  }
+
   > .container {
-    padding: 0;
+    padding : 0;
+  }
+}
+
+// Mobile
+@media all and (max-width : @container-width) {
+  nav {
+    a:not(:first-child) {
+      display : none;
+    }
+    &.open a {
+      display : block;
+    }
+    a.icon {
+      display  : block;
+      float    : right;
+      position : absolute;
+      right    : 0;
+      top      : 0;
+    }
   }
 }

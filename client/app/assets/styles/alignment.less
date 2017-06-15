@@ -1,3 +1,5 @@
+@container-width: 50rem;
+
 .padded {
   padding: 0.5rem;
 }
@@ -5,7 +7,7 @@
 .container {
   .padded;
   margin   : 0 auto;
-  max-width: 50rem;
+  max-width: @container-width;
 }
 .right {
   float: right;

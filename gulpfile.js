@@ -64,7 +64,8 @@ gulp.task('css', function(done) {
 
 gulp.task('js', function(done) {
   var maps = {
-    '/assets/scripts/*.js': '/assets/js'
+    '/assets/scripts/*.js'   : '/assets/js',
+    '/assets/scripts/**/*.js': '/assets/js'
   };
   var mapKeys = Object.keys(maps);
   (function next() {

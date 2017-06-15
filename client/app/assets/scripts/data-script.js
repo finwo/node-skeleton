@@ -6,7 +6,7 @@ define(['jquery', 'jquery-watch-dom'], function($) {
       var $this  = $(this),
           script = $this.attr('data-script');
       $this.removeAttr('data-script');
-      require([script], function( module ) {
+      require(['js/'+script], function( module ) {
         module && module($this);
       });
     });
