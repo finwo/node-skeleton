@@ -1,22 +1,31 @@
-var path = require('path');
+var co   = require('co'),
+    path = require('path');
 
-module.exports = {
+module.exports = co(function*() {
+  return {
 
-  // Static
-  default_home : [ 'index.html', 'index.htm' ],
-  static_route : path.join(approot, 'web'),
+    //// Static
+    default_home: [ 'index.html', 'index.htm' ],
+    static_route: path.join(approot, 'web'),
 
-  // HTTP
-  port          : parseInt(process.env.PORT || 3000),
-  served_by     : 'TrackThis',
-  software_name : require(path.join(approot,'package.json')).name,
-  version       : require(path.join(approot,'package.json')).version,
+    // HTTP
+    port         : parseInt(process.env.PORT || 3000),
+    served_by    : 'TrackThis',
+    software_name: require(path.join(approot, 'package.json')).name,
+    version      : require(path.join(approot, 'package.json')).version,
 
-  // Cache
-  cache: {
-    enabled   : true,
-    extensions: [ 'js', 'css' ],
-    ttl       : 3600
+    // Logging
+    log: {
+      handler : console.log,
+      template: '[ {date} ] {method} {path}'
+    },
+
+    // Cache
+    cache: {
+      enabled   : true,
+      extensions: [ 'js', 'css' ],
+      ttl       : 3600
+    }
+
   }
-
-};
+});
