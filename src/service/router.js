@@ -6,20 +6,6 @@ var co   = require('co'),
 module.exports = co(function*() {
 
   /**
-   * Pad & cut a string to the given length
-   *
-   * @param {string} subject
-   * @param {number} length
-   * @param {string} padding
-   * @return {string}
-   */
-  function lpad( subject, length, padding ) {
-    padding = padding || ' ';
-    while ( subject.length < length ) subject = padding + subject;
-    return subject.substr(-length);
-  }
-
-  /**
    * Handle native http requests
    *
    * @param {object} req
@@ -105,18 +91,7 @@ module.exports = co(function*() {
         time   = new Date();
 
     // Log
-    config.http.log.handler(config.http.log.template.format({
-      'date'        : '' + time,
-      'day'         : lpad('' + time.getUTCDate(), 2, '0'),
-      'hour'        : lpad('' + time.getUTCHours(), 2, '0'),
-      'method'      : method,
-      'minute'      : lpad('' + time.getUTCMinutes(), 2, '0'),
-      'milliseconds': lpad('' + time.getUTCMilliseconds(), 3, '0'),
-      'month'       : lpad('' + (time.getUTCMonth() + 1), 2, '0'),
-      'path'        : parsed.pathname,
-      'seconds'     : lpad('' + time.getUTCSeconds(), 2, '0'),
-      'year'        : lpad('' + time.getUTCFullYear(), 4, '0'),
-    }));
+    config.http.log('info', method.toUpperCase(), parsed.pathname);
 
     // Default routes
     return co(function*() {

@@ -1,6 +1,33 @@
 var co   = require('co'),
     path = require('path');
 
+/**
+ * Pad & cut a string to the given length
+ *
+ * @param {string} subject
+ * @param {number} length
+ * @param {string} padding
+ * @return {string}
+ */
+function lpad( subject, length, padding ) {
+  padding = padding || ' ';
+  while ( subject.length < length ) subject = padding + subject;
+  return subject.substr(-length);
+}
+
+function explodeDate(src) {
+  return {
+    'date'        : '' + src,
+    'day'         : lpad('' + src.getUTCDate(), 2, '0'),
+    'hour'        : lpad('' + src.getUTCHours(), 2, '0'),
+    'minute'      : lpad('' + src.getUTCMinutes(), 2, '0'),
+    'milliseconds': lpad('' + src.getUTCMilliseconds(), 3, '0'),
+    'month'       : lpad('' + (src.getUTCMonth() + 1), 2, '0'),
+    'seconds'     : lpad('' + src.getUTCSeconds(), 2, '0'),
+    'year'        : lpad('' + src.getUTCFullYear(), 4, '0'),
+  };
+}
+
 module.exports = co(function*() {
   return {
 
@@ -15,9 +42,13 @@ module.exports = co(function*() {
     version      : require(path.join(approot, 'package.json')).version,
 
     // Logging
-    log: {
-      handler : console.log,
-      template: '[ {year}-{month}-{day} {hour}:{minute}:{seconds}.{milliseconds} Z ] {method} {path}'
+    log: function() {
+      var args         = arguments,
+          dateTemplate = '[ {year}-{month}-{day} {hour}:{minute}:{seconds}.{milliseconds} Z ]',
+          data         = explodeDate(new Date());
+      return console.log.apply(console, [ dateTemplate.format(data) ].concat(Object.keys(args).map(function ( key ) {
+        return args[ key ];
+      })));
     },
 
     // Cache

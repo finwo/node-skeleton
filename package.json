@@ -39,6 +39,7 @@
     "object.reduce": "^1.0.1",
     "path": "^0.12.7",
     "run-sequence": "^1.2.2",
+    "sockjs": "^0.3.18",
     "thinodium": "^1.2.2",
     "thinodium-knex": "^1.2.0",
     "thinodium-mongodb": "^1.2.0",
