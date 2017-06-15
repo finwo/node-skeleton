@@ -30,6 +30,7 @@
     "globby": "^6.1.0",
     "gulp": "^3.9.1",
     "gulp-clean-css": "^3.4.2",
+    "gulp-htmlmin": "^3.0.0",
     "gulp-less": "^3.3.0",
     "gulp-util": "^3.0.8",
     "handlebars": "^4.0.10",

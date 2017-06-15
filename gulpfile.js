@@ -5,6 +5,7 @@ var bower       = require('bower'),
     fs          = require('fs-extra'),
     gulp        = require('gulp'),
     gutil       = require('gulp-util'),
+    htmlmin     = require('gulp-htmlmin'),
     i18n        = require('i18n'),
     less        = require('gulp-less'),
     runSequence = require('run-sequence');
@@ -61,8 +62,56 @@ gulp.task('css', function(done) {
   })();
 });
 
+gulp.task('js', function(done) {
+  var maps = {
+    '/assets/scripts/*.js': '/assets/js'
+  };
+  var mapKeys = Object.keys(maps);
+  (function next() {
+    var mapKey = mapKeys.shift();
+    if(!mapKey) return done();
+    gulp
+      .src( sourceDir + mapKey )
+      .pipe(gulp.dest( targetDir + maps[mapKey] ))
+      .on('end', next)
+  })();
+});
+
+gulp.task('html', function(done) {
+  var languages = Object.keys(config.language);
+  engine.partials(sourceDir + '/partials/**/*.hbs');
+  (function next() {
+    var language = languages.shift();
+    if(!language) return done();
+    if(language=='default') return next();
+    i18n.setLocale(language);
+    engine.data({
+      _config: config,
+      _lang  : language
+    });
+    gulp
+      .src(sourceDir + '/*.hbs')
+      .pipe(engine.render())
+      .pipe(htmlmin({ collapseWhitespace: true }))
+      .pipe(gulp.dest( targetDir + '/' + language + '/' ))
+      .on('end', next);
+  })();
+});
+
+gulp.task('images', function(done) {
+  var extensions = [ 'gif', 'ico', 'png' ];
+  (function next() {
+    var extension = extensions.shift();
+    if (!extension) return done();
+    gulp
+      .src( sourceDir + '/assets/images/**/*.' + extension )
+      .pipe(gulp.dest(targetDir + '/assets/img'))
+      .on('end', next)
+  })();
+});
+
 gulp.task('build', function(done) {
-  runSequence('config', 'clean', 'engine', 'bower', 'css', done)
+  runSequence('config', 'clean', 'engine', 'bower', 'css', 'js', 'html', 'images', done)
 });
 
 gulp.task('default', ['build']);
