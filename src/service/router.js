@@ -1,4 +1,5 @@
 var co   = require('co'),
+    fs   = require('fs-extra'),
     path = require('path'),
     url  = require('url');
 
@@ -212,8 +213,7 @@ module.exports = co(function*() {
         });
         res.end(data);
         return;
-      } catch ( e ) {
-      }
+      } catch ( e ) {}
     }
     res.writeHeader(404, {
       'Content-Type': 'text/plain'

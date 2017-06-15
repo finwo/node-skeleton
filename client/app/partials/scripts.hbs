@@ -1,0 +1,18 @@
+<script src="/assets/js/req.js"></script>
+<script>
+    require.baseUri = '/assets/';
+    require.paths   = {
+        'api'             : 'js/api.js',
+        'cachep2p'        : 'https://unpkg.com/cachep2p/cachep2p.min.js',
+        'data-script'     : 'js/data-script.js',
+        'jquery'          : 'bower/jquery/dist/jquery.min.js',
+        'jquery-watch-dom': 'bower/jquery-watch-dom/jquery-watch.min.js',
+        'notify'          : 'bower/js-notify/notify.min.js'
+    };
+    require.getter['data-script']      = function() { return true;                    };
+    require.getter['jquery-watch-dom'] = function() { return $ && $.fn && $.fn.watch; };
+    require(['cachep2p'], function(CacheP2P) {
+        var c = new CacheP2P();
+        c.on('ready', function() { require(['data-script'], function(){}); });
+    });
+</script>
