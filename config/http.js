@@ -1,5 +1,5 @@
-var co     = require('co'),
-    path   = require('path');
+var co   = require('co'),
+    path = require('path');
 
 /**
  * Pad & cut a string to the given length

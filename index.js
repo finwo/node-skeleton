@@ -4,6 +4,9 @@ var co     = require('co'),
     http   = require('http'),
     sockjs = require('sockjs');
 
+// Make sure promises exist
+global.Promise = Promise || require('bluebird');
+
 // Initialize services & config
 co(function*() {
   require('./src/helper');
@@ -15,7 +18,22 @@ co(function*() {
 
   // Bootstrap code
   .then(co.wrap(function*() {
-
+    var data      = config.database.bootstrapData,
+        odm       = yield service('odm'),
+        key, keys = Object.keys(data),
+        model, current;
+    while( key = keys.shift() ) {
+      model   = yield odm.model( key, config.database.collections[key] || undefined );
+      current = yield model.getAll();
+      if (current.length) {
+        console.log(current.length, key+'(s) found, not inserting bootstrap data');
+      } else {
+        console.log('No', key+'s', 'found, inserting bootstrap data');
+        while(current = data[key].shift()) {
+          yield model.insert(current);
+        }
+      }
+    }
   }))
 
   // Initialize server

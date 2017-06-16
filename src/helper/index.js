@@ -1,3 +1,4 @@
+require('./array_fill');
 require('./array_intersect');
 require('./fs_scandir');
 require('./set_deep');
