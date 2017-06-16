@@ -55,6 +55,36 @@ co(function*() {
     ws.on('connection', function(conn) {
       conn.on('data', function(message) {
         // Message structure: "uid json"
+        var parts = message.split(' ', 2),
+            id    = parts.shift(),
+            data  = parts.shift();
+
+        // Try to parse
+        try {
+          data = JSON.parse(data);
+        } catch(e) {
+          conn.write(id + ' ' + JSON.stringify({
+            status: 400,
+            error: {
+              title      : 'websocket-error',
+              description: 'websocket-error-body',
+              details    : e && e.message || e
+            }
+          }));
+        }
+
+        // The data must have a type
+        if (!data.type) {
+          conn.write(id + ' ' + JSON.stringify({
+              status: 400,
+              error: {
+                title      : 'bad-request',
+                description: 'bad-request-body'
+              }
+            }));
+        }
+
+        console.log(data);
       });
     });
     //echo.on('connection', function ( conn ) {

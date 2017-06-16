@@ -100,7 +100,7 @@ gulp.task('html', function(done) {
 });
 
 gulp.task('images', function(done) {
-  var extensions = [ 'gif', 'ico', 'png' ];
+  var extensions = [ 'gif', 'ico', 'png', 'svg' ];
   (function next() {
     var extension = extensions.shift();
     if (!extension) return done();

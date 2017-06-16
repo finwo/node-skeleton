@@ -77,7 +77,8 @@ module.exports = co(function*() {
       'css' : 'text/css',
       'htm' : 'text/html',
       'html': 'text/html',
-      'js'  : 'text/javascript'
+      'js'  : 'text/javascript',
+      'svg' : 'image/svg+xml'
     }
 
   };

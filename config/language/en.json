@@ -1,4 +1,11 @@
 {
-  "home": "Home",
-  "login": "Login"
+  "home" : "Home",
+  "login": "Login",
+
+  "bad-request"         : "Bad request",
+  "bad-request-body"    : "The request was not in a format the server understood. Our team has been notified.",
+  "unknown-error"       : "Unknown error",
+  "unknown-error-body"  : "Something went wrong in TrackThis. Our team has been notified.",
+  "websocket-error"     : "Internal error",
+  "websocket-error-body": "Something went wrong with communicating to the server. Our team has been notified."
 }

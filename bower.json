@@ -11,6 +11,7 @@
   "dependencies": {
     "jquery": "~2.2.0",
     "jquery-watch-dom": "^1.21.0",
-    "sockjs-client": "^1.1.4"
+    "sockjs-client": "^1.1.4",
+    "js-notify": "^1.0.2"
   }
 }

@@ -1,4 +1,11 @@
 {
-  "home": "Home",
-  "login": "Inloggen"
+  "home" : "Home",
+  "login": "Inloggen",
+
+  "bad-request"         : "Invalide request",
+  "bad-request-body"    : "De aanvraag was niet in een formaat welke de server begreep. Ons team is op de hoogte gebracht.",
+  "unknown-error"       : "Onbekende error",
+  "unknown-error-body"  : "Er ging iets mis in TrackThis. Ons team is op de hoogte gebracht.",
+  "websocket-error"     : "Interne error",
+  "websocket-error-body": "Er ging iets mis met de communicatie naar de server. Ons team is op de hoogte gebracht."
 }
