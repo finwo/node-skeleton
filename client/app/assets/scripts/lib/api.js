@@ -1,4 +1,4 @@
-define([ 'notify', 'sockjs', 'translate', 'uid'], function(notify, SockJS, t, uid) {
+define([ 'bluebird', 'notify', 'sockjs', 'translate', 'uid' ], function ( Promise, notify, SockJS, t, uid ) {
 
   // Settings
   var uri = window.location.protocol + '//' + window.location.hostname;
@@ -6,58 +6,59 @@ define([ 'notify', 'sockjs', 'translate', 'uid'], function(notify, SockJS, t, ui
   uri += '/socket';
 
   // Initialize
-  var sock = new SockJS(uri);
-  sock.onopen  = function() { console.log('Connected');    };
-  sock.onclose = function() { console.log('Disconnected'); };
+  var sock;
+  function sock_init() {
+    sock         = new SockJS(uri);
+    sock.onopen  = function () {
+      console.log('Connected');
+    };
+    sock.onclose = function () {
+      console.log('Disconnected');
+      setTimeout(sock_init, 1000);
+    };
 
-  // Message receiver
-  sock.onmessage = function(e) {
-    var raw  = e.data.split(' ', 2),
-        id   = raw.shift(),
-        data = raw.shift();
+    // Message receiver
+    sock.onmessage = function ( e ) {
+      try {
+        var data = JSON.parse(e.data);
+      } catch ( e ) {
+        return notify(t('websocket-error'), {
+          body: t('websocket-error-body'),
+          icon: '/assets/img/logo_bare.png'
+        });
+      }
 
-    // Decode
-    try {
-      data = JSON.parse(data);
-    } catch ( e ) {
-      return notify(t('websocket-error'), {
-        body: t('websocket-error-body'),
-        icon: '/assets/img/logo_bare.png'
-      });
-    }
+      // Perform redirections
+      if ( data.redirect ) {
+        return window.location.href = data.redirect;
+      }
 
-    // Perform actions requested by the server
+      // Convert errors to events
+      if ( data.error ) {
+        data.event = {
+          name: 'error',
+          data: [ data.error ]
+        };
+        delete data.error;
+      }
 
-    // Perform redirections
-    if ( data.redirect ) {
-      return window.location.href = data.redirect;
-    }
+      // Events
+      if ( data.event ) {
+        var args = [ data.event.name ].concat(data.event.data);
+        api.emit.apply({ bubble: false }, args);
+      }
 
-    // Convert errors to events
-    if ( data.error ) {
-      data.event = {
-        name: 'error',
-        data: [ data.error ]
-      };
-      delete data.error;
-    }
-
-    // Events
-    if ( data.event ) {
-      var args = [ data.event.name ].concat(data.event.data);
-      api.emit.apply({ bubble: false }, args);
-    }
-
-    // Handle callbacks
-    if ( callbacks[id] ) {
-      var cb = callbacks[id];
-      if (data.finished) delete callbacks[id];
-      return cb(data);
-    }
-  };
+      // Handle callbacks
+      if ( callbacks[data._id] ) {
+        var cb = callbacks[data._id];
+        if (data.finished) delete callbacks[data._id];
+        return cb(data);
+      }
+    };
+  }
 
   // Track state
-  var auth      = false,
+  var auth      = window.localStorage && window.localStorage.auth || false,
       callbacks = [],
       listeners = {};
 
@@ -65,55 +66,107 @@ define([ 'notify', 'sockjs', 'translate', 'uid'], function(notify, SockJS, t, ui
   var api = {
 
     // Doing all the groundwork
-    raw: function(data) {
-      var id = uid();
+    raw: function ( data ) {
+      data._id = uid();
       if ( auth ) {
         data.auth = auth;
       }
       if ( data.callback ) {
-        callbacks[id] = data.callback;
+        callbacks[ data._id ] = data.callback;
         delete data.callback;
       }
-      sock.send(id + ' ' + JSON.stringify(data));
-      return id;
+      sock.send(JSON.stringify(data));
+      return data._id;
+    },
+    get: function( url, options ) {
+      options = options || {};
+      return new Promise(function( resolve, reject ) {
+        api.raw({
+          type    : 'request',
+          method  : 'POST',
+          url     : url,
+          headers : options.headers || {},
+          callback: function(data) {
+            if ( data.status && ( data.status >= 300 || data.status < 200 ) ) {
+              reject(data);
+            } else {
+              resolve(data);
+            }
+          }
+        });
+      });
+    },
+    post: function( url, options ) {
+      options = options || {};
+      return new Promise(function( resolve, reject ) {
+        api.raw({
+          type    : 'request',
+          method  : 'POST',
+          url     : url,
+          headers : options.headers || {},
+          body    : options.body    || options.data || '',
+          callback: function(data) {
+            if ( data.status && ( data.status >= 300 || data.status < 200 ) ) {
+              reject(data);
+            } else {
+              resolve(data);
+            }
+          }
+        });
+      });
     },
 
     // Events
-    on: function( name, callback ) {
+    on  : function ( name, callback ) {
       if ( Array.isArray(name) ) {
-        return name.map(function(n) {
-          return api.on( n, callback );
+        return name.map(function ( n ) {
+          return api.on(n, callback);
         });
       }
       if ( Array.isArray(callback) ) {
-        return callback.map(api.on.bind(null,name));
+        return callback.map(api.on.bind(null, name));
       }
-      (listeners[name] = listeners[name] || []).push(callback);
+      (listeners[ name ] = listeners[ name ] || []).push(callback);
     },
-    emit: function( name ) {
+    emit: function ( name ) {
       var args = arguments;
-      args = Object.keys(args).map(function(key) { return args[key]; });
+      args     = Object.keys(args).map(function ( key ) { return args[ key ]; });
       args.shift();
-      (listeners[name]||[]).forEach(function(handler) {
+      (listeners[ name ] || []).forEach(function ( handler ) {
         handler.apply(null, args);
       });
       if ( !this.hasOwnProperty('bubble') || this.bubble ) {
         api.raw({
           type: 'event',
+          name: name,
           data: args
         });
       }
     },
 
+    // Collections
+    user: {
+      isLoggedIn: function() {
+        return !!auth;
+      },
+      login: function(data) {
+        return api.post( '/api/user/login', { data: data })
+          .then(function( token ) {
+            return auth = token;
+          });
+      }
+    }
+
   };
 
   // Attach error handler
-  api.on('error', function(err) {
-    notify(t( err.title || 'unknown-error' ), {
-      body: t( err.description || 'unknown-error-body' ),
+  api.on('error', function ( err ) {
+    notify(t(err.title || 'unknown-error'), {
+      body: t(err.description || 'unknown-error-body'),
       icon: '/assets/img/logo_bare.png'
     });
   });
 
+  sock_init();
   return api;
 });

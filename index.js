@@ -54,16 +54,12 @@ co(function*() {
     ws.installHandlers(server);
     ws.on('connection', function(conn) {
       conn.on('data', function(message) {
-        // Message structure: "uid json"
-        var parts = message.split(' ', 2),
-            id    = parts.shift(),
-            data  = parts.shift();
-
-        // Try to parse
+        var request;
         try {
-          data = JSON.parse(data);
+          request = JSON.parse(message);
+          if ( !request._id ) throw "Request is missing an id";
         } catch(e) {
-          conn.write(id + ' ' + JSON.stringify({
+          return conn.write(JSON.stringify({
             status: 400,
             error: {
               title      : 'websocket-error',
@@ -73,27 +69,24 @@ co(function*() {
           }));
         }
 
-        // The data must have a type
-        if (!data.type) {
-          conn.write(id + ' ' + JSON.stringify({
-              status: 400,
+        request.type = request.type || 'request';
+        switch(request.type) {
+          case 'request':
+            request.websocket = conn;
+            return router.internal(request);
+            break;
+          default:
+            return conn.write(JSON.stringify({
+              _id: request._id,
+              status: 501,
               error: {
-                title      : 'bad-request',
-                description: 'bad-request-body'
+                title      : 'not-implemented',
+                description: 'not-implemented-body'
               }
             }));
         }
 
-        console.log(data);
       });
     });
-    //echo.on('connection', function ( conn ) {
-    //  conn.on('data', function ( message ) {
-    //    console.log(message);
-    //    conn.write(message);
-    //  });
-    //  conn.on('close', function () {});
-    //});
-    //echo.installHandlers(server, {prefix: '/socket'});
 
   }));
