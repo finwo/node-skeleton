@@ -7,12 +7,7 @@ define([ 'notify', 'sockjs', 'translate', 'uid'], function(notify, SockJS, t, ui
 
   // Initialize
   var sock = new SockJS(uri);
-  sock.onopen  = function() { console.log('Connected');
-    api.raw({
-      foo: 'bar'
-    });
-
-  };
+  sock.onopen  = function() { console.log('Connected');    };
   sock.onclose = function() { console.log('Disconnected'); };
 
   // Message receiver
@@ -33,17 +28,24 @@ define([ 'notify', 'sockjs', 'translate', 'uid'], function(notify, SockJS, t, ui
 
     // Perform actions requested by the server
 
-    // Display errors
-    if ( data.error ) {
-      return notify(t( data.error.title || 'unknown-error' ), {
-        body: t( data.error.description || 'unknown-error-body' ),
-        icon: '/assets/img/logo_bare.png'
-      });
-    }
-
     // Perform redirections
     if ( data.redirect ) {
       return window.location.href = data.redirect;
+    }
+
+    // Convert errors to events
+    if ( data.error ) {
+      data.event = {
+        name: 'error',
+        data: [ data.error ]
+      };
+      delete data.error;
+    }
+
+    // Events
+    if ( data.event ) {
+      var args = [ data.event.name ].concat(data.event.data);
+      api.emit.apply({ bubble: false }, args);
     }
 
     // Handle callbacks
@@ -56,10 +58,13 @@ define([ 'notify', 'sockjs', 'translate', 'uid'], function(notify, SockJS, t, ui
 
   // Track state
   var auth      = false,
-      callbacks = [];
+      callbacks = [],
+      listeners = {};
 
   // The actual API
   var api = {
+
+    // Doing all the groundwork
     raw: function(data) {
       var id = uid();
       if ( auth ) {
@@ -72,7 +77,43 @@ define([ 'notify', 'sockjs', 'translate', 'uid'], function(notify, SockJS, t, ui
       sock.send(id + ' ' + JSON.stringify(data));
       return id;
     },
+
+    // Events
+    on: function( name, callback ) {
+      if ( Array.isArray(name) ) {
+        return name.map(function(n) {
+          return api.on( n, callback );
+        });
+      }
+      if ( Array.isArray(callback) ) {
+        return callback.map(api.on.bind(null,name));
+      }
+      (listeners[name] = listeners[name] || []).push(callback);
+    },
+    emit: function( name ) {
+      var args = arguments;
+      args = Object.keys(args).map(function(key) { return args[key]; });
+      args.shift();
+      (listeners[name]||[]).forEach(function(handler) {
+        handler.apply(null, args);
+      });
+      if ( !this.hasOwnProperty('bubble') || this.bubble ) {
+        api.raw({
+          type: 'event',
+          data: args
+        });
+      }
+    },
+
   };
+
+  // Attach error handler
+  api.on('error', function(err) {
+    notify(t( err.title || 'unknown-error' ), {
+      body: t( err.description || 'unknown-error-body' ),
+      icon: '/assets/img/logo_bare.png'
+    });
+  });
 
   return api;
 });
