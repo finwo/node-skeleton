@@ -11,9 +11,11 @@ define([ 'bluebird', 'notify', 'sockjs', 'translate', 'uid' ], function ( Promis
     sock         = new SockJS(uri);
     sock.onopen  = function () {
       console.log('Connected');
+      api.emit('connect');
     };
     sock.onclose = function () {
       console.log('Disconnected');
+      api.emit.call({bubble: false}, 'disconnect');
       setTimeout(sock_init, 1000);
     };
 
@@ -52,14 +54,14 @@ define([ 'bluebird', 'notify', 'sockjs', 'translate', 'uid' ], function ( Promis
       if ( callbacks[data._id] ) {
         var cb = callbacks[data._id];
         if (data.finished) delete callbacks[data._id];
+        data = data.body.length && data.body || data.data || null;
         return cb(data);
       }
     };
   }
 
   // Track state
-  var auth      = window.localStorage && window.localStorage.auth || false,
-      callbacks = [],
+  var callbacks = [],
       listeners = {};
 
   // The actual API
@@ -68,9 +70,8 @@ define([ 'bluebird', 'notify', 'sockjs', 'translate', 'uid' ], function ( Promis
     // Doing all the groundwork
     raw: function ( data ) {
       data._id = uid();
-      if ( auth ) {
-        data.auth = auth;
-      }
+      data.headers = data.headers || {};
+      data.headers.cookie = data.headers.cookie || document.cookie;
       if ( data.callback ) {
         callbacks[ data._id ] = data.callback;
         delete data.callback;
@@ -152,8 +153,18 @@ define([ 'bluebird', 'notify', 'sockjs', 'translate', 'uid' ], function ( Promis
       login: function(data) {
         return api.post( '/api/user/login', { data: data })
           .then(function( token ) {
-            return auth = token;
+            if ( token ) {
+              api.emit.call({ bubble: false }, 'login', token );
+              return token;
+            }
+            throw "login-failed";
           });
+      },
+      logout: function() {
+        return new Promise(function(resolve) {
+          api.emit.call({ bubble: false }, 'logout' );
+          resolve(true);
+        });
       }
     }
 
@@ -161,11 +172,15 @@ define([ 'bluebird', 'notify', 'sockjs', 'translate', 'uid' ], function ( Promis
 
   // Attach error handler
   api.on('error', function ( err ) {
-    notify(t(err.title || 'unknown-error'), {
+    notify(t( ( ('string' == typeof err.title) && err.title) || 'unknown-error'), {
       body: t(err.description || 'unknown-error-body'),
       icon: '/assets/img/logo_bare.png'
     });
   });
+
+  // Keep the auth cookie up-to-date
+  api.on('login', function(token) { document.cookie = 'auth='+token; });
+  api.on('logout', function() { document.cookie = 'auth='; });
 
   sock_init();
   return api;

@@ -1,4 +1,5 @@
 var co       = require('co'),
+    extend   = require('extend'),
     fs       = require('fs-extra'),
     path     = require('path'),
     request  = require('../lib/request'),
@@ -114,6 +115,13 @@ module.exports = co(function*() {
 
         // Filter path
         req.params = router.parse_query(parsed.query);
+
+        // Fetch from body if post
+        if ( method == 'post' && req.body && ( 'object' == typeof req.body ) ) {
+          extend(req.params, req.body);
+        }
+
+        // Filter path & fetch path variables
         if ( route.path != '*' ) {
           var routeParts = route.path.split('/').filter(function ( part ) {return !!part;});
           if ( routeParts.length != parts.length ) continue;

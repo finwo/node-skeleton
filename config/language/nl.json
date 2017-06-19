@@ -2,12 +2,16 @@
   "home" : "Home",
   "login": "Inloggen",
 
-  "bad-request"         : "Invalide request",
-  "bad-request-body"    : "De aanvraag was niet in een formaat welke de server begreep. Ons team is op de hoogte gebracht.",
-  "not-implemented"     : "Niet geïmplementeerd",
-  "not-implemented-body": "De gevraagde functionaliteit is (nog) niet geïmplementeerd",
-  "unknown-error"       : "Onbekende error",
-  "unknown-error-body"  : "Er ging iets mis in TrackThis. Ons team is op de hoogte gebracht.",
-  "websocket-error"     : "Interne error",
-  "websocket-error-body": "Er ging iets mis met de communicatie naar de server. Ons team is op de hoogte gebracht."
+  "bad-request"                  : "Invalide request",
+  "bad-request-body"             : "De aanvraag was niet in een formaat welke de server begreep. Ons team is op de hoogte gebracht.",
+  "not-implemented"              : "Niet geïmplementeerd",
+  "not-implemented-body"         : "De gevraagde functionaliteit is (nog) niet geïmplementeerd",
+  "unknown-error"                : "Onbekende error",
+  "unknown-error-body"           : "Er ging iets mis in TrackThis. Ons team is op de hoogte gebracht.",
+  "userservice-check-params"     : "Missende gegevens",
+  "userservice-check-params-body": "U bent vergeten een gebruikersnaam of wachtwoord op te geven",
+  "userservice-login-none"       : "User not found",
+  "userservice-login-none-body"  : "No user with the given credentials was found",
+  "websocket-error"              : "Interne error",
+  "websocket-error-body"         : "Er ging iets mis met de communicatie naar de server. Ons team is op de hoogte gebracht."
 }

@@ -69,6 +69,11 @@ module.exports = co(function*() {
       ttl       : 3600
     },
 
+    // Sessions
+    session: {
+      expires: 3600
+    },
+
     // Other settings
     globalAgent  : {
       maxSockets: 20

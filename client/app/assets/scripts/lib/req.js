@@ -1,4 +1,4 @@
-(function(exports) {
+(function(e) {
   var modules  = {},
       known    = {},
       queue    = [],
@@ -22,12 +22,12 @@
   function load( name ) {
     if ( modules[name] || known[name] ) return;
     known[name] = true;
-    var uri = exports.require.baseUri + name + '.js';
-    if ( exports.require.paths[name] ) {
-      if ( exports.require.paths[name].indexOf('://') >= 0 ) {
-        uri = exports.require.paths[name];
+    var uri = e.require.baseUri + name + '.js';
+    if ( e.require.paths[name] ) {
+      if ( e.require.paths[name].indexOf('://') >= 0 ) {
+        uri = e.require.paths[name];
       } else {
-        uri = exports.require.baseUri + exports.require.paths[name];
+        uri = e.require.baseUri + e.require.paths[name];
       }
     }
     var req = xmlhttp();
@@ -35,9 +35,9 @@
       if( req.readyState == 4 && req.status==200 ) {
         lastName = name;
         eval(req.responseText);
-        var mapped = exports.require.getter[name] && exports.require.getter[name]();
+        var mapped = e.require.getter[name] && e.require.getter[name]();
         if (mapped) {
-          exports.define(name,function() {
+          e.define(name,function() {
             return mapped;
           });
         }
@@ -72,7 +72,7 @@
     if (queue.length) setTimeout(process,10);
   }
 
-  exports.require = function() {
+  e.require = function() {
     var args  = arguments,
         entry = { s: undefined, f: undefined, o: [] };
     Object.keys(args).forEach(function(key) {
@@ -85,18 +85,18 @@
     process();
   };
 
-  exports.define = function() {
+  e.define = function() {
     var args  = arguments,
         entry = { s: lastName, f: undefined, o: [] };
     Object.keys(args).forEach(function(key) {
       entry[(typeof args[key]).substr(0,1)] = args[key];
     });
-    exports.require.apply(null,Object.keys(entry).map(function(key) {return entry[key];}));
+    e.require.apply(null,Object.keys(entry).map(function(key) {return entry[key];}));
   };
 
-  exports.require.amd     = true;
-  exports.define.amd      = true;
-  exports.require.baseUri = '';
-  exports.require.paths   = {};
-  exports.require.getter  = {};
+  e.require.amd     = true;
+  e.define.amd      = true;
+  e.require.baseUri = '';
+  e.require.paths   = {};
+  e.require.getter  = {};
 })(window);

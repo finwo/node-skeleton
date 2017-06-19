@@ -6,17 +6,10 @@ module.exports = function(options) {
 
   var request = new EventEmitter();
   extend(request, {
+    body   : options.body    || '',
     headers: options.headers || {},
     url    : options.url     || '/'
   });
-  //var websocket = options.websocket || false,
-  //    request   = {
-  //
-  //    };
 
   return request;
-
-  //this.method  = (options.method || 'get').toUpperCase();
-  //this.url     = (options.url    || '/'  ).toUpperCase();
-  //this.headers = options.headers || {};
 };

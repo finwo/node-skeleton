@@ -2,12 +2,16 @@
   "home" : "Home",
   "login": "Login",
 
-  "bad-request"         : "Bad request",
-  "bad-request-body"    : "The request was not in a format the server understood. Our team has been notified.",
-  "not-implemented"     : "Not implemented",
-  "not-implemented-body": "The requested feature is not (yet) implemented.",
-  "unknown-error"       : "Unknown error",
-  "unknown-error-body"  : "Something went wrong in TrackThis. Our team has been notified.",
-  "websocket-error"     : "Internal error",
-  "websocket-error-body": "Something went wrong with communicating to the server. Our team has been notified."
+  "bad-request"                  : "Bad request",
+  "bad-request-body"             : "The request was not in a format the server understood. Our team has been notified.",
+  "not-implemented"              : "Not implemented",
+  "not-implemented-body"         : "The requested feature is not (yet) implemented.",
+  "unknown-error"                : "Unknown error",
+  "unknown-error-body"           : "Something went wrong in TrackThis. Our team has been notified.",
+  "userservice-check-params"     : "Missing parameters",
+  "userservice-check-params-body": "You may have forgotten to supply a username or password",
+  "userservice-login-none"       : "User not found",
+  "userservice-login-none-body"  : "No user with the given credentials was found",
+  "websocket-error"              : "Internal error",
+  "websocket-error-body"         : "Something went wrong with communicating to the server. Our team has been notified."
 }

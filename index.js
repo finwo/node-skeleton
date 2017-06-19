@@ -71,6 +71,9 @@ co(function*() {
 
         request.type = request.type || 'request';
         switch(request.type) {
+          case 'event':
+            // Do nothing yet
+            break;
           case 'request':
             request.websocket = conn;
             return router.internal(request);
