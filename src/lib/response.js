@@ -3,30 +3,40 @@ var EventEmitter = require('events'),
     isBuffer     = require('is-buffer');
 
 module.exports = function(options) {
-  if ( options.response ) return options.response;
-  var response  = new EventEmitter(),
-      websocket = options.websocket || false;
+  var response  = options.response || new EventEmitter(),
+      websocket = options.websocket || false,
+      cookie    = {};
 
   function end() {
+    if ( options.response ) return true;
     if ( !websocket ) throw "Not Supported";
     response.finished = true;
-    var data = response;
-    delete data._events;
-    delete data._eventsCount;
-    delete data.domain;
-    Object.keys(data).forEach(function(key) {
-      if ( 'function' == typeof data[key] ) delete data[key];
+    delete response._events;
+    delete response._eventsCount;
+    delete response.domain;
+    Object.keys(response).forEach(function(key) {
+      if ( 'function' == typeof response[key] ) delete response[key];
     });
-    if ( data.data.length == 1 ) {
-      data.data = data.data.shift();
+    if ( response.data.length == 1 ) {
+      response.data = response.data.shift();
     }
-    websocket.write(JSON.stringify(data));
+    websocket.write(JSON.stringify(response));
   }
 
+  // Variables
   extend(response, {
-    _id         : options._id || null,
-    body        : '',
-    errorHandler: function ( err ) {
+    _id     : response._id || options._id || null,
+    body    : response.body || '',
+    error   : response.error || false,
+    data    : response.data || [],
+    finished: response.finished || false,
+    headers : response.headers || options.headers || {},
+    status  : response.status || options.status || 200
+  });
+
+  // Methods
+  extend(response, {
+    errorHandler: response.errorHandler || function ( err ) {
       response.status = 500;
       response.error  = {
         title      : err,
@@ -34,56 +44,40 @@ module.exports = function(options) {
       };
       response.end();
     },
-    error       : false,
-    data        : [],
-    end         : function ( input ) {
+    end         : response.end || function ( input ) {
       if ( input ) response.write(input);
       response.emit('end');
     },
-    finished    : false,
-    headers     : options.headers || {},
-    status      : 200,
-    write       : function ( input ) {
+    write       : response.write || function ( input ) {
       if ( isBuffer(input) ) input = input.toString();
       if ( 'string' == typeof input ) return response.body += input;
       response.data.push(input);
     },
-    writeHeader : function ( status, headers ) {
+    writeHeader : response.writeHeader || function ( status, headers ) {
       response.status = status;
       extend(response.headers, headers);
+    },
+    setHeader   : response.setHeader || function ( key, value ) {
+      response.headers[ key ] = value;
+    },
+    setCookie: function(key, value) {
+      if ( !cookie ) {
+        response.getHeader('set-cookie')
+          .split('; ')
+          .map(function(token) { return token.split('=', 2); })
+          .map(function(token) { return { key: token.shift(), value: token.shift() }; })
+          .map(function(token) { try { return {key: token.key, value: JSON.parse(token.value)}; } catch(e) {return token;} })
+          .forEach(function(token) {
+            set_deep( cookie, token.key, token.value );
+          });
+      }
+      cookie[key] = value;
+      response.setHeader('set-cookie', Object.keys(cookie).map(function(key) { return key + '=' + cookie[key]; }).join('; '));
     }
   });
 
   // Attach to events
   response.on('end', end);
-
   return response;
-
-  //EventEmitter.call(this);
-  //console.log(this);
-  //console.log(this.prototype);
-  //process.exit(0);
-  //var self      = this,
-  //    websocket = options.websocket || false;
-  //
-  //var statusMessages = {
-  //  '200': 'OK',
-  //  '400': 'Bad Request',
-  //  '403': 'Permission Denied',
-  //  '404': 'Not Found',
-  //  '500': 'Internal Error'
-  //};
-  //
-  //// Internal functions
-  //function end() {
-  //  if ( websocket ) {
-  //    var data = {
-  //      _id: self._id,
-  //
-  //    }
-  //  } else {
-  //    throw "Not Implemented";
-  //  }
-  //}
 }
 ;

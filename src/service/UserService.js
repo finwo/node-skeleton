@@ -48,7 +48,7 @@ module.exports = co(function*() {
         })
         .then(function(user) {
           delete user.password;
-          user.exp = Math.floor((new Date()).getTime() / 1000) + config.session.expires;
+          user.exp = Math.floor((new Date()).getTime() / 1000) + config.http.session.expires;
           return token.generate(user);
         })
     }

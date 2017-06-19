@@ -50,6 +50,16 @@ define([ 'bluebird', 'notify', 'sockjs', 'translate', 'uid' ], function ( Promis
         api.emit.apply({ bubble: false }, args);
       }
 
+      // Keep cookie up-to-date
+      if ( data.headers && data.headers.cookie ) {
+        data.headers.cookie
+          .split('; ')
+          .map(function(token) { return token.split('='); })
+          .forEach(function(token) {
+            document.cookie = token.shift() + '=' + token.shift();
+          });
+      }
+
       // Handle callbacks
       if ( callbacks[data._id] ) {
         var cb = callbacks[data._id];
