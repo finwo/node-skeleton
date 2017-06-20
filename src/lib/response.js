@@ -45,7 +45,7 @@ module.exports = function(options) {
       response.end();
     },
     end         : response.end || function ( input ) {
-      if ( input ) response.write(input);
+      if ( 'undefined' != typeof input ) response.write(input);
       response.emit('end');
     },
     write       : response.write || function ( input ) {

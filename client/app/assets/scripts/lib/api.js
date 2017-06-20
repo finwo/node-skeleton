@@ -75,7 +75,7 @@ define([ 'bluebird', 'notify', 'sockjs', 'translate', 'uid' ], function ( Promis
       if ( callbacks[data._id] ) {
         var cb = callbacks[data._id];
         if (data.finished) delete callbacks[data._id];
-        data = data.body.length && data.body || data.data || null;
+        data = data.body.length && data.body || data.data;
         return cb(data);
       }
     };
@@ -190,7 +190,11 @@ define([ 'bluebird', 'notify', 'sockjs', 'translate', 'uid' ], function ( Promis
 
       me: function() {
         if ( !api.user.isLoggedIn() ) return Promise.reject(false);
-        return api.get( '/api/user/me');
+        return api.get( '/api/user/me')
+          .then(function(result) {
+            if (!result) throw result;
+            return result;
+          });
       }
     }
 

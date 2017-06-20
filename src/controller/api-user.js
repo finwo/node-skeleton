@@ -10,13 +10,8 @@ module.exports = {
     var user = req.auth && req.auth.user || false;
     if ( !user ) {
       res.writeHeader( 403 );
-      return res.end({
-
-      });
+      return res.end(false);
     }
-    res.end( req.auth && req.auth.user || {
-        stat
-      });
-    res.end({foo:'bar'});
+    res.end( user );
   }
 };
