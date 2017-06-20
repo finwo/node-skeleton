@@ -2,7 +2,7 @@ module.exports = {
   "any *": function*( req, res ) {
 
     // Unauthorized request
-    req.user = false;
+    req.auth = {};
 
     // Fetch auth cookie
     var auth = req.getCookie('auth') || false;
@@ -25,7 +25,7 @@ module.exports = {
     if ( expired ) return;
 
     // Being here => authenticated
-    req.user = decoded;
+    req.auth = decoded;
 
     // Check if we need to refresh the token
     if ( !refresh ) return;

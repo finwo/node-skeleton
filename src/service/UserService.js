@@ -26,10 +26,6 @@ module.exports = co(function*() {
       });
     },
 
-    get: function(id) {
-
-    },
-
     login: function(data) {
       if ( !data.username || !data.password ) {
         return Promise.reject("Missing parameters");
@@ -49,7 +45,7 @@ module.exports = co(function*() {
         .then(function(user) {
           delete user.password;
           user.exp = Math.floor((new Date()).getTime() / 1000) + config.http.session.expires;
-          return token.generate(user);
+          return token.generate({user:user});
         })
     }
   };

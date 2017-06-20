@@ -1,4 +1,4 @@
-define([ 'bluebird', 'notify', 'sockjs', 'translate', 'uid' ], function ( Promise, notify, SockJS, t, uid ) {
+define([ 'bluebird', 'uid' ], function ( Promise, uid ) {
 
   // Settings
   var uri = window.location.protocol + '//' + window.location.hostname;

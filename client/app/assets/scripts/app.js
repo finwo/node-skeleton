@@ -1,4 +1,4 @@
-define(['api'], function(api) {
+define(['data-auth'], function(auth) {
 
 
   return true;

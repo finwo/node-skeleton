@@ -55,6 +55,7 @@ module.exports = function(options) {
     },
     writeHeader : response.writeHeader || function ( status, headers ) {
       response.status = status;
+      headers = headers || {};
       extend(response.headers, headers);
     },
     setHeader   : response.setHeader || function ( key, value ) {
