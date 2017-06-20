@@ -1,0 +1,68 @@
+@import "alignment";
+@import "colors";
+@import "edges";
+@import "fonts";
+@import "transitions";
+
+form, .form {
+  .group {
+    position : relative;
+  }
+  .input, input, select, textarea {
+    border        : none;
+    border-bottom : 1px solid fade(@color-text,50%);
+    display       : block;
+    margin-top    : 2rem;
+    padding       : 0.25rem;
+    width         : 100%;
+
+    &:focus, &:valid {
+      ~ label {
+        top       : -1.2rem;
+        font-size : 0.8rem;
+        color     : @color-theme;
+      }
+    }
+    &:focus ~ .bar {
+      width: 100%;
+    }
+  }
+
+  label {
+    color              : fade(@color-text, 50%);
+    left               : 0.25rem;
+    pointer-events     : none;
+    position           : absolute;
+    top                : 0.25rem;
+    -webkit-transition : @transitions-duration ease all;
+    -moz-transition    : @transitions-duration ease all;
+    -ms-transition     : @transitions-duration ease all;
+    -o-transition      : @transitions-duration ease all;
+    transition         : @transitions-duration ease all;
+  }
+
+  .bar {
+    display  : block;
+    position : relative;
+    width    : 100%;
+    z-index  : -1;
+    &:before, &:after {
+      background         : @color-theme;
+      content            : '';
+      height             : 0.1rem;
+      position           : absolute;
+      width              : 0;
+      -webkit-transition : @transitions-duration ease all;
+      -moz-transition    : @transitions-duration ease all;
+      -ms-transition     : @transitions-duration ease all;
+      -o-transition      : @transitions-duration ease all;
+      transition         : @transitions-duration ease all;
+    }
+    &:before {
+      left: 50%;
+    }
+    &:after {
+      right: 50%;
+    }
+  }
+}

@@ -1,7 +1,8 @@
 {
+  "account": "Account",
   "home"   : "Home",
   "login"  : "Inloggen",
-  "account": "Account",
+  "logout" : "Uitloggen",
 
   "bad-request"                  : "Invalide request",
   "bad-request-body"             : "De aanvraag was niet in een formaat welke de server begreep. Ons team is op de hoogte gebracht.",

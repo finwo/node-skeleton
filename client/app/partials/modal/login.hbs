@@ -1,0 +1,18 @@
+{{>modal/precontent id='login'}}
+<h2>{{i18n "login"}}</h2>
+<form data-script="helpers/form-api">
+    <div class="group">
+        <input type="text" id="login-username" required>
+        <span class="bar"></span>
+        <label for="login-username">{{i18n "label-username"}}</label>
+    </div>
+    <div class="group">
+        <input type="password" id="login-password" required>
+        <span class="bar"></span>
+        <label for="login-password">{{i18n "label-password"}}</label>
+    </div>
+    <!--<div class="button-container">-->
+        <!--<button type="button" class="button"><span>{{i18n "button-login"}}</span></button>-->
+    <!--</div>-->
+</form>
+{{>modal/postcontent}}

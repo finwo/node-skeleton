@@ -1,7 +1,8 @@
 {
+  "account": "Account",
   "home"   : "Home",
   "login"  : "Login",
-  "account": "Account",
+  "logout" : "Logout",
 
   "bad-request"                  : "Bad request",
   "bad-request-body"             : "The request was not in a format the server understood. Our team has been notified.",

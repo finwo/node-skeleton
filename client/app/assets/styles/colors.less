@@ -1,16 +1,15 @@
-@color-edge  : rgba(0,0,0,0.8);
-@color-theme : #5AF;
-@color-text  : #555;
-@color-back  : #FFF;
+@color-edge    : rgba(0, 0, 0, 0.8);
+@color-theme   : #5AF;
+@color-text    : #555;
+@color-back    : #FFF;
+@color-overlay : fade( @color-text, 80% );
 
 .color-primary {
-  background-color : transparent;
+  background-color : @color-back;
   color            : @color-text;
 }
+
 .color-secundary {
   background-color : @color-theme;
   color            : @color-back;
-  .color-primary {
-    background-color: @color-back;
-  }
 }
