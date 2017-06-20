@@ -46,6 +46,7 @@ module.exports = co(function*() {
           delete user.password;
           return token.generate({
             user: user,
+            iat : Math.floor((new Date()).getTime() / 1000),
             exp : Math.floor((new Date()).getTime() / 1000) + config.http.session.expires
           });
         })
