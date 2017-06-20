@@ -71,7 +71,8 @@ module.exports = co(function*() {
 
     // Sessions
     session: {
-      expires: 3600
+      expires: 8 * 3600, // Keep session for 8 hours
+      refresh: 2 * 3600  // Refresh if only 2 hours left on the clock
     },
 
     // Other settings

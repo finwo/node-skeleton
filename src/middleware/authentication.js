@@ -11,16 +11,24 @@ module.exports = {
     // Validate the cookie
     var token   = yield service('token'),
         decoded = yield token.decode( auth );
+
+    // Invalid => not authenticated
     if (!decoded) return;
 
-    // Check if it hasn't expired
-    var expired = Math.floor((new Date()).getTime()/1000) > (decoded.exp||0);
+    // Check timings
+    decoded.exp = decoded.exp || 0;
+    var now     = Math.floor((new Date()).getTime()/1000),
+        expired = now > decoded.exp,
+        refresh = ( now + config.http.session.expires ) > decoded;
+
+    // Expired => not authenticated
     if ( expired ) return;
 
-    // Decoding = logged in
+    // Being here => authenticated
     req.user = decoded;
 
-    // Refresh token to stay logged in
+    // Check if we need to refresh the token
+    if ( !refresh ) return;
     decoded.exp = Math.floor((new Date()).getTime()/1000) + config.http.session.expires;
     res.setCookie('auth', yield token.generate( decoded ));
   }
