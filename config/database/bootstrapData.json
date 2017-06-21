@@ -6,5 +6,6 @@
     { "name": "collection" },
     { "name": "rule"       },
     { "name": "user"       }
-  ]
+  ],
+  "rule": []
 }

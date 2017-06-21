@@ -23,13 +23,14 @@ co(function*() {
         key, keys = Object.keys(data),
         model, current;
     while( key = keys.shift() ) {
-      model   = yield odm.model('user');
+      model   = yield odm.model(key);
       current = yield model.findAll();
       if (current.length) {
         console.log(current.length, key+'(s) found, not inserting bootstrap data');
       } else {
         console.log('No', key+'s', 'found, inserting bootstrap data');
         while(current = data[key].shift()) {
+          console.log('Inserting', key, current);
           yield model.create(current);
         }
       }

@@ -8,6 +8,12 @@ module.exports = co(function*() {
 
   var userService = {
 
+    encryptPassword: function( password ) {
+      return co(function*() {
+        return '#' + ( yield token.generate(password) );
+      });
+    },
+
     checkPassword: function( user, password ) {
       return co(function*() {
         if ( !user || !password ) {
@@ -16,11 +22,11 @@ module.exports = co(function*() {
         if ( !user.password ) {
           return false;
         }
-        if ( password.substr(0,1) != '#' ) {
-          password = '#' + ( yield token.generate(password) );
+        if ( password.substr(0, 1) != '#' ) {
+          password = yield userService.encryptPassword(password);
         }
-        if ( user.password.substr(0,1) != '#' ) {
-          user.password = '#' + ( yield token.generate(user.password) );
+        if ( user.password.substr(0, 1) != '#' ) {
+          user.password = yield userService.encryptPassword(user.password);
         }
         return user.password == password;
       });
