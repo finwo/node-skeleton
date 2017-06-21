@@ -1,5 +1,10 @@
 {
-  "User": [
+  "user": [
     { "username": "admin", "password": "admin" }
+  ],
+  "collection": [
+    { "name": "collection" },
+    { "name": "rule"       },
+    { "name": "user"       }
   ]
 }
