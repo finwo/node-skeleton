@@ -26,11 +26,12 @@
 button, .btn {
   .card;
   .padded;
-  background : mix(@color-text, @color-back);
-  color      : @color-back;
-  cursor     : pointer;
-  display    : inline-block;
-  text-align : left;
+  background  : mix(@color-text, @color-back);
+  color       : @color-back;
+  cursor      : pointer;
+  display     : inline-block;
+  margin-left : 0.25rem;
+  text-align  : left;
   &:first-child {
     margin-left : 0;
   }
@@ -58,16 +59,16 @@ input, select, textarea {
   display          : block;
   line-height      : 1.2rem;
   width            : 100%;
-  &:focus ~ .bar {
-    &:before, &:after {
-      width : 50%;
-    }
-  }
-  &:focus, &:valid {
+  &:focus, &.has-content {
     ~ label {
       color     : @color-theme;
       font-size : 0.8rem;
       top       : -1rem;
+    }
+  }
+  &:focus ~ .bar {
+    &:before, &:after {
+      width : 50%;
     }
   }
 

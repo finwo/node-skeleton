@@ -175,6 +175,7 @@ define([ 'bluebird', 'notify', 'sockjs', 'translate', 'uid' ], function ( Promis
       login: function(data) {
         return api.post( '/api/user/login', { data: data })
           .then(function( token ) {
+            if (Array.isArray(token)) token = token.shift();
             if ( token ) {
               api.emit.call({ bubble: false }, 'login', token );
               return token;
@@ -210,8 +211,14 @@ define([ 'bluebird', 'notify', 'sockjs', 'translate', 'uid' ], function ( Promis
   });
 
   // Keep the auth cookie up-to-date
-  api.on('login', function(token) { document.cookie = 'auth='+token; });
   api.on('logout', function() { document.cookie = 'auth='; });
+  api.on('login', function(token) {
+    document.cookie = 'auth='+token;
+    notify(t('login-successful'), {
+      body: t('login-successful-body'),
+      icon: '/assets/img/logo_bare.png'
+    })
+  });
 
   sock_init();
   return api;

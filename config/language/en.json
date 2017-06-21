@@ -4,9 +4,13 @@
   "login"  : "Login",
   "logout" : "Logout",
 
-  "label-login-button" : "Login",
-  "label-password"     : "Password",
-  "label-username"     : "Username",
+  "login-successful"      : "Login successful",
+  "login-successful-body" : "You have successfully logged in",
+
+  "label-cancel-button" : "Cancel",
+  "label-login-button"  : "Login",
+  "label-password"      : "Password",
+  "label-username"      : "Username",
 
   "bad-request"                  : "Bad request",
   "bad-request-body"             : "The request was not in a format the server understood. Our team has been notified.",
