@@ -203,8 +203,8 @@ define([ 'bluebird', 'notify', 'sockjs', 'translate', 'uid' ], function ( Promis
   };
 
   // Keep the auth cookie up-to-date
-  api.on('logout', function() { document.cookie = 'auth='; });
-  api.on('login', function(token) { document.cookie = 'auth='+token; });
+  api.on('logout', function()      { document.cookie = 'auth=; path=/'; });
+  api.on('login' , function(token) { document.cookie = 'auth='+token+'; path=/'; });
 
   sock_init();
   return api;
