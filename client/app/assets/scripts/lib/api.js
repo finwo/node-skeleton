@@ -202,23 +202,9 @@ define([ 'bluebird', 'notify', 'sockjs', 'translate', 'uid' ], function ( Promis
 
   };
 
-  // Attach error handler
-  api.on('error', function ( err ) {
-    notify(t( ( ('string' == typeof err.title) && err.title) || 'unknown-error'), {
-      body: t(err.description || 'unknown-error-body'),
-      icon: '/assets/img/logo_bare.png'
-    });
-  });
-
   // Keep the auth cookie up-to-date
   api.on('logout', function() { document.cookie = 'auth='; });
-  api.on('login', function(token) {
-    document.cookie = 'auth='+token;
-    notify(t('login-successful'), {
-      body: t('login-successful-body'),
-      icon: '/assets/img/logo_bare.png'
-    })
-  });
+  api.on('login', function(token) { document.cookie = 'auth='+token; });
 
   sock_init();
   return api;
