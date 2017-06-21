@@ -67,7 +67,7 @@ define([ 'bluebird', 'notify', 'sockjs', 'translate', 'uid' ], function ( Promis
           .split('; ')
           .map(function(token) { return token.split('='); })
           .forEach(function(token) {
-            document.cookie = token.shift() + '=' + token.shift();
+            document.cookie = token.shift() + '=' + token.shift() + '; path=/';
           });
       }
 
