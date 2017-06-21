@@ -1,8 +1,15 @@
 <nav data-script="helpers/nav">
     <div class="container">
         <a href="/{{_lang}}/">{{i18n "home"}}</a>
-        <a href="/{{_lang}}/account" class="auth">{{i18n "account"}}</a>
+
+        <!-- unauthenticated -->
         <a href="#modal-login" class="unauth">{{i18n "login"}}</a>
+
+        <!-- authenticated -->
+        <a href="/{{_lang}}/stats" class="auth">{{i18n "statistics"}}</a>
+        <a href="/{{_lang}}/cpl" class="auth">{{i18n "cpl"}}</a>
+        <a href="/{{_lang}}/account" class="auth">{{i18n "account"}}</a>
         <a href="#!" class="auth" data-script="helpers/logout">{{i18n "logout"}}</a>
+        <a href="/{{_lang}}/account" class="auth admin">{{i18n "admin"}}</a>
     </div>
 </nav>

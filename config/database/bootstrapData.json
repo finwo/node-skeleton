@@ -3,9 +3,11 @@
     { "username": "admin", "password": "admin" }
   ],
   "collection": [
-    { "name": "collection" },
-    { "name": "rule"       },
-    { "name": "user"       }
+    { "name": "collection"   },
+    { "name": "user"         },
+    { "name": "user-options" }
   ],
-  "rule": []
+  "user-option": [
+    { "username": "admin", "name": "admin", "value": true }
+  ]
 }
