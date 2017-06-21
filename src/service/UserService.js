@@ -2,7 +2,7 @@ var co     = require('co');
 
 module.exports = co(function*() {
   var odm    = yield service('odm'),
-      User   = yield odm.model('User', config.database.collections.User ),
+      User   = yield odm.model('user'),
       filter = yield service('EntityFilter'),
       token  = yield service('token');
 
@@ -32,8 +32,7 @@ module.exports = co(function*() {
       }
 
       return User
-        .getAll()
-        .then(filter({ username: data.username }))
+        .findAll({ username: data.username })
         .then(function( matches ) {
           matches = matches.filter(function(user) {
             return userService.checkPassword(user, data.password);
