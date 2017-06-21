@@ -1,0 +1,19 @@
+@import "variables";
+
+.box-shadow (@string) {
+  -webkit-box-shadow: @string;
+  -moz-box-shadow:    @string;
+  box-shadow:         @string;
+}
+.border-radius (@radius: @border-radius) {
+  border-radius: @radius;
+  -moz-border-radius: @radius;
+  -webkit-border-radius: @radius;
+}
+.transition(@string) {
+  -webkit-transition : @string;
+  -moz-transition    : @string;
+  -ms-transition     : @string;
+  -o-transition      : @string;
+  transition         : @string;
+}

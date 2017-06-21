@@ -1,10 +1,11 @@
-@import "./colors.less";
+@import "mixins";
+@import "variables";
 
 .shadow {
-  box-shadow : 0 0.05rem 0.15rem @color-edge;
+  .box-shadow( 0 0.05rem 0.15rem @color-edge );
 }
 
 .card {
   .shadow;
-  border-radius: 0.1rem;
+  .border-radius();
 }

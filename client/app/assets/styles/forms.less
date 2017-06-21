@@ -1,68 +1,118 @@
 @import "alignment";
 @import "colors";
 @import "edges";
-@import "fonts";
-@import "transitions";
+@import "mixins";
+@import "variables";
 
-form, .form {
-  .group {
-    position : relative;
+// Remove autofill 'yellow'
+@-webkit-keyframes autofill {
+  to {
+    background : @color-back;
+    color      : @color-text;
   }
-  .input, input, select, textarea {
-    border        : none;
-    border-bottom : 1px solid fade(@color-text,50%);
-    display       : block;
-    margin-top    : 2rem;
-    padding       : 0.25rem;
-    width         : 100%;
+}
 
-    &:focus, &:valid {
-      ~ label {
-        top       : -1.2rem;
-        font-size : 0.8rem;
-        color     : @color-theme;
-      }
-    }
-    &:focus ~ .bar {
-      width: 100%;
-    }
+:-webkit-autofill {
+  -webkit-animation-name      : autofill;
+  -webkit-animation-fill-mode : both;
+}
+
+// Buttons
+.button-container {
+  text-align : right;
+  margin-top : 1.5rem;
+}
+
+button, .btn {
+  .card;
+  .padded;
+  background : mix(@color-text, @color-back);
+  color      : @color-back;
+  cursor     : pointer;
+  display    : inline-block;
+  text-align : left;
+  &:first-child {
+    margin-left : 0;
   }
-
-  label {
-    color              : fade(@color-text, 50%);
-    left               : 0.25rem;
-    pointer-events     : none;
-    position           : absolute;
-    top                : 0.25rem;
-    -webkit-transition : @transitions-duration ease all;
-    -moz-transition    : @transitions-duration ease all;
-    -ms-transition     : @transitions-duration ease all;
-    -o-transition      : @transitions-duration ease all;
-    transition         : @transitions-duration ease all;
+  &.btn-default {
+    background : @color-theme;
   }
+  &.btn-warn {
+    background : @color-warn;
+  }
+}
 
-  .bar {
-    display  : block;
-    position : relative;
-    width    : 100%;
-    z-index  : -1;
+// Row alignment & absolute boundaries
+.form-group {
+  margin-top : 1.5em;
+  position   : relative;
+}
+
+// Basic inputs
+input, select, textarea {
+  .padded;
+  background-color : @color-back;
+  border           : none;
+  border-bottom    : 1px solid fade(@color-text, 50%);
+  color            : @color-text;
+  display          : block;
+  line-height      : 1.2rem;
+  width            : 100%;
+  &:focus ~ .bar {
     &:before, &:after {
-      background         : @color-theme;
-      content            : '';
-      height             : 0.1rem;
-      position           : absolute;
-      width              : 0;
-      -webkit-transition : @transitions-duration ease all;
-      -moz-transition    : @transitions-duration ease all;
-      -ms-transition     : @transitions-duration ease all;
-      -o-transition      : @transitions-duration ease all;
-      transition         : @transitions-duration ease all;
+      width : 50%;
+    }
+  }
+  &:focus, &:valid {
+    ~ label {
+      color     : @color-theme;
+      font-size : 0.8rem;
+      top       : -1rem;
+    }
+  }
+
+  ~ .bar {
+    position : relative;
+    display  : block;
+    width    : 100%;
+
+    &:before, &:after {
+      content    : '';
+      height     : 2px;
+      width      : 0;
+      bottom     : 0px;
+      position   : absolute;
+      background : @color-theme;
+      .transition(all @transitions-duration ease);
     }
     &:before {
-      left: 50%;
+      left : 50%;
     }
     &:after {
-      right: 50%;
+      right : 50%;
     }
   }
 }
+
+label.control-label,
+label[for] {
+  color          : fade(@color-text, 50%);
+  font-weight    : 400;
+  left           : 0.25rem;
+  pointer-events : none;
+  position       : absolute;
+  top            : 0.25rem;
+  .transition(all @transitions-duration ease);
+}
+
+//form, .form {
+//  .group {
+//    position   : relative;
+//    margin-top : 2rem;
+//  }
+//  input {
+//    .padded;
+//    -webkit-appearance : none;
+//
+//  }
+//}

@@ -4,6 +4,10 @@
   "login"  : "Login",
   "logout" : "Logout",
 
+  "label-login-button" : "Login",
+  "label-password"     : "Password",
+  "label-username"     : "Username",
+
   "bad-request"                  : "Bad request",
   "bad-request-body"             : "The request was not in a format the server understood. Our team has been notified.",
   "not-implemented"              : "Not implemented",

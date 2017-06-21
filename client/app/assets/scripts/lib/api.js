@@ -169,7 +169,8 @@ define([ 'bluebird', 'notify', 'sockjs', 'translate', 'uid' ], function ( Promis
     // Collections
     user: {
       isLoggedIn: function() {
-        return !!getCookie('auth').length;
+        var cookie = getCookie('auth');
+        return !!(cookie && cookie.length || false);
       },
       login: function(data) {
         return api.post( '/api/user/login', { data: data })

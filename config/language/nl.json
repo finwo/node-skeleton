@@ -4,6 +4,10 @@
   "login"  : "Inloggen",
   "logout" : "Uitloggen",
 
+  "label-login-button" : "Inloggen",
+  "label-password"     : "Wachtwoord",
+  "label-username"     : "Gebruikernaam",
+
   "bad-request"                  : "Invalide request",
   "bad-request-body"             : "De aanvraag was niet in een formaat welke de server begreep. Ons team is op de hoogte gebracht.",
   "not-implemented"              : "Niet geïmplementeerd",
