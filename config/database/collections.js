@@ -5,7 +5,7 @@ var co = require('co');
 
 module.exports = require('co')(function*() {
   return {
-    'user': {
+    'user'       : {
       beforeCreate: function ( resource, data, cb ) {
         return co(function*() {
           if ( !data.password ) throw "Missing password";
@@ -18,15 +18,6 @@ module.exports = require('co')(function*() {
 
           return data;
         });
-      },
-      relations   : {
-        hasMany: {
-          option: {
-            localField: 'options',
-            localKey  : 'username',
-            foreignKey: 'username'
-          }
-        }
       }
     }
   };

@@ -3,7 +3,6 @@ var co     = require('co');
 module.exports = co(function*() {
   var odm    = yield service('odm'),
       User   = yield odm.model('user'),
-      filter = yield service('EntityFilter'),
       token  = yield service('token');
 
   var userService = {
@@ -16,19 +15,16 @@ module.exports = co(function*() {
 
     checkPassword: function( user, password ) {
       return co(function*() {
-        if ( !user || !password ) {
+        // Check we have all requirements
+        if ( !user || !user.password || !password ) {
           throw 'userservice-check-params';
         }
-        if ( !user.password ) {
+        // Do not allow passing hashes directly
+        if ( password.substr(0, 1) == '#' ) {
           return false;
         }
-        if ( password.substr(0, 1) != '#' ) {
-          password = yield userService.encryptPassword(password);
-        }
-        if ( user.password.substr(0, 1) != '#' ) {
-          user.password = yield userService.encryptPassword(user.password);
-        }
-        return user.password == password;
+        // Hash it
+        return yield token.compare( user.password.substr(1), password );
       });
     },
 
@@ -40,12 +36,16 @@ module.exports = co(function*() {
       return User
         .findAll({ username: data.username })
         .then(function( matches ) {
-          matches = matches.filter(function(user) {
-            return userService.checkPassword(user, data.password);
+          return co(function*() {
+            var match, result;
+            while( match = matches.shift() ) {
+              result = yield userService.checkPassword( match, data.password );
+              if ( result ) {
+                return match;
+              }
+            }
+            throw "userservice-login-none";
           });
-          if ( matches.length < 1 ) throw "userservice-login-none";
-          if ( matches.length > 1 ) throw "userservice-login-multiple";
-          return matches.shift();
         })
         .then(function(user) {
           delete user.password;

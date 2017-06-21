@@ -12,7 +12,17 @@ module.exports = co(function*() {
         return crypto.AES.encrypt( data, secret ).toString();
       });
     },
-    decode: function( token ) {
+    compare: function( hash, testValue ) {
+      return co(function*() {
+        var decoded = yield tokenService.decode( hash, false );
+        if ( 'string' != typeof testValue ) {
+          testValue = JSON.stringify(testValue);
+        }
+        return decoded == testValue;
+      });
+    },
+    decode: function( token, parse ) {
+      if ( 'boolean' != typeof parse ) { parse = true; }
       if (Array.isArray(token)) return token.map(tokenService.decode);
       return co(function*() {
         if ( token.then ) token = yield token;
@@ -21,11 +31,12 @@ module.exports = co(function*() {
         } catch(e) {
           return false;
         }
-        try {
-          return JSON.parse(decrypted);
-        } catch(e) {
-          return decrypted;
+        if ( parse ) {
+          try {
+            return JSON.parse(decrypted);
+          } catch(e) {}
         }
+        return decrypted;
       });
     }
   };
