@@ -1,8 +1,12 @@
 {
+  "appname": "TrackThis",
   "account": "Account",
   "home"   : "Home",
   "login"  : "Inloggen",
   "logout" : "Uitloggen",
+
+  "title-404"  : "Pagina niet gevonden",
+  "title-index": "Home",
 
   "login-successful"      : "Inloggen succesvol",
   "login-successful-body" : "U bent succesvol ingelogd",

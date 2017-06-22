@@ -13,15 +13,19 @@
         'jquery'          : 'bower/jquery/dist/jquery.min.js',
         'jquery-watch-dom': 'bower/jquery-watch-dom/jquery-watch.min.js',
         'modal'           : 'js/lib/modal.js',
+        'notify-tt'       : 'js/lib/notify.js',
         'notify'          : 'bower/js-notify/notify.min.js',
+        'notify-sl'       : 'bower/notify-sl/dist/notify-sl.min.js',
         'sockjs'          : 'bower/sockjs-client/dist/sockjs.min.js',
         'translate'       : 'js/lib/translate.js',
         'uid'             : 'js/lib/uid.js'
     };
     require.getter['data-script']      = function() { return true;                    };
     require.getter['jquery-watch-dom'] = function() { return $ && $.fn && $.fn.watch; };
-    require(['cachep2p'], function(CacheP2P) {
-        var c = new CacheP2P();
-        c.on('ready', function() { require(['app', 'data-script'], function(){}); });
-    });
+//    require(['cachep2p'], function(CacheP2P) {
+//        var c = new CacheP2P();
+//        c.on('ready', function() {
+            require(['app', 'data-script'], function(){});
+//        });
+//    });
 </script>

@@ -1,0 +1,19 @@
+@import "colors";
+@import "edges";
+
+#notify-sl-container .notify-box {
+  border : none !important;
+  .card !important;
+  .color-primary !important;
+  > h2 {
+    padding-top : 0;
+  }
+  button {
+    float : right;
+  }
+  &:after {
+    clear   : both;
+    content : '';
+    display : table;
+  }
+}

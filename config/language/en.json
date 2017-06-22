@@ -1,8 +1,12 @@
 {
+  "appname": "TrackThis",
   "account": "Account",
   "home"   : "Home",
   "login"  : "Login",
   "logout" : "Logout",
+
+  "title-404"  : "Page not found",
+  "title-index": "Home",
 
   "login-successful"      : "Login successful",
   "login-successful-body" : "You have successfully logged in",

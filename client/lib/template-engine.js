@@ -29,7 +29,11 @@ engine = module.exports = {
   enableI18n: function (instance) {
     this._i18n = instance;
 
-    function i18n (argument, options) {
+    function i18n () {
+      var args     = object_to_array(arguments),
+          options  = args.pop(),
+          argument = args.join('-');
+
       var argumentsForApply = [];
 
       if (typeof argument === 'object' && argument.hash) {

@@ -1,17 +1,17 @@
-define(['api', 'jquery', 'translate'], function(api, $, t) {
+define(['api', 'jquery', 'notify-tt'], function(api, $, notify) {
 
   // Show login notification
   api.on('login', function() {
-    notify(t('login-successful'), {
-      body: t('login-successful-body'),
+    notify('login-successful', {
+      body: 'login-successful-body',
       icon: '/assets/img/logo_bare.png'
     });
   });
 
   // Attach error handler
   api.on('error', function ( err ) {
-    notify(t( ( ('string' == typeof err.title) && err.title) || 'unknown-error'), {
-      body: t(err.description || 'unknown-error-body'),
+    notify( ( ('string' == typeof err.title) && err.title) || 'unknown-error', {
+      body: err.description || 'unknown-error-body',
       icon: '/assets/img/logo_bare.png'
     });
   });

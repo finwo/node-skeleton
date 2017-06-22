@@ -21,6 +21,11 @@ nav {
     }
   }
 
+  .title {
+    .padded;
+    display: none;
+  }
+
   &:after {
     clear   : both;
     content : "";
@@ -34,11 +39,15 @@ nav {
 // Mobile
 @media all and (max-width : @container-width) {
   nav {
-    a:not(:first-child) {
+    .title {
+      display: block;
+    }
+    a {
       display : none;
     }
-    &.open a {
-      display : block;
+    &.open {
+      a { display : block; }
+      .title { display: none; }
     }
     a.icon {
       display  : block;

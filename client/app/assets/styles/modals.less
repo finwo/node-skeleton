@@ -1,4 +1,5 @@
 @import "alignment";
+@import "colors";
 @import "edges";
 @import "variables";
 
@@ -17,11 +18,11 @@
   .modal-content {
     .card;
     .padded;
+    .color-primary;
     > :first-child {
-      padding-top: 0;
+      padding-top : 0;
     }
-    background : @color-back;
-    max-width  : @container-width * 3 / 4;
-    margin     : 3rem auto;
+    max-width : @container-width * 3 / 4;
+    margin    : 3rem auto;
   }
 }
