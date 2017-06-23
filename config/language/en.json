@@ -1,13 +1,10 @@
 {
-  "appname": "TrackThis",
-  "account": "Account",
-  "home"   : "Home",
-  "login"  : "Login",
-  "logout" : "Logout",
+  "appname" : "TrackThis",
+  "login"   : "Login",
 
-  "title-404"    : "Page not found",
-  "title-account": "Account",
-  "title-index"  : "Home",
+  "title-404"     : "Page not found",
+  "title-account" : "Account",
+  "title-index"   : "Home",
 
   "login-successful"      : "Login successful",
   "login-successful-body" : "You have successfully logged in",
@@ -17,19 +14,27 @@
   "label-password"      : "Password",
   "label-username"      : "Username",
 
+  "nav-account" : "Account",
+  "nav-admin"   : "Admin",
+  "nav-cpl"     : "CPL",
+  "nav-index"   : "Home",
+  "nav-login"   : "Login",
+  "nav-logout"  : "Logout",
+  "nav-stats"   : "Stats",
+
   "unauthorized-header": "Not logged in",
   "unauthorized-body"  : "To view this page you have to be logged in",
 
-  "bad-request"                  : "Bad request",
-  "bad-request-body"             : "The request was not in a format the server understood. Our team has been notified.",
-  "not-implemented"              : "Not implemented",
-  "not-implemented-body"         : "The requested feature is not (yet) implemented.",
-  "unknown-error"                : "Unknown error",
-  "unknown-error-body"           : "Something went wrong in TrackThis. Our team has been notified.",
-  "userservice-check-params"     : "Missing parameters",
-  "userservice-check-params-body": "You may have forgotten to supply a username or password",
-  "userservice-login-none"       : "User not found",
-  "userservice-login-none-body"  : "No user with the given credentials was found",
-  "websocket-error"              : "Internal error",
-  "websocket-error-body"         : "Something went wrong with communicating to the server. Our team has been notified."
+  "bad-request"                   : "Bad request",
+  "bad-request-body"              : "The request was not in a format the server understood. Our team has been notified.",
+  "not-implemented"               : "Not implemented",
+  "not-implemented-body"          : "The requested feature is not (yet) implemented.",
+  "unknown-error"                 : "Unknown error",
+  "unknown-error-body"            : "Something went wrong in TrackThis. Our team has been notified.",
+  "userservice-check-params"      : "Missing parameters",
+  "userservice-check-params-body" : "You may have forgotten to supply a username or password",
+  "userservice-login-none"        : "User not found",
+  "userservice-login-none-body"   : "No user with the given credentials was found",
+  "websocket-error"               : "Internal error",
+  "websocket-error-body"          : "Something went wrong with communicating to the server. Our team has been notified."
 }
