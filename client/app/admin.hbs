@@ -1,0 +1,25 @@
+{{>precontent}}
+{{>nav}}
+<div class="container unauth">
+    <h1>{{i18n "unauthorized-header"}}</h1>
+    {{i18n "unauthorized-body"}}
+</div>
+<div class="auth">
+    <div class="container" data-bind="api.user.me.options.admin" data-equals="!1">
+        <h1>{{i18n "unauthorized-admin-header"}}</h1>
+        {{i18n "unauthorized-admin-body"}}
+    </div>
+    <div class="container" data-bind="api.user.me.options.admin" data-equals="1">
+        <select id="admin-subject" class="card" data-bind-source="input.admin.view">
+            <option value="main">Main</option>
+            <option value="collections">Data types</option>
+        </select>
+        <div data-bind="input.admin.view" data-equals="main">
+            VIEW MAIN
+        </div>
+        <div data-bind="input.admin.view" data-equals="collections">
+            VIEW COLLECTIONS
+        </div>
+    </div>
+</div>
+{{>postcontent}}

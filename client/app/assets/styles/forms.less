@@ -54,7 +54,7 @@ input, select, textarea {
   .padded;
   background-color : @color-back;
   border           : none;
-  border-bottom    : 1px solid fade(@color-text, 50%);
+  border-bottom    : 1pt solid fade(@color-text, 50%);
   color            : @color-text;
   display          : block;
   line-height      : 1.2rem;
@@ -79,9 +79,9 @@ input, select, textarea {
 
     &:before, &:after {
       content    : '';
-      height     : 2px;
+      height     : 2pt;
       width      : 0;
-      bottom     : 0px;
+      bottom     : 0;
       position   : absolute;
       background : @color-theme;
       .transition(all @transitions-duration ease);

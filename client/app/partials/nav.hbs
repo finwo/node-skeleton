@@ -8,10 +8,10 @@
         <a href="#modal-login" class="unauth">{{i18n "nav-login"}}</a>
 
         <!-- authenticated -->
-        <a href="/{{_lang}}/{{i18n "stats"}}" class="auth">{{i18n "nav-stats"}}</a>
-        <a href="/{{_lang}}/{{i18n "cpl"}}" class="auth">{{i18n "nav-cpl"}}</a>
+        <a href="/{{_lang}}/{{i18n "stats"}}" class="auth" data-bind="api.user.me.options.stats" data-equals="1">{{i18n "nav-stats"}}</a>
+        <a href="/{{_lang}}/{{i18n "cpl"}}" class="auth" data-bind="api.user.me.options.cpl" data-equals="1">{{i18n "nav-cpl"}}</a>
         <a href="/{{_lang}}/{{i18n "account"}}" class="auth">{{i18n "nav-account"}}</a>
         <a href="#!" class="auth" data-script="helpers/logout">{{i18n "nav-logout"}}</a>
-        <a href="/{{_lang}}/{{i18n "admin"}}" class="auth admin">{{i18n "nav-admin"}}</a>
+        <a href="/{{_lang}}/{{i18n "admin"}}" class="auth admin" data-bind="api.user.me.options.admin" data-equals="1">{{i18n "nav-admin"}}</a>
     </div>
 </nav>

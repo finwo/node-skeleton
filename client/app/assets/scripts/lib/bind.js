@@ -1,9 +1,49 @@
 define([ 'jquery', 'api', 'bluebird', 'jquery-watch-dom' ], function ( $, api, Promise ) {
 
-  var bindings = [];
+  var bindings = [],
+      sources  = {
+        api: api
+      },
+      filters  = {
+        '=' : function( a, b ) { return a == b; },
+        '!' : function( a, b ) { return a != b; },
+        '>' : function( a, b ) { return a >  b; },
+        '>=': function( a, b ) { return a >= b; },
+        '<' : function( a, b ) { return a <  b; },
+        '<=': function( a, b ) { return a <= b; }
+      };
+
+  function filter( test, value ) {
+    var operator     = filters['='],
+        compareValue = test;
+    Object.keys(filters).forEach(function(key) {
+      if ( test.substr(0,key.length) == key ) {
+        operator     = filters[key];
+        compareValue = test.substr(key.length);
+      }
+    });
+    return operator( value, compareValue );
+  }
+
+  function setSourced( $el, keys ) {
+    function out() {
+      var key, path = keys.split('.');
+      while(path.length) {
+        key = path.shift();
+        if ( path.length ) {
+          sources = sources[key] = sources[key] || {};
+        } else {
+          sources[key] = $el.val();
+        }
+      }
+      run();
+    }
+    out();
+    return out;
+  }
 
   function getData( path, src, apiData ) {
-    src = apiData || src || api;
+    src = apiData || src || sources;
     if ( 'string' == typeof path ) path = path.split('.');
     if ( !Array.isArray(path) ) return Promise.reject();
     var key = path.shift();
@@ -26,7 +66,7 @@ define([ 'jquery', 'api', 'bluebird', 'jquery-watch-dom' ], function ( $, api, P
   function render( template ) {
     return function render_internal(data) {
       if ( Array.isArray(data) ) return data.map(render_internal).join('');
-      if ( !template ) return ('string' == typeof data) ? data : JSON.stringify(data);
+      if ( !template ) return data;
       return template.format(data);
     }
   }
@@ -37,7 +77,13 @@ define([ 'jquery', 'api', 'bluebird', 'jquery-watch-dom' ], function ( $, api, P
       return getData(binding.key)
         .then(render(binding.template || ''))
         .then(function(output) {
-          binding.element.innerHTML = output;
+          var eq, $el = $(binding.element);
+          if ( eq = $el.attr('data-equals') ) {
+            binding.element.style = binding.element.style || {};
+            binding.element.style.display = filter(eq, output) ? null : 'none';
+          } else {
+            binding.element.innerHTML = output;
+          }
         })
     }
   }
@@ -47,13 +93,22 @@ define([ 'jquery', 'api', 'bluebird', 'jquery-watch-dom' ], function ( $, api, P
 
     // Listen for new bindings
     $("[data-bind]").each(function() {
-      var key = $(this).attr('data-bind');
+      var $this = $(this),
+          key   = $this.attr('data-bind');
       this.removeAttribute('data-bind');
       bindings.push({
         element : this,
         key     : key,
-        template: this.innerHTML
+        template: $this.attr('data-equals') ? false : this.innerHTML
       });
+    });
+
+    // Handle inputs as source
+    $("[data-bind-source]").each(function() {
+      var $this = $(this),
+          key   = $this.attr('data-bind-source');
+      this.removeAttribute('data-bind-source');
+      $this.on('change', setSourced($this,key));
     });
 
     // Handle existing bindings

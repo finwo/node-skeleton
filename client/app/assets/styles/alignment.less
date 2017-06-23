@@ -1,25 +1,30 @@
 @import "variables";
 
 .grid {
-  display  : flex;
-  flex-flow: row wrap;
-  margin: 0 auto 1rem auto;
+  display   : flex;
+  flex-flow : row wrap;
+  margin    : 0 auto 1rem auto;
   > * {
-    flex-basis: 15rem;
-    flex-grow : 1;
-    margin    : 0.5rem;
+    flex-basis : 15rem;
+    flex-grow  : 1;
+    margin     : 0.5rem;
+    &.wide {
+      flex-basis : 30rem;
+    }
   }
 }
 
 .padded {
-  padding: 0.5rem;
+  padding : 0.5rem;
 }
+
 .markdown-body,
 .container {
   .padded;
-  margin   : 0 auto;
-  max-width: @container-width;
+  margin    : 0 auto;
+  max-width : @container-width;
 }
+
 .right {
-  float: right;
+  float : right;
 }

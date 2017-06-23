@@ -4,6 +4,7 @@
 
   "title-404"     : "Pagina niet gevonden",
   "title-account" : "Account",
+  "title-admin"   : "Beheer",
   "title-index"   : "Home",
 
   "login-successful"      : "Inloggen succesvol",
@@ -24,6 +25,8 @@
 
   "unauthorized-header" : "Not ingelogd",
   "unauthorized-body"   : "Om deze pagina te bekijken moet je ingelogd zijn.",
+  "unauthorized-admin-header": "Onvoldoende rechten",
+  "unauthorized-admin-body"  : "U heeft niet voldoende rechten om deze pagina te bekijken",
 
   "bad-request"                   : "Invalide request",
   "bad-request-body"              : "De aanvraag was niet in een formaat welke de server begreep. Ons team is op de hoogte gebracht.",
