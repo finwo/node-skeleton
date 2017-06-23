@@ -1,0 +1,15 @@
+{{>precontent}}
+{{>nav}}
+<div class="container unauth">
+    <h1>{{i18n "unauthorized-header"}}</h1>
+    {{i18n "unauthorized-body"}}
+</div>
+<div class="container auth" data-bind="user.me">
+    <h1>{username}</h1>
+    <div class="grid">
+        <div class="card">
+            ID: {_id}
+        </div>
+    </div>
+</div>
+{{>postcontent}}

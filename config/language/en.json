@@ -5,8 +5,9 @@
   "login"  : "Login",
   "logout" : "Logout",
 
-  "title-404"  : "Page not found",
-  "title-index": "Home",
+  "title-404"    : "Page not found",
+  "title-account": "Account",
+  "title-index"  : "Home",
 
   "login-successful"      : "Login successful",
   "login-successful-body" : "You have successfully logged in",
@@ -15,6 +16,9 @@
   "label-login-button"  : "Login",
   "label-password"      : "Password",
   "label-username"      : "Username",
+
+  "unauthorized-header": "Not logged in",
+  "unauthorized-body"  : "To view this page you have to be logged in",
 
   "bad-request"                  : "Bad request",
   "bad-request-body"             : "The request was not in a format the server understood. Our team has been notified.",

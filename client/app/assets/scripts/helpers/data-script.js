@@ -21,4 +21,5 @@ define(['jquery', 'jquery-watch-dom'], function($) {
   // Make an initial call
   process();
 
+  return true;
 });

@@ -6,6 +6,7 @@
     require.paths   = {
         'api'             : 'js/lib/api.js',
         'app'             : 'js/app.js',
+        'bind'            : 'js/lib/bind.js',
         'bluebird'        : 'bower/bluebird/js/browser/bluebird.min.js',
         'cachep2p'        : 'https://unpkg.com/cachep2p/cachep2p.min.js',
         'crypto-js'       : 'bower/crypto-js/crypto-js.js',
@@ -20,12 +21,12 @@
         'translate'       : 'js/lib/translate.js',
         'uid'             : 'js/lib/uid.js'
     };
-    require.getter['data-script']      = function() { return true;                    };
     require.getter['jquery-watch-dom'] = function() { return $ && $.fn && $.fn.watch; };
+
 //    require(['cachep2p'], function(CacheP2P) {
 //        var c = new CacheP2P();
 //        c.on('ready', function() {
-            require(['app', 'data-script'], function(){});
+            require(['app', 'data-script', 'bind'], function(){});
 //        });
 //    });
 </script>

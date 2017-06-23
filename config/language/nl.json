@@ -5,8 +5,9 @@
   "login"  : "Inloggen",
   "logout" : "Uitloggen",
 
-  "title-404"  : "Pagina niet gevonden",
-  "title-index": "Home",
+  "title-404"    : "Pagina niet gevonden",
+  "title-account": "Account",
+  "title-index"  : "Home",
 
   "login-successful"      : "Inloggen succesvol",
   "login-successful-body" : "U bent succesvol ingelogd",
@@ -15,6 +16,9 @@
   "label-login-button"  : "Inloggen",
   "label-password"      : "Wachtwoord",
   "label-username"      : "Gebruikernaam",
+
+  "unauthorized-header": "Not ingelogd",
+  "unauthorized-body"  : "Om deze pagina te bekijken moet je ingelogd zijn.",
 
   "bad-request"                  : "Invalide request",
   "bad-request-body"             : "De aanvraag was niet in een formaat welke de server begreep. Ons team is op de hoogte gebracht.",
