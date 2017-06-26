@@ -8,8 +8,13 @@ module.exports = {
     var odm         = yield service('odm'),
         definitions = odm.ds.definitions,
         list        = Object.keys(definitions);
-    res.end(list.map(function ( name ) {
-      return { name: name };
-    }));
+
+    if ( req.params.q ) {
+      list = list.filter(function(name) {
+        return name.indexOf(req.params.q) >= 0;
+      });
+    }
+
+    res.end(list);
   }
 };

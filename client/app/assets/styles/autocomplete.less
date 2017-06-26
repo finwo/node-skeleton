@@ -1,0 +1,34 @@
+@import "colors";
+@import "edges";
+
+.autocomplete-suggestions {
+  .shadow;
+  .color-primary;
+  text-align : left;
+  cursor     : default;
+
+  /* core styles should not be changed */
+  position   : absolute;
+  display    : none;
+  z-index    : 60;
+  overflow   : hidden;
+  overflow-y : auto;
+}
+
+.autocomplete-suggestion {
+  .padded;
+
+  position      : relative;
+  white-space   : nowrap;
+  overflow      : hidden;
+  text-overflow : ellipsis;
+
+  b {
+    font-weight : normal;
+    color       : @color-theme;
+  }
+  &.selected {
+    background: @color-theme;
+    b { color: @color-back; }
+  }
+}

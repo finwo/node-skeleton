@@ -1,4 +1,4 @@
-define(['api', 'jquery', 'notify-tt'], function(api, $, notify) {
+define(['api', 'jquery', 'notify-tt', 'autocomplete'], function(api, $, notify) {
 
   // Register notifications
   (function() {

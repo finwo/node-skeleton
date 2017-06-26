@@ -1,4 +1,4 @@
-define([ 'bluebird', 'notify', 'sockjs', 'translate', 'uid' ], function ( Promise, notify, SockJS, t, uid ) {
+define([ 'bluebird', 'notify', 'sockjs', 'translate', 'uid', 'query' ], function ( Promise, notify, SockJS, t, uid, query ) {
 
   // Settings
   var uri = window.location.protocol + '//' + window.location.hostname;
@@ -6,14 +6,8 @@ define([ 'bluebird', 'notify', 'sockjs', 'translate', 'uid' ], function ( Promis
   uri += '/socket';
 
   function getCookie(name) {
-    return document.cookie
-      .split('; ')
-      .map(function(token) { return token.split('=', 2); })
-      .map(function(token) { return { key: token.shift(), value: token.shift() }; })
-      .filter(function(token) { return token.key == name })
-      .map(function(token) { try { return {key: token.key, value: JSON.parse(token.value)}; } catch(e) {return token;} })
-      .map(function(token) { return token.value; })
-      .shift()
+    var data = query.decode(document.cookie, '; ');
+    return data[name] || undefined;
   }
 
   // Initialize
@@ -212,13 +206,16 @@ define([ 'bluebird', 'notify', 'sockjs', 'translate', 'uid' ], function ( Promis
     },
 
     admin: {
-      collections: function() {
+      collections: function(params) {
         if ( !api.user.isLoggedIn() ) return Promise.reject(false);
         if ( cache['admin.collections'] ) return Promise.resolve(cache['admin.collections']);
-        return cache['admin.collections'] = api.get( '/api/admin/collections')
+        return api.get( '/api/admin/collections' + ( params ? '?' + query.encode(params) : '' ) )
           .then(function(result) {
             if (!result) throw result;
-            return cache['admin.collections'] = result;
+            if ( !params ) {
+              cache['admin.collections'] = result
+            }
+            return result;
           });
       }
     }

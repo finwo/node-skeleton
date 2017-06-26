@@ -4,24 +4,28 @@
     window.translations = { {{#each _config.language}}"{{@key}}":{ {{#each this}}"{{@key}}": "{{this}}",{{/each}} },{{/each}} };
     require.baseUri = '/assets/';
     require.paths   = {
-        'api'             : 'js/lib/api.js',
-        'app'             : 'js/app.js',
-        'bind'            : 'js/lib/bind.js',
-        'bluebird'        : 'bower/bluebird/js/browser/bluebird.min.js',
-        'cachep2p'        : 'https://unpkg.com/cachep2p/cachep2p.min.js',
-        'crypto-js'       : 'bower/crypto-js/crypto-js.js',
-        'data-script'     : 'js/helpers/data-script.js',
-        'jquery'          : 'bower/jquery/dist/jquery.min.js',
-        'jquery-watch-dom': 'bower/jquery-watch-dom/jquery-watch.min.js',
-        'modal'           : 'js/lib/modal.js',
-        'notify-tt'       : 'js/lib/notify.js',
-        'notify'          : 'bower/js-notify/notify.min.js',
-        'notify-sl'       : 'bower/notify-sl/dist/notify-sl.min.js',
-        'sockjs'          : 'bower/sockjs-client/dist/sockjs.min.js',
-        'translate'       : 'js/lib/translate.js',
-        'uid'             : 'js/lib/uid.js'
+        'api'                : 'js/lib/api.js',
+        'app'                : 'js/app.js',
+        'autocomplete'       : 'js/lib/autocomplete.js',
+        'bind'               : 'js/lib/bind.js',
+        'bluebird'           : 'bower/bluebird/js/browser/bluebird.min.js',
+        'cachep2p'           : 'https://unpkg.com/cachep2p/cachep2p.min.js',
+        'crypto-js'          : 'bower/crypto-js/crypto-js.js',
+        'data-script'        : 'js/helpers/data-script.js',
+        'jquery'             : 'bower/jquery/dist/jquery.min.js',
+        'jquery-autocomplete': 'bower/jquery-auto-complete/jquery.auto-complete.min.js',
+        'jquery-watch-dom'   : 'bower/jquery-watch-dom/jquery-watch.min.js',
+        'modal'              : 'js/lib/modal.js',
+        'notify-tt'          : 'js/lib/notify.js',
+        'notify'             : 'bower/js-notify/notify.min.js',
+        'notify-sl'          : 'bower/notify-sl/dist/notify-sl.min.js',
+        'query'              : 'js/lib/query.js',
+        'sockjs'             : 'bower/sockjs-client/dist/sockjs.min.js',
+        'translate'          : 'js/lib/translate.js',
+        'uid'                : 'js/lib/uid.js'
     };
-    require.getter['jquery-watch-dom'] = function() { return $ && $.fn && $.fn.watch; };
+    require.getter['jquery-autocomplete'] = function() { return $ && $.fn && $.fn.autoComplete; };
+    require.getter['jquery-watch-dom']    = function() { return $ && $.fn && $.fn.watch;        };
 
 //    require(['cachep2p'], function(CacheP2P) {
 //        var c = new CacheP2P();

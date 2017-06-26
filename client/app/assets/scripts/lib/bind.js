@@ -44,25 +44,26 @@ define([ 'jquery', 'api', 'bluebird', 'jquery-watch-dom' ], function ( $, api, P
     return out;
   }
 
-  function getData( path, src, apiData ) {
-    src = apiData || src || sources;
-    if ( 'string' == typeof path ) path = path.split('.');
-    if ( !Array.isArray(path) ) return Promise.reject();
-    var key = path.shift();
-    if ( !key ) return Promise.resolve(src);
-    switch(typeof src[key]) {
+  function getData( options, apiData ) {
+    options = options || {};
+    options.src = apiData || options.src || sources;
+    if ( 'string' == typeof options.path ) options.path = options.path.split('.');
+    if ( !Array.isArray(options.path) ) return Promise.reject();
+    var key = options.path.shift();
+    if ( !key ) return Promise.resolve(options.src);
+    switch(typeof options.src[key]) {
       case 'function':
-        src = src[key]();
-        if ( src.then ) {
-          return src.then(getData.bind(null,path,src));
+        options.src = options.src[key](options.apiParams);
+        if ( options.src.then ) {
+          return options.src.then(getData.bind(null,options));
         }
         break;
       default:
-        src = src[key];
+        options.src = options.src[key];
         break;
     }
-    if ( path.length ) return getData(path, src);
-    return Promise.resolve(src);
+    if ( options.path.length ) return getData(options);
+    return Promise.resolve(options.src);
   }
 
   function render( template ) {
@@ -101,7 +102,7 @@ define([ 'jquery', 'api', 'bluebird', 'jquery-watch-dom' ], function ( $, api, P
         })
       }
 
-      return getData(binding.key)
+      return getData({path: binding.key})
         .then(render(template))
         .then(function(output) {
           var eq, $el = $(binding.element);
@@ -162,5 +163,7 @@ define([ 'jquery', 'api', 'bluebird', 'jquery-watch-dom' ], function ( $, api, P
     callback: run
   });
 
-  return true;
+  // Allow setting api param
+
+  return getData;
 });
