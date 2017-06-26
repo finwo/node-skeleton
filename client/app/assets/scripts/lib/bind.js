@@ -27,13 +27,14 @@ define([ 'jquery', 'api', 'bluebird', 'jquery-watch-dom' ], function ( $, api, P
 
   function setSourced( $el, keys ) {
     function out() {
-      var key, path = keys.split('.');
+      var subject   = sources,
+          key, path = keys.split('.');
       while(path.length) {
         key = path.shift();
         if ( path.length ) {
-          sources = sources[key] = sources[key] || {};
+          subject = subject[key] = subject[key] || {};
         } else {
-          sources[key] = $el.val();
+          subject[key] = $el.val();
         }
       }
       run();
