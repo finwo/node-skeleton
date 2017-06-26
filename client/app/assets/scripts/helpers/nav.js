@@ -6,11 +6,10 @@ define(['jquery'], function($) {
         $title     = $el.find('.title'),
         $button    = $('<a href="#!" class="icon">&#9776;</a>');
     function toggle(el) {
-      el = el || $el;
       el.toggleClass('open');
     }
-    $button.on('click', toggle);
-    $title.on('click', toggle);
+    $button.on('click', toggle.bind(null,$el));
+    $title.on('click', toggle.bind(null,$el));
     $container.append($button);
 
     // Handle dropdowns

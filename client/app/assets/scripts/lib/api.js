@@ -17,15 +17,20 @@ define([ 'bluebird', 'notify', 'sockjs', 'translate', 'uid' ], function ( Promis
   }
 
   // Initialize
-  var sock;
+  var sock, connected = false;
   function sock_init() {
     sock         = new SockJS(uri);
     sock.onopen  = function () {
       console.log('Connected');
+      connected = true;
       api.emit('connect');
+      if ( outbox.length ) {
+        api.emit.call({bubble: false}, 'queue');
+      }
     };
     sock.onclose = function () {
       console.log('Disconnected');
+      connected = false;
       api.emit.call({bubble: false}, 'disconnect');
       setTimeout(sock_init, 1000);
     };
@@ -83,7 +88,8 @@ define([ 'bluebird', 'notify', 'sockjs', 'translate', 'uid' ], function ( Promis
 
   // Track state
   var callbacks = [],
-      listeners = {};
+      listeners = {},
+      outbox    = [];
 
   // The actual API
   var api = {
@@ -97,7 +103,8 @@ define([ 'bluebird', 'notify', 'sockjs', 'translate', 'uid' ], function ( Promis
         callbacks[ data._id ] = data.callback;
         delete data.callback;
       }
-      sock.send(JSON.stringify(data));
+      outbox.push(JSON.stringify(data));
+      api.emit.call({ bubble: false }, 'queue');
       return data._id;
     },
     get: function( url, options ) {
@@ -205,6 +212,21 @@ define([ 'bluebird', 'notify', 'sockjs', 'translate', 'uid' ], function ( Promis
   // Keep the auth cookie up-to-date
   api.on('logout', function()      { document.cookie = 'auth=; path=/'; });
   api.on('login' , function(token) { document.cookie = 'auth='+token+'; path=/'; });
+
+  // Transmit messages in the outbox
+  api.on('queue', function() {
+    if ( !connected ) {
+      return setTimeout(api.emit.bind({bubble:false}, 'emit'), 100);
+    }
+    var msg = outbox.shift();
+    if (!msg) {
+      return;
+    }
+    sock.send(msg);
+    if ( outbox.length ) {
+      setTimeout(api.emit.bind({bubble:false}, 'emit'), 5);
+    }
+  });
 
   sock_init();
   return api;
