@@ -2,16 +2,23 @@
     <div class="container">
         <span class="title">{{i18n "title" __pageName}}</span>
 
-        <a href="/{{_lang}}/">{{i18n "nav-index"}}</a>
+        <div><a href="/{{_lang}}/">{{i18n "nav-index"}}</a></div>
 
         <!-- unauthenticated -->
-        <a href="#modal-login" class="unauth">{{i18n "nav-login"}}</a>
+        <div class="unauth"><a href="#modal-login">{{i18n "nav-login"}}</a></div>
 
         <!-- authenticated -->
-        <a href="/{{_lang}}/{{i18n "stats"}}" class="auth" data-bind="api.user.me.options.stats" data-equals="1">{{i18n "nav-stats"}}</a>
-        <a href="/{{_lang}}/{{i18n "cpl"}}" class="auth" data-bind="api.user.me.options.cpl" data-equals="1">{{i18n "nav-cpl"}}</a>
-        <a href="/{{_lang}}/{{i18n "account"}}" class="auth">{{i18n "nav-account"}}</a>
-        <a href="#!" class="auth" data-script="helpers/logout">{{i18n "nav-logout"}}</a>
-        <a href="/{{_lang}}/{{i18n "admin"}}" class="auth admin" data-bind="api.user.me.options.admin" data-equals="1">{{i18n "nav-admin"}}</a>
+        <div class="auth"><a href="/{{_lang}}/{{i18n "stats"}}" class="auth" data-bind="api.user.me.options.stats" data-equals="1">{{i18n "nav-stats"}}</a></div>
+        <div class="auth"><a href="/{{_lang}}/{{i18n "cpl"}}" class="auth" data-bind="api.user.me.options.cpl" data-equals="1">{{i18n "nav-cpl"}}</a></div>
+        <div class="auth">
+            <a href="#!" class="auth">{{i18n "nav-account"}}</a>
+            <ul>
+                <li><a href="/{{_lang}}/{{i18n "account"}}">Overview</a></li>
+                <li><a href="#!" data-script="helpers/logout">Logout</a></li>
+            </ul>
+        </div>
+
+        <!--<a href="#!" class="auth" data-script="helpers/logout">{{i18n "nav-logout"}}</a>-->
+        <div class="auth" data-bind="api.user.me.options.admin" data-equals="1"><a href="/{{_lang}}/{{i18n "admin"}}">{{i18n "nav-admin"}}</a></div>
     </div>
 </nav>

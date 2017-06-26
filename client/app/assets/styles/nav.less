@@ -7,32 +7,49 @@
 nav {
   .color-secundary;
   .shadow;
+  > .container {
+    padding : 0;
+    & > div {
+      display  : inline-block;
+      position : relative;
+    }
+  }
 
-  a {
+  ul {
+    .color-primary;
+    .shadow;
+    display         : none;
+    list-style-type : none;
+    position        : absolute;
+    a {
+      min-width : 100%;
+      &:hover {
+        .color-secundary;
+      }
+    }
+  }
+  .title, a {
     .padded;
     display : inline-block;
-    &:hover {
+  }
+  .title,
+  .icon {
+    display : none;
+  }
+
+  a {
+    &:hover,
+    &.open {
       background-color : @color-back;
       color            : @color-theme;
     }
-
-    &.icon {
-      display : none;
+    &.open + ul {
+      display : block;
     }
   }
-
-  .title {
-    .padded;
-    display: none;
-  }
-
   &:after {
     clear   : both;
     content : "";
-  }
-
-  > .container {
-    padding : 0;
   }
 }
 
@@ -40,21 +57,32 @@ nav {
 @media all and (max-width : @container-width) {
   nav {
     .title {
-      display: block;
+      display : block;
     }
-    a {
+    > .container > div {
       display : none;
     }
     &.open {
-      a { display : block; }
-      .title { display: none; }
+      > .container > div {
+        display : block;
+      }
+      .title {
+        display : none;
+      }
     }
-    a.icon {
-      display  : block;
-      float    : right;
-      position : absolute;
-      right    : 0;
-      top      : 0;
+    ul {
+      position : initial;
+    }
+    a {
+      width : 100%;
+      &.icon {
+        display  : block;
+        float    : right;
+        position : absolute;
+        right    : 0;
+        top      : 0;
+        width    : auto;
+      }
     }
   }
 }
