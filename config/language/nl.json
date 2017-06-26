@@ -23,12 +23,12 @@
   "nav-logout"  : "Uitloggen",
   "nav-stats"   : "Stats",
 
-  "unauthorized-header" : "Not ingelogd",
+  "unauthorized-header" : "Niet ingelogd",
   "unauthorized-body"   : "Om deze pagina te bekijken moet je ingelogd zijn.",
   "unauthorized-admin-header": "Onvoldoende rechten",
   "unauthorized-admin-body"  : "U heeft niet voldoende rechten om deze pagina te bekijken",
 
-  "bad-request"                   : "Invalide request",
+  "bad-request"                   : "Invalide aanvraag",
   "bad-request-body"              : "De aanvraag was niet in een formaat welke de server begreep. Ons team is op de hoogte gebracht.",
   "not-implemented"               : "Niet geïmplementeerd",
   "not-implemented-body"          : "De gevraagde functionaliteit is (nog) niet geïmplementeerd",
@@ -36,8 +36,8 @@
   "unknown-error-body"            : "Er ging iets mis in TrackThis. Ons team is op de hoogte gebracht.",
   "userservice-check-params"      : "Missende gegevens",
   "userservice-check-params-body" : "U bent vergeten een gebruikersnaam of wachtwoord op te geven",
-  "userservice-login-none"        : "User not found",
-  "userservice-login-none-body"   : "No user with the given credentials was found",
+  "userservice-login-none"        : "Gebruiker niet gevonden",
+  "userservice-login-none-body"   : "Geen gebruiker gevonden met de opgegeven gegevens",
   "websocket-error"               : "Interne error",
   "websocket-error-body"          : "Er ging iets mis met de communicatie naar de server. Ons team is op de hoogte gebracht."
 }

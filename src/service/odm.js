@@ -10,6 +10,7 @@ module.exports = co(function*() {
   store.registerAdapter(config.database.adapter.name, adapter, { default: true });
 
   return odm = {
+    ds   : store,
     model: function ( name ) {
       return co(function*() {
         if ( store.definitions[ name ] ) return store.definitions[ name ];
