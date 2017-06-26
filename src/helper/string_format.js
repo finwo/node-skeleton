@@ -1,7 +1,7 @@
-String.prototype.format = function(data) {
+String.prototype.format = function ( data ) {
   var str      = this,
       flatData = {};
-  switch(typeof data) {
+  switch ( typeof data ) {
     case 'string':
       var args = arguments;
       return this.replace(/{(\d+)}/g, function ( match, number ) {
@@ -12,27 +12,30 @@ String.prototype.format = function(data) {
       });
       break;
     case 'object':
-      (function flatten(obj,prefix) {
-        obj    = obj    || data;
+      (function flatten( obj, prefix ) {
+        obj    = obj || data;
         prefix = prefix || '';
-        Object.keys(obj).forEach(function(key) {
+        Object.keys(obj).forEach(function ( key ) {
           var compositeKey = prefix + key;
-          switch(typeof obj[key]) {
+          switch ( typeof obj[ key ] ) {
             case 'string':
             case 'number':
-              flatData[compositeKey] = obj[key];
+              flatData[ compositeKey ] = obj[ key ];
               break;
             case 'object':
-              flatData[compositeKey] = JSON.stringify(obj[key]);
-              flatten( obj[key], compositeKey + '.' );
+              flatData[ compositeKey ] = JSON.stringify(obj[ key ]);
+              flatten(obj[ key ], compositeKey + '.');
               break;
           }
         });
       })();
-      Object.keys(flatData).forEach(function(key) {
-        while(str.indexOf('{' + key + '}')>=0) str = str.replace('{' + key + '}',flatData[key]);
+      return str.replace(/\{([\w_]+(\.[\w_])*(\|[\w_]+(\.[\w_])*)*)}/g, function ( full, match ) {
+        var matches = match.split('|'),
+            result  = false;
+        matches.forEach(function ( key ) {
+          result = result || flatData[ key ];
+        });
+        return result || match;
       });
-      return str;
-      break;
   }
 };

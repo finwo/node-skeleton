@@ -10,13 +10,15 @@
         {{i18n "unauthorized-admin-body"}}
     </div>
     <div data-bind="api.user.me.options.admin" data-equals="1">
-        <div class="container form-group">
-            <select id="admin-subject" class="padded" data-bind-source="input.admin.view" data-script="helpers/input-has-content">
-                <option value="main">Main</option>
-                <option value="collections">Data types</option>
-            </select>
-            <i class="bar"></i>
-            <label for="admin-subject">{{i18n "label-admin-subject"}}</label>
+        <div class="container">
+            <div class="form-group">
+                <select id="admin-subject" class="padded" data-bind-source="input.admin.view" data-script="helpers/input-has-content">
+                    <option value="main">Main</option>
+                    <option value="collections">Data types</option>
+                </select>
+                <i class="bar"></i>
+                <label for="admin-subject">{{i18n "label-admin-subject"}}</label>
+            </div>
         </div>
         <div class="container" data-bind="input.admin.view" data-equals="main">
             VIEW MAIN
