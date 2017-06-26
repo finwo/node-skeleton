@@ -1,6 +1,7 @@
 define([ 'jquery', 'api', 'bluebird', 'jquery-watch-dom' ], function ( $, api, Promise ) {
 
   var bindings = [],
+      busy     = false,
       sources  = {
         api: api
       },
@@ -75,8 +76,35 @@ define([ 'jquery', 'api', 'bluebird', 'jquery-watch-dom' ], function ( $, api, P
   function process( binding ) {
     return function() {
       if ( !binding.key || !binding.element ) return;
+      var template = binding.template || '',
+          pipeline = Promise.resolve(true);
+
+      console.log(template);
+
+      // Process sub-bindings first, non-tracking
+      if ( template.indexOf('data-bind') >= 0 ) {
+        var virt = $('<div>' + template + '</div>');
+        virt.find('[data-bind]').each(function () {
+          var self  = this,
+              $self = $(self),
+              key   = $self.attr('data-bind');
+          self.removeAttribute('data-bind');
+          pipeline
+            .then(function () {
+              return process({
+                element : self,
+                key     : key,
+                template: self.innerHTML
+              });
+            })
+            .then(function () {
+              template = virt.html();
+            })
+        })
+      }
+
       return getData(binding.key)
-        .then(render(binding.template || ''))
+        .then(render(template))
         .then(function(output) {
           var eq, $el = $(binding.element);
           if ( eq = $el.attr('data-equals') ) {
@@ -91,6 +119,8 @@ define([ 'jquery', 'api', 'bluebird', 'jquery-watch-dom' ], function ( $, api, P
 
   // Our processor
   function run() {
+    if ( busy ) return;
+    busy = true;
 
     // Listen for new bindings
     $("[data-bind]").each(function() {
@@ -119,7 +149,10 @@ define([ 'jquery', 'api', 'bluebird', 'jquery-watch-dom' ], function ( $, api, P
     });
     bindings.forEach(function(binding) {
       pipeline.then(process(binding));
-    })
+    });
+    pipeline.then(function() {
+      busy = false;
+    });
   }
 
   // Clear data on login/logout

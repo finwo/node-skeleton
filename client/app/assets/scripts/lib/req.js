@@ -17,8 +17,9 @@ String.prototype.format = function(data) {
         obj    = obj    || data;
         prefix = prefix || '';
         Object.keys(obj).forEach(function(key) {
-          var compositeKey = prefix + key;
-          switch(typeof obj[key]) {
+          var compositeKey = prefix + key,
+              type         = typeof obj[key];
+          switch(type) {
             case 'string':
             case 'number':
               flatData[compositeKey] = obj[key];
