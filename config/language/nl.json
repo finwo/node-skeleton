@@ -23,8 +23,9 @@
   "nav-logout"  : "Uitloggen",
   "nav-stats"   : "Stats",
 
-  "unauthorized-header" : "Niet ingelogd",
-  "unauthorized-body"   : "Om deze pagina te bekijken moet je ingelogd zijn.",
+  "unauthorized-header"      : "Niet ingelogd",
+  "unauthorized-body"        : "Om deze pagina te bekijken moet je ingelogd zijn.",
+  "unauthorized-admin"       : "Onvoldoende rechten",
   "unauthorized-admin-header": "Onvoldoende rechten",
   "unauthorized-admin-body"  : "U heeft niet voldoende rechten om deze pagina te bekijken",
 

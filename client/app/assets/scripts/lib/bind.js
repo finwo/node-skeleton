@@ -79,8 +79,6 @@ define([ 'jquery', 'api', 'bluebird', 'jquery-watch-dom' ], function ( $, api, P
       var template = binding.template || '',
           pipeline = Promise.resolve(true);
 
-      console.log(template);
-
       // Process sub-bindings first, non-tracking
       if ( template.indexOf('data-bind') >= 0 ) {
         var virt = $('<div>' + template + '</div>');
@@ -111,7 +109,9 @@ define([ 'jquery', 'api', 'bluebird', 'jquery-watch-dom' ], function ( $, api, P
             binding.element.style = binding.element.style || {};
             binding.element.style.display = filter(eq, output) ? null : 'none';
           } else {
-            binding.element.innerHTML = output;
+            if ( binding.element.innerHTML != output ) {
+              binding.element.innerHTML = output;
+            }
           }
         })
     }
@@ -154,9 +154,6 @@ define([ 'jquery', 'api', 'bluebird', 'jquery-watch-dom' ], function ( $, api, P
       busy = false;
     });
   }
-
-  // Clear data on login/logout
-  api.on([ 'login', 'logout' ], function() { cache = {}; });
 
   // Listen for dom changes
   run();

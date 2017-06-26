@@ -185,25 +185,37 @@ module.exports = co(function*() {
     }
   };
 
-  router._404 = function*( req, res ) {
+  router._err = function*( req, res, number ) {
     var docroot     = config.http.static_route,
-        file, files = [];
-    if ( req.language ) files.push(path.join(docroot, req.language, '404.html'));
-    files.push(path.join(docroot, '404.html'));
+        file, files = [],
+        bodies = {
+          "403": "Permission Denied",
+          "404": "Not Found",
+        };
+    if ( req.language ) files.push(path.join(docroot, req.language, number + '.html'));
+    files.push(path.join(docroot, number+'.html'));
     while ( file = files.shift() ) {
       try {
         var data = yield fs.readFile(file);
-        res.writeHeader(404, {
+        res.writeHeader(number, {
           'Content-Type': router.mimetypes[ file.split('.').pop() ] || 'application/octet-stream'
         });
         res.end(data);
         return;
       } catch ( e ) {}
     }
-    res.writeHeader(404, {
+    res.writeHeader(number, {
       'Content-Type': 'text/plain'
     });
-    res.end('Not found');
+    res.end(bodies[number] || 'Internal Error');
+  };
+
+  router._403 = function*( req, res ) {
+    return router._err(req, res, 403);
+  };
+
+  router._404 = function*( req, res ) {
+    return router._err(req, res, 404);
   };
 
   return router;

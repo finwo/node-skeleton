@@ -30,6 +30,7 @@ define([ 'bluebird', 'notify', 'sockjs', 'translate', 'uid' ], function ( Promis
     };
     sock.onclose = function () {
       console.log('Disconnected');
+      cache     = {};
       connected = false;
       api.emit.call({bubble: false}, 'disconnect');
       setTimeout(sock_init, 1000);
@@ -89,7 +90,8 @@ define([ 'bluebird', 'notify', 'sockjs', 'translate', 'uid' ], function ( Promis
   // Track state
   var callbacks = [],
       listeners = {},
-      outbox    = [];
+      outbox    = [],
+      cache     = {};
 
   // The actual API
   var api = {
@@ -199,10 +201,24 @@ define([ 'bluebird', 'notify', 'sockjs', 'translate', 'uid' ], function ( Promis
 
       me: function() {
         if ( !api.user.isLoggedIn() ) return Promise.reject(false);
-        return api.get( '/api/user/me')
+        if ( cache['user.me'] ) return Promise.resolve(cache['user.me']);
+        return cache['user.me'] = api.get( '/api/user/me')
           .then(function(result) {
             if (!result) throw result;
+            cache['user.me'] = result;
             return result;
+          });
+      }
+    },
+
+    admin: {
+      collections: function() {
+        if ( !api.user.isLoggedIn() ) return Promise.reject(false);
+        if ( cache['admin.collections'] ) return Promise.resolve(cache['admin.collections']);
+        return cache['admin.collections'] = api.get( '/api/admin/collections')
+          .then(function(result) {
+            if (!result) throw result;
+            return cache['admin.collections'] = result;
           });
       }
     }
@@ -210,8 +226,8 @@ define([ 'bluebird', 'notify', 'sockjs', 'translate', 'uid' ], function ( Promis
   };
 
   // Keep the auth cookie up-to-date
-  api.on('logout', function()      { document.cookie = 'auth=; path=/'; });
-  api.on('login' , function(token) { document.cookie = 'auth='+token+'; path=/'; });
+  api.on('logout', function()      { cache = {}; document.cookie = 'auth=; path=/'; });
+  api.on('login' , function(token) { cache = {}; document.cookie = 'auth='+token+'; path=/'; });
 
   // Transmit messages in the outbox
   api.on('queue', function() {
