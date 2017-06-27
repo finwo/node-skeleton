@@ -1,13 +1,7 @@
-define(['api', 'jquery', 'notify-tt', 'autocomplete'], function(api, $, notify) {
+define(['api', 'jquery', 'notify-tt', 'autocomplete', 'data-script', 'bind'], function(api, $, notify) {
 
   // Register notifications
   (function() {
-    api.on('login', function() {
-      notify('login-successful', {
-        body: 'login-successful-body',
-        icon: '/assets/img/logo_bare.png'
-      });
-    });
     api.on('error', function ( err ) {
       notify( ( ('string' == typeof err.title) && err.title) || 'unknown-error', {
         body: err.description || 'unknown-error-body',

@@ -1,17 +1,18 @@
 {
-  "user"      : [
+  "user": [
     {
       "username": "admin",
       "password": "admin",
-      "options": {
+      "options" : {
         "admin": true,
         "cpl"  : true,
         "stats": true
       }
     }
   ],
-  "collection": [
-    { "name": "collection" },
-    { "name": "user"       }
+  "user-option": [
+    { "type": "flag", "name": "admin" },
+    { "type": "flag", "name": "cpl"   },
+    { "type": "flag", "name": "stats" }
   ]
 }

@@ -211,11 +211,11 @@ module.exports = co(function*() {
   };
 
   router._403 = function*( req, res ) {
-    return router._err(req, res, 403);
+    return co.wrap(router._err)(req, res, 403);
   };
 
   router._404 = function*( req, res ) {
-    return router._err(req, res, 404);
+    return co.wrap(router._err)(req, res, 404);
   };
 
   return router;

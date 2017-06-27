@@ -2,6 +2,10 @@
   "appname" : "TrackThis",
   "login"   : "Inloggen",
 
+  "admin-view-blank"       : "Kies een overzicht om verder te gaan",
+  "admin-view-user"        : "Gebruikerbeheer",
+  "admin-view-user-option" : "Gebruikeropties",
+
   "title-404"     : "Pagina niet gevonden",
   "title-account" : "Account",
   "title-admin"   : "Beheer",
@@ -10,6 +14,7 @@
   "login-successful"      : "Inloggen succesvol",
   "login-successful-body" : "U bent succesvol ingelogd",
 
+  "label-admin-view"    : "Overzicht",
   "label-cancel-button" : "Annuleren",
   "label-login-button"  : "Inloggen",
   "label-password"      : "Wachtwoord",

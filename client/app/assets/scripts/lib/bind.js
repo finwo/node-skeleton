@@ -1,4 +1,4 @@
-define([ 'jquery', 'api', 'bluebird', 'jquery-watch-dom' ], function ( $, api, Promise ) {
+define([ 'jquery', 'api', 'bluebird', 'translate', 'jquery-watch-dom' ], function ( $, api, Promise, t ) {
 
   var bindings = [],
       busy     = false,
@@ -78,11 +78,12 @@ define([ 'jquery', 'api', 'bluebird', 'jquery-watch-dom' ], function ( $, api, P
     return function() {
       if ( !binding.key || !binding.element ) return;
       var template = binding.template || '',
-          pipeline = Promise.resolve(true);
+          pipeline = Promise.resolve(true),
+          virt;
 
       // Process sub-bindings first, non-tracking
       if ( template.indexOf('data-bind') >= 0 ) {
-        var virt = $('<div>' + template + '</div>');
+        virt = $('<div>' + template + '</div>');
         virt.find('[data-bind]').each(function () {
           var self  = this,
               $self = $(self),
@@ -110,6 +111,18 @@ define([ 'jquery', 'api', 'bluebird', 'jquery-watch-dom' ], function ( $, api, P
             binding.element.style = binding.element.style || {};
             binding.element.style.display = filter(eq, output) ? null : 'none';
           } else {
+
+            // Process translations
+            if ( output.indexOf('data-text') >= 0 ) {
+              virt = $('<div>' + output + '</div>');
+              virt.find('[data-text]').each(function () {
+                this.innerHTML = t($(this).attr('data-text'));
+                this.removeAttribute('data-text');
+              });
+              output = virt.html();
+            }
+
+            // Only update if the output was different
             if ( binding.element.innerHTML != output ) {
               binding.element.innerHTML = output;
             }

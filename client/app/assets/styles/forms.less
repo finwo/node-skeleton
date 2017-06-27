@@ -44,57 +44,79 @@ button, .btn {
 }
 
 // Row alignment & absolute boundaries
-.form-group {
+.input,
+.input-select {
   margin-top : 1.5em;
   position   : relative;
+
+  // Basic inputs
+  input, select, textarea {
+    .padded;
+    background-color : @color-back;
+    border           : none;
+    border-bottom    : 1pt solid fade(@color-text, 50%);
+    color            : @color-text;
+    display          : block;
+    line-height      : 1.2rem;
+    width            : 100%;
+    &:focus, &.has-content {
+      ~ label {
+        color     : @color-theme;
+        font-size : 0.8rem;
+        top       : -1rem;
+      }
+    }
+    &:focus ~ .bar {
+      &:before, &:after {
+        width : 50%;
+      }
+    }
+    &.card {
+      border-bottom : none;
+    }
+
+    ~ .bar {
+      position : relative;
+      display  : block;
+      width    : 100%;
+
+      &:before, &:after {
+        content    : '';
+        height     : 2pt;
+        width      : 0;
+        bottom     : 0;
+        position   : absolute;
+        background : @color-theme;
+        .transition(all @transitions-duration ease);
+      }
+      &:before {
+        left : 50%;
+      }
+      &:after {
+        right : 50%;
+      }
+    }
+  }
 }
 
-// Basic inputs
-input, select, textarea {
-  .padded;
-  background-color : @color-back;
-  border           : none;
-  border-bottom    : 1pt solid fade(@color-text, 50%);
-  color            : @color-text;
-  display          : block;
-  line-height      : 1.2rem;
-  width            : 100%;
-  &:focus, &.has-content {
-    ~ label {
-      color     : @color-theme;
-      font-size : 0.8rem;
-      top       : -1rem;
-    }
+.input-select {
+  select {
+    -webkit-appearance : none;
+    -moz-appearance    : none;
+    -ms-appearance     : none;
+    -o-appearance      : none;
+    appearance         : none;
   }
-  &:focus ~ .bar {
-    &:before, &:after {
-      width : 50%;
-    }
-  }
-  &.card {
-    border-bottom: none;
-  }
-
-  ~ .bar {
-    position : relative;
-    display  : block;
-    width    : 100%;
-
-    &:before, &:after {
-      content    : '';
-      height     : 2pt;
-      width      : 0;
-      bottom     : 0;
-      position   : absolute;
-      background : @color-theme;
-      .transition(all @transitions-duration ease);
-    }
-    &:before {
-      left : 50%;
-    }
-    &:after {
-      right : 50%;
-    }
+  &:after {
+    border-left  : 0.25rem solid transparent;
+    border-right : 0.25rem solid transparent;
+    border-top   : 0.5rem solid @color-text;
+    content      : "";
+    height       : 0;
+    position     : absolute;
+    right        : 0.9rem;
+    top          : 0.9rem;
+    width        : 0;
   }
 }
 

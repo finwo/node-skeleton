@@ -2,6 +2,10 @@
   "appname" : "TrackThis",
   "login"   : "Login",
 
+  "admin-view-blank"       : "Select a view to continue",
+  "admin-view-user"        : "User management",
+  "admin-view-user-option" : "User options",
+
   "title-404"     : "Page not found",
   "title-account" : "Account",
   "title-admin"   : "Admin",
@@ -10,6 +14,7 @@
   "login-successful"      : "Login successful",
   "login-successful-body" : "You have successfully logged in",
 
+  "label-admin-view"    : "View",
   "label-cancel-button" : "Cancel",
   "label-login-button"  : "Login",
   "label-password"      : "Password",

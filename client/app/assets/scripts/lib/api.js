@@ -1,4 +1,4 @@
-define([ 'bluebird', 'notify', 'sockjs', 'translate', 'uid', 'query' ], function ( Promise, notify, SockJS, t, uid, query ) {
+define([ 'bluebird', 'notify-tt', 'sockjs', 'translate', 'uid', 'query' ], function ( Promise, notify, SockJS, t, uid, query ) {
 
   // Settings
   var uri = window.location.protocol + '//' + window.location.hostname;
@@ -35,10 +35,7 @@ define([ 'bluebird', 'notify', 'sockjs', 'translate', 'uid', 'query' ], function
       try {
         var data = JSON.parse(e.data);
       } catch ( e ) {
-        return notify(t('websocket-error'), {
-          body: t('websocket-error-body'),
-          icon: '/assets/img/logo_bare.png'
-        });
+        return api.emit.call({ bubble: false }, 'error', 'websocket-error');
       }
 
       // Perform redirections
@@ -206,15 +203,13 @@ define([ 'bluebird', 'notify', 'sockjs', 'translate', 'uid', 'query' ], function
     },
 
     admin: {
-      collections: function(params) {
+      views: function() {
         if ( !api.user.isLoggedIn() ) return Promise.reject(false);
-        if ( cache['admin.collections'] ) return Promise.resolve(cache['admin.collections']);
-        return api.get( '/api/admin/collections' + ( params ? '?' + query.encode(params) : '' ) )
+        if ( cache['admin.views'] ) return Promise.resolve(cache['admin.views']);
+        return api.get( '/api/admin/views' )
           .then(function(result) {
             if (!result) throw result;
-            if ( !params ) {
-              cache['admin.collections'] = result
-            }
+            cache['admin.views'] = result
             return result;
           });
       }
