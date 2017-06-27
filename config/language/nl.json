@@ -6,6 +6,8 @@
   "admin-view-user"        : "Gebruikerbeheer",
   "admin-view-user-option" : "Gebruikeropties",
 
+  "body-404": "De pagina die U zoekt kon niet gevonden worden.",
+
   "title-404"     : "Pagina niet gevonden",
   "title-account" : "Account",
   "title-admin"   : "Beheer",
