@@ -196,8 +196,7 @@ define([ 'bluebird', 'notify-tt', 'sockjs', 'translate', 'uid', 'query' ], funct
         return cache['user.me'] = api.get( '/api/user/me')
           .then(function(result) {
             if (!result) throw result;
-            cache['user.me'] = result;
-            return result;
+            return cache['user.me'] = result;
           });
       }
     },
@@ -209,9 +208,22 @@ define([ 'bluebird', 'notify-tt', 'sockjs', 'translate', 'uid', 'query' ], funct
         return api.get( '/api/admin/views' )
           .then(function(result) {
             if (!result) throw result;
-            cache['admin.views'] = result
+            cache['admin.views'] = result;
             return result;
           });
+      },
+      user: {
+        search: function(params) {
+          if ( !api.user.isLoggedIn() ) return Promise.reject(false);
+          var q = params.q || '';
+          cache['user.search'] = cache['user.search'] || {};
+          if ( cache['user.search'][q] ) return Promise.resolve(cache['user.search'][q]);
+          return api.get( '/api/admin/user/search?q=' + q )
+            .then(function(result) {
+              if (!result) throw result;
+              return cache['user.search'][query] = result;
+            });
+        }
       }
     }
 

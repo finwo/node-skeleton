@@ -1,0 +1,25 @@
+@import "alignment";
+@import "colors";
+@import "edges";
+@import "variables";
+
+table {
+  .card;
+  border-collapse : collapse;
+  width           : 100%;
+  th {
+    .color-secundary;
+  }
+  th, td {
+    .padded;
+    font-weight : normal;
+    text-align  : left;
+    + th,
+    + td {
+      border-left : 1pt solid fade(@color-edge, 20%);
+    }
+  }
+  tr + tr {
+    border-top : 1pt solid fade(@color-edge, 20%);
+  }
+}

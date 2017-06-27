@@ -16,11 +16,12 @@
   "login-successful"      : "Login successful",
   "login-successful-body" : "You have successfully logged in",
 
-  "label-admin-view"    : "View",
-  "label-cancel-button" : "Cancel",
-  "label-login-button"  : "Login",
-  "label-password"      : "Password",
-  "label-username"      : "Username",
+  "label-admin-view"        : "View",
+  "label-admin-user-search" : "User",
+  "label-cancel-button"     : "Cancel",
+  "label-login-button"      : "Login",
+  "label-password"          : "Password",
+  "label-username"          : "Username",
 
   "nav-account" : "Account",
   "nav-admin"   : "Admin",

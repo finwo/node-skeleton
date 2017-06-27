@@ -16,11 +16,12 @@
   "login-successful"      : "Inloggen succesvol",
   "login-successful-body" : "U bent succesvol ingelogd",
 
-  "label-admin-view"    : "Overzicht",
-  "label-cancel-button" : "Annuleren",
-  "label-login-button"  : "Inloggen",
-  "label-password"      : "Wachtwoord",
-  "label-username"      : "Gebruikernaam",
+  "label-admin-view"        : "Overzicht",
+  "label-admin-user-search" : "Gebruiker",
+  "label-cancel-button"     : "Annuleren",
+  "label-login-button"      : "Inloggen",
+  "label-password"          : "Wachtwoord",
+  "label-username"          : "Gebruikernaam",
 
   "nav-account" : "Account",
   "nav-admin"   : "Beheer",

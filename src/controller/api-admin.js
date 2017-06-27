@@ -20,5 +20,16 @@ module.exports = {
         return { name: name };
       }))
     );
+  },
+
+  'get /api/admin/user/search': function*( req, res ) {
+    var auth        = yield service('auth'),
+        userService = yield service('UserService');
+    if ( !auth.option(req, 'admin') ) {
+      return res.errorHandler('unauthorized-admin', 403);
+    }
+    return userService
+      .search(req.params && req.params.q || '')
+      .then(res.end);
   }
 };

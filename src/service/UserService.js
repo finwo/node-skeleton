@@ -1,19 +1,19 @@
-var co     = require('co');
+var co = require('co');
 
 module.exports = co(function*() {
-  var odm    = yield service('odm'),
-      User   = yield odm.model('user'),
-      token  = yield service('token');
+  var odm   = yield service('odm'),
+      User  = yield odm.model('user'),
+      token = yield service('token');
 
   var userService = {
 
-    encryptPassword: function( password ) {
+    encryptPassword: function ( password ) {
       return co(function*() {
         return '#' + ( yield token.generate(password) );
       });
     },
 
-    checkPassword: function( user, password ) {
+    checkPassword: function ( user, password ) {
       return co(function*() {
         // Check we have all requirements
         if ( !user || !user.password || !password ) {
@@ -24,22 +24,46 @@ module.exports = co(function*() {
           return false;
         }
         // Hash it
-        return yield token.compare( user.password.substr(1), password );
+        return yield token.compare(user.password.substr(1), password);
       });
     },
 
-    login: function(data) {
+    search: function ( username ) {
+      return co(function*() {
+        // Check we have all requirements
+        if ( !username ) {
+          throw 'userservice-search-params';
+        }
+        return User
+          .findAll({
+            where: {
+              username: {
+                'contains': username
+              }
+            },
+            limit: 10
+          })
+          .then(function ( result ) {
+            return result.map(function ( user ) {
+              delete user.password;
+              return user;
+            });
+          })
+      });
+    },
+
+    login: function ( data ) {
       if ( !data.username || !data.password ) {
         return Promise.reject("Missing parameters");
       }
 
       return User
         .findAll({ username: data.username })
-        .then(function( matches ) {
+        .then(function ( matches ) {
           return co(function*() {
             var match, result;
-            while( match = matches.shift() ) {
-              result = yield userService.checkPassword( match, data.password );
+            while ( match = matches.shift() ) {
+              result = yield userService.checkPassword(match, data.password);
               if ( result ) {
                 return match;
               }
@@ -47,7 +71,7 @@ module.exports = co(function*() {
             throw "userservice-login-none";
           });
         })
-        .then(function(user) {
+        .then(function ( user ) {
           delete user.password;
           return token.generate({
             user: user,

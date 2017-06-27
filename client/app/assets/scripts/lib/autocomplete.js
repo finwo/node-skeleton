@@ -9,12 +9,15 @@ define([ 'bind', 'jquery', 'jquery-watch-dom', 'jquery-autocomplete' ], function
       $this.autoComplete({
         minChars: $this.attr('data-min-chars') || 1,
         source  : function ( term, suggest ) {
-          bind({
-            path     : key,
-            apiParams: {
-              q: term
-            }
-          }).then(suggest)
+          var options       = { path: key };
+          options.apiParams = { q: term };
+          bind(options)
+            .then(function ( result ) {
+              return result.map(function ( user ) {
+                return user.username;
+              })
+            })
+            .then(suggest);
         }
       });
     });
