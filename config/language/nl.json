@@ -8,18 +8,28 @@
 
   "body-404": "De pagina die U zoekt kon niet gevonden worden.",
 
-  "title-404"     : "Pagina niet gevonden",
-  "title-account" : "Account",
-  "title-admin"   : "Beheer",
-  "title-index"   : "Home",
+  "button-cancel"   : "Annuleren",
+  "button-delete"   : "Verwijderen",
+  "button-edit"     : "Bewerken",
+  "button-login"    : "Inloggen",
+  "button-new-user" : "Nieuwe gebruiker",
+  "button-save"     : "Opslaan",
+
+  "title-404"         : "Pagina niet gevonden",
+  "title-account"     : "Account",
+  "title-admin"       : "Beheer",
+  "title-index"       : "Home",
+  "title-modal-login" : "Inloggen",
+  "title-modal-user"  : "Gebruiker",
 
   "login-successful"      : "Inloggen succesvol",
   "login-successful-body" : "U bent succesvol ingelogd",
 
   "label-admin-view"        : "Overzicht",
   "label-admin-user-search" : "Gebruiker",
-  "label-cancel-button"     : "Annuleren",
-  "label-login-button"      : "Inloggen",
+  "label-flag-admin"        : "Administrator",
+  "label-flag-cpl"          : "CPL gebruiker",
+  "label-flag-stats"        : "Statistieken inzien",
   "label-password"          : "Wachtwoord",
   "label-username"          : "Gebruikernaam",
 

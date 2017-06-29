@@ -1,7 +1,7 @@
 {
   "user": [
     {
-      "username": "admin",
+      "username": "root",
       "password": "admin",
       "options" : {
         "admin": true,

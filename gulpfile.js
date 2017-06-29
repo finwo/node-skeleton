@@ -93,7 +93,7 @@ gulp.task('html', function(done) {
     gulp
       .src(sourceDir + '/*.hbs')
       .pipe(engine.render())
-      .pipe(htmlmin({ collapseWhitespace: true }))
+      //.pipe(htmlmin({ collapseWhitespace: true }))
       .pipe(gulp.dest( targetDir + '/' + language + '/' ))
       .on('end', next);
   })();

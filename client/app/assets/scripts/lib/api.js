@@ -199,32 +199,6 @@ define([ 'bluebird', 'notify-tt', 'sockjs', 'translate', 'uid', 'query' ], funct
             return cache['user.me'] = result;
           });
       }
-    },
-
-    admin: {
-      views: function() {
-        if ( !api.user.isLoggedIn() ) return Promise.reject(false);
-        if ( cache['admin.views'] ) return Promise.resolve(cache['admin.views']);
-        return api.get( '/api/admin/views' )
-          .then(function(result) {
-            if (!result) throw result;
-            cache['admin.views'] = result;
-            return result;
-          });
-      },
-      user: {
-        search: function(params) {
-          if ( !api.user.isLoggedIn() ) return Promise.reject(false);
-          var q = params.q || '';
-          cache['user.search'] = cache['user.search'] || {};
-          if ( cache['user.search'][q] ) return Promise.resolve(cache['user.search'][q]);
-          return api.get( '/api/admin/user/search?q=' + q )
-            .then(function(result) {
-              if (!result) throw result;
-              return cache['user.search'][query] = result;
-            });
-        }
-      }
     }
 
   };

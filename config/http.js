@@ -64,9 +64,9 @@ module.exports = co(function*() {
 
     // Cache
     cache: {
-      enabled   : true,
-      extensions: [ 'js', 'css' ],
-      ttl       : 3600
+      enabled : true,
+      dynamic : [ '/api', '/socket' ],
+      ttl     : 3600
     },
 
     // Sessions

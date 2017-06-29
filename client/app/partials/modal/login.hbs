@@ -1,5 +1,5 @@
 {{>modal/precontent id='login'}}
-<h2>{{i18n "login"}}</h2>
+<h2>{{i18n "title-modal-login"}}</h2>
 <form data-script="helpers/form-api" action="user.login" method="post">
     <div class="input">
         <input type="text" id="login-username" name="username" data-script="helpers/input-has-content" />
@@ -12,7 +12,7 @@
         <label for="login-password">{{i18n "label-password"}}</label>
     </div>
     <div class="button-container">
-        <button class="btn btn-default" data-action="submit">{{i18n "label-login-button"}}</button>
+        <button class="btn btn-default" data-action="submit">{{i18n "button-login"}}</button>
     </div>
 </form>
 {{>modal/postcontent}}

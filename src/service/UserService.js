@@ -3,9 +3,10 @@ var co = require('co');
 module.exports = co(function*() {
   var odm   = yield service('odm'),
       User  = yield odm.model('user'),
-      token = yield service('token');
+      token = yield service('token'),
+      cache = {};
 
-  var userService = {
+  var UserService = {
 
     encryptPassword: function ( password ) {
       return co(function*() {
@@ -15,6 +16,10 @@ module.exports = co(function*() {
 
     checkPassword: function ( user, password ) {
       return co(function*() {
+        // Transform username to user
+        if ( 'string' == typeof user ) {
+          user = yield UserService.get(user);
+        }
         // Check we have all requirements
         if ( !user || !user.password || !password ) {
           throw 'userservice-check-params';
@@ -26,6 +31,38 @@ module.exports = co(function*() {
         // Hash it
         return yield token.compare(user.password.substr(1), password);
       });
+    },
+
+    get: function( username ) {
+      return User
+        .findAll({ username: username })
+        .then(function(matches) {
+          return matches.shift();
+        })
+    },
+
+    login: function ( data ) {
+      if ( !data.username || !data.password ) {
+        return Promise.reject("Missing parameters");
+      }
+
+      return UserService
+        .get(data.username)
+        .then(function(user) {
+          return co(function*() {
+            var result = yield UserService.checkPassword(user, data.password);
+            if (result) return user;
+            throw "userservice-login-none";
+          });
+        })
+        .then(function(user) {
+          delete user.password;
+          return token.generate({
+            usr : user,
+            iat : Math.floor((new Date()).getTime() / 1000),
+            exp : Math.floor((new Date()).getTime() / 1000) + config.http.session.expires
+          });
+        });
     },
 
     search: function ( username ) {
@@ -50,37 +87,8 @@ module.exports = co(function*() {
             });
           })
       });
-    },
-
-    login: function ( data ) {
-      if ( !data.username || !data.password ) {
-        return Promise.reject("Missing parameters");
-      }
-
-      return User
-        .findAll({ username: data.username })
-        .then(function ( matches ) {
-          return co(function*() {
-            var match, result;
-            while ( match = matches.shift() ) {
-              result = yield userService.checkPassword(match, data.password);
-              if ( result ) {
-                return match;
-              }
-            }
-            throw "userservice-login-none";
-          });
-        })
-        .then(function ( user ) {
-          delete user.password;
-          return token.generate({
-            user: user,
-            iat : Math.floor((new Date()).getTime() / 1000),
-            exp : Math.floor((new Date()).getTime() / 1000) + config.http.session.expires
-          });
-        })
     }
   };
 
-  return userService;
+  return UserService;
 });

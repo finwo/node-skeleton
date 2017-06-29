@@ -5,32 +5,9 @@
     {{i18n "unauthorized-body"}}
 </div>
 <div class="auth">
-    <div class="container" data-bind="api.user.me.options.admin" data-equals="!1">
+    <div class="container">
         <h1>{{i18n "unauthorized-admin-header"}}</h1>
         {{i18n "unauthorized-admin-body"}}
-    </div>
-    <div data-bind="api.user.me.options.admin" data-equals="1">
-        <div class="container">
-           <div class="input-select">
-               <select data-script="helpers/input-has-content" id="admin-subject" data-bind="api.admin.views" data-bind-source="input.admin.view" autofocus>
-                   <option value="{name}" data-text="admin-view-{name}"></option>
-               </select>
-               <i class="bar"></i>
-               <label for="admin-subject">{{i18n "label-admin-view"}}</label>
-           </div>
-        </div>
-      
-        <div class="container" data-bind="input.admin.view" data-equals="user">
-            <div class="input">
-                <input data-script="helpers/input-has-content" id="admin-user-search" data-autocomplete="api.admin.user.search" />
-                <i class="bar"></i>
-                <label for="admin-subject">{{i18n "label-admin-user-search"}}</label>
-            </div>
-        </div>
-
-        <div class="container" data-bind="input.admin.view" data-equals="user-option">
-            USER OPTIONS
-        </div>
     </div>
 </div>
 {{>postcontent}}

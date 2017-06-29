@@ -8,18 +8,28 @@
 
   "body-404": "The page you are looking for could not be found.",
 
-  "title-404"     : "Page not found",
-  "title-account" : "Account",
-  "title-admin"   : "Admin",
-  "title-index"   : "Home",
+  "button-cancel"   : "Cancel",
+  "button-delete"   : "Delete",
+  "button-edit"     : "Edit",
+  "button-login"    : "Login",
+  "button-new-user" : "New user",
+  "button-save"     : "Save",
+
+  "title-404"         : "Page not found",
+  "title-account"     : "Account",
+  "title-admin"       : "Admin",
+  "title-index"       : "Home",
+  "title-modal-login" : "Login",
+  "title-modal-user"  : "User",
 
   "login-successful"      : "Login successful",
   "login-successful-body" : "You have successfully logged in",
 
   "label-admin-view"        : "View",
   "label-admin-user-search" : "User",
-  "label-cancel-button"     : "Cancel",
-  "label-login-button"      : "Login",
+  "label-flag-admin"        : "Administrator",
+  "label-flag-cpl"          : "CPL user",
+  "label-flag-stats"        : "View statistics",
   "label-password"          : "Password",
   "label-username"          : "Username",
 

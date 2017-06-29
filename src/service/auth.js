@@ -3,7 +3,7 @@ var co = require('co');
 module.exports = co(function*() {
   var authService = {
     option: function( req, name ) {
-      return req && req.auth && req.auth.user && req.auth.user.options && req.auth.user.options[name];
+      return req && req.auth && req.auth.usr && req.auth.usr.options && req.auth.usr.options[name];
     }
   };
 
