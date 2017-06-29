@@ -1,4 +1,11 @@
 {
+  "nav": [
+    { "url": ""       , "name": "index"  , "perms": ""      },
+    { "url": "stats"  , "name": "stats"  , "perms": "stats" },
+    { "url": "cpl"    , "name": "cpl"    , "perms": "cpl"   },
+    { "url": "account", "name": "account", "perms": ""      },
+    { "url": "admin"  , "name": "admin"  , "perms": "admin" }
+  ],
   "user": [
     {
       "username": "root",

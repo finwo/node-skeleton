@@ -98,9 +98,13 @@ String.prototype.format = function ( data ) {
   function process() {
     var entry = queue.shift();
     if ( !entry ) return;
-    var ready = true,
-        args  = entry.o.map(function ( name ) {
+    var exports = {},
+        ready   = true,
+        args    = entry.o.map(function ( name ) {
           if ( !ready ) return;
+          if ( name == 'exports' ) {
+            return exports;
+          }
           if ( modules[ name ] ) {
             return modules[ name ];
           } else {
@@ -112,7 +116,7 @@ String.prototype.format = function ( data ) {
     if ( ready ) {
       var result = entry.f.apply(null, args);
       if ( entry.s ) {
-        modules[ entry.s ] = result;
+        modules[ entry.s ] = Object.keys(exports).length ? exports : result;
       }
     } else {
       queue.push(entry);

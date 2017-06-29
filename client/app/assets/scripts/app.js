@@ -1,45 +1,48 @@
-define([ 'api', 'notify-tt', 'data-script' ], function ( api, notify ) {
+define([ 'api', 'notify-tt', 'rivets' ], function ( api, notify, rivets ) {
 
-  // Register notifications
-  (function () {
-    api.on('error', function ( err ) {
-      notify(( ('string' == typeof err.title) && err.title) || 'unknown-error', {
-        body: err.description || 'unknown-error-body',
-        icon: '/assets/img/logo_bare.png'
-      });
-    });
-  })();
+  // Log errors to the console (for now)
+  api.on('error', function () { console.error(arguments) });
 
-  // Show-hide elements by authentication
-  (function () {
-    // Handle authentication classes
-    var authenticated = api.user.isLoggedIn();
+  // Bind the interface to the API
+  rivets.configure({
+    executeFunctions: true
+  });
+  rivets.bind(document.body, api);
 
-    function updateAuth() {
-      document.body.className += authenticated ? ' auth' : ' unauth';
-      document.body.className =
-        document.body.className
-          .split(' ')
-          .filter(function(token) {return !!token})
-          .filter(function(token) {
-            if ( authenticated )  return token != 'unauth';
-            if ( !authenticated ) return token != 'auth';
-            return true;
-          })
-          .join(' ');
-    }
+  //// Register notifications
+  //(function () {
+  //  api.on('error', function ( err ) {
+  //    notify(( ('string' == typeof err.title) && err.title) || 'unknown-error', {
+  //      body: err.description || 'unknown-error-body',
+  //      icon: '/assets/img/logo_bare.png'
+  //    });
+  //  });
+  //})();
+  //
+  //// Show-hide elements by authentication
+  //(function () {
+  //  // Handle authentication classes
+  //  var authenticated = api.user.isLoggedIn();
+  //  function updateAuth() {
+  //    document.body.className += authenticated ? ' auth' : ' unauth';
+  //    document.body.className =
+  //      document.body.className
+  //        .split(' ')
+  //        .filter(function(token) {return !!token})
+  //        .filter(function(token) {
+  //          if ( authenticated )  return token != 'unauth';
+  //          if ( !authenticated ) return token != 'auth';
+  //          return true;
+  //        })
+  //        .join(' ');
+  //  }
+  //
+  //  // Track authentication state
+  //  api.on('login' , function () { authenticated = true ; updateAuth(); });
+  //  api.on('logout', function () { authenticated = false; updateAuth(); });
+  //  updateAuth();
+  //})();
 
-    // Track authentication state
-    api.on('login', function () {
-      authenticated = true;
-      updateAuth();
-    });
-    api.on('logout', function () {
-      authenticated = false;
-      updateAuth();
-    });
-    updateAuth();
-  })();
 
   ////// Fix label clicks
   ////$("input[type=checkbox], input[type=radio]").each(function() {

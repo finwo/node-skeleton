@@ -5,5 +5,5 @@ module.exports = {
       return res.errorHandler('unauthorized-admin', 403);
     }
     res.end('dinges');
-  },
+  }
 };
