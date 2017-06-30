@@ -54,10 +54,9 @@ define([ 'query', 'events', 'sockjs', 'bluebird', 'uid', 'extend' ], function ( 
       }
       // Handle callbacks
       if ( data._id && callbacks[ data._id ] ) {
-        var cb = callbacks[ data._id ];
+        callbacks[ data._id ](data);
         if ( data.finished ) delete callbacks[ data._id ];
-        data = data.body.length && data.body || data.data;
-        return cb(data);
+        return;
       }
     };
   }
@@ -75,7 +74,7 @@ define([ 'query', 'events', 'sockjs', 'bluebird', 'uid', 'extend' ], function ( 
           data.headers        = data.headers || {};
           data.headers.cookie = data.headers.cookie || document.cookie;
           if ( data.callback ) {
-            callbacks[ data.id ] = data.callback;
+            callbacks[ data._id ] = data.callback;
             delete data.callback;
           }
           outbox.push(JSON.stringify(data));
@@ -91,9 +90,9 @@ define([ 'query', 'events', 'sockjs', 'bluebird', 'uid', 'extend' ], function ( 
             options.headers  = options.headers || {};
             options.callback = function ( data ) {
               if ( data.status && ( data.status >= 300 || data.status < 200 ) ) {
-                reject(data);
+                reject( (data&&data.body) || (data&&data.data) || data );
               } else {
-                resolve(data);
+                resolve( (data&&data.body) || (data&&data.data) || data );
               }
             };
             api.raw(options);
@@ -117,13 +116,15 @@ define([ 'query', 'events', 'sockjs', 'bluebird', 'uid', 'extend' ], function ( 
         // NAV model
         nav: {
           all: function () {
+            if ( !api.data.nav ) api.data.nav = [];
             api
               .get('/api/nav/all')
               .then(function ( data ) {
-                console.log(data);
-                extend(api.data.nav, data);
+                while(api.data.nav.length) api.data.nav.pop();
+                while(data.length) api.data.nav.push(data.shift());
+                return api.data.nav;
               });
-            return api.data.nav = api.data.nav || {};
+            return api.data.nav;
           }
         }
       });
