@@ -4,9 +4,6 @@ define([ 'api', 'notify-tt', 'rivets' ], function ( api, notify, rivets ) {
   api.on('error', function () { console.error(arguments) });
 
   // Bind the interface to the API
-  rivets.configure({
-    executeFunctions: true
-  });
   rivets.bind(document.body, api);
 
   //// Register notifications

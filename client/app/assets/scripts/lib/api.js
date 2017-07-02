@@ -1,4 +1,4 @@
-define([ 'query', 'events', 'sockjs', 'bluebird', 'uid', 'extend' ], function ( query, EventEmitter, SockJS, Promise, uid, extend ) {
+define([ 'query', 'events', 'sockjs', 'bluebird', 'uid', 'rivets' ], function ( query, EventEmitter, SockJS, Promise, uid, rivets ) {
 
   // Helper functions
   function getCookie( name ) {
@@ -64,9 +64,9 @@ define([ 'query', 'events', 'sockjs', 'bluebird', 'uid', 'extend' ], function ( 
   // Build the api object
   var callbacks = {},
       outbox    = [],
+      observers = [],
       api       = EventEmitter.mixin({
         bubble: true,
-        data  : {},
 
         // Raw call
         raw: function ( data ) {
@@ -114,19 +114,18 @@ define([ 'query', 'events', 'sockjs', 'bluebird', 'uid', 'extend' ], function ( 
         },
 
         // NAV model
-        nav: {
+        nav: EventEmitter.mixin({
+          data: {},
           all: function () {
-            if ( !api.data.nav ) api.data.nav = [];
-            api
+            return api
               .get('/api/nav/all')
-              .then(function ( data ) {
-                while(api.data.nav.length) api.data.nav.pop();
-                while(data.length) api.data.nav.push(data.shift());
-                return api.data.nav;
-              });
-            return api.data.nav;
+              .then(function(data) {
+                api.nav.emit('data:all', data);
+                api.nav.data.all = data;
+                return data;
+              })
           }
-        }
+        })
       });
 
   // Track states
@@ -159,6 +158,26 @@ define([ 'query', 'events', 'sockjs', 'bluebird', 'uid', 'extend' ], function ( 
     sock.send(msg);
     if ( outbox.length ) setTimeout(api.emit.bind(api, 'queue'), 5);
   });
+
+  // Tell rivets how to use our api
+  rivets.adapters[':'] = {
+    observe: function(obj, keypath, callback) {
+      obj.on('data:'+keypath, callback);
+    },
+    unobserve: function(obj, keypath, callback) {
+      obj.off('data:'+keypath, callback);
+    },
+    get: function( obj, keypath ) {
+      if(!obj.data[keypath]) {
+        obj[keypath]();
+      }
+      return obj.data[keypath];
+    },
+    set: function( obj, keypath, value ) {
+      obj.data[keypath] = value;
+      obj.emit('data:'+keypath, value);
+    }
+  };
 
   // Return our module
   return api;

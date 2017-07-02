@@ -10,58 +10,42 @@ nav {
 
   > .container {
     padding: 0;
+    > div {
+      display: inline-block;
+      position: relative;
+    }
   }
 
   .title,
   a {
     .padded;
+    &:hover,
+    &.open {
+      background-color: @color-back;
+      color           : @color-theme;
+    }
+    &.open+ ul {
+      display: block;
+    }
   }
-
-  //> .container {
-  //  padding : 0;
-  //  & > div {
-  //    display  : inline-block;
-  //    position : relative;
-  //  }
-  //}
-  //
-  //ul {
-  //  .color-primary;
-  //  .shadow;
-  //  display         : none;
-  //  list-style-type : none;
-  //  position        : absolute;
-  //  z-index         : 10;
-  //  a {
-  //    min-width : 100%;
-  //    &:hover {
-  //      .color-secundary;
-  //    }
-  //  }
-  //}
-  //.title, a {
-  //  .padded;
-  //  display : inline-block;
-  //}
-  //.title,
-  //.icon {
-  //  display : none;
-  //}
-  //
-  //a {
-  //  &:hover,
-  //  &.open {
-  //    background-color : @color-back;
-  //    color            : @color-theme;
-  //  }
-  //  &.open + ul {
-  //    display : block;
-  //  }
-  //}
-  //&:after {
-  //  clear   : both;
-  //  content : "";
-  //}
+  ul {
+    .color-primary;
+    .shadow;
+    display         : none;
+    list-style-type : none;
+    position        : absolute;
+    z-index         : 10;
+    a {
+      min-width : 100%;
+      &:hover {
+        .color-secundary;
+      }
+    }
+  }
+  &:after {
+    clear   : both;
+    content : "";
+  }
 }
 
 // Mobile

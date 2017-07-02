@@ -1,10 +1,8 @@
 <nav data-script="helpers/nav">
     <div class="container">
         <span class="inline title">{{i18n "title" __pageName}}</span>
-        <div class="inline">
-            <div rv-each-nav="nav.all">
-                <a href="{nav.url}">{nav.name}</a>
-            </div>
+        <div rv-each-entry="nav:all">
+            <a rv-href="entry.url" data-script="helpers/translate">{entry.name}</a>
         </div>
     </div>
     <!--<div class="container" data-bind="api.nav.all">-->
