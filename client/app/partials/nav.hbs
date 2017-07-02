@@ -1,8 +1,10 @@
+<style>[rv-each-*] { display:none;}</style>
+
 <nav data-script="helpers/nav">
     <div class="container">
         <span class="inline title">{{i18n "title" __pageName}}</span>
         <div rv-each-entry="nav:all">
-            <a rv-href="entry.url" data-script="helpers/translate">{entry.name}</a>
+            <a rv-href="entry.url | prefix '/{{_lang}}/'" rv-text="entry.name | prefix 'nav-' | translate"></a>
         </div>
     </div>
     <!--<div class="container" data-bind="api.nav.all">-->

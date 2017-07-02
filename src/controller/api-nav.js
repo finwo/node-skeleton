@@ -9,15 +9,13 @@ module.exports = {
       .then(function(list) {
         return list.filter(function(entry) {
           var perms = entry.perms.split(',');
-          perms = perms.filter(function(perm) {return !!perm;});
-          console.log(entry,perms);
-          return true;
+          perms = perms
+            .filter(function(perm) {return !!perm;})
+            .filter(auth.optionFilter(req));
+          return !perms.length;
         });
       })
-      .then(function(list) {
-        console.log(list);
-        res.end(list);
-      });
+      .then(res.end);
 
     //var user = req.auth && req.auth.usr || false;
     //if ( !user ) {

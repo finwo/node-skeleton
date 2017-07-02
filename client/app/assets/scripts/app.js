@@ -1,7 +1,12 @@
-define([ 'api', 'notify-tt', 'rivets' ], function ( api, notify, rivets ) {
+define([ 'api', 'notify-tt', 'rivets', 'translate' ], function ( api, notify, rivets, t ) {
 
   // Log errors to the console (for now)
   api.on('error', function () { console.error(arguments) });
+
+  // Configure rivets
+  rivets.formatters = rivets.formatters || {};
+  rivets.formatters.prefix    = function(value, arg) { return '' + (arg||'') + value; }
+  rivets.formatters.translate = function(value) { return t( value ); };
 
   // Bind the interface to the API
   rivets.bind(document.body, api);

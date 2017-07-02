@@ -9,23 +9,24 @@ nav {
   .shadow;
 
   > .container {
-    padding: 0;
+    padding : 0;
     > div {
-      display: inline-block;
-      position: relative;
+      display  : inline-block;
+      position : relative;
     }
   }
 
   .title,
   a {
     .padded;
+    display : block;
     &:hover,
     &.open {
-      background-color: @color-back;
-      color           : @color-theme;
+      background-color : @color-back;
+      color            : @color-theme;
     }
     &.open+ ul {
-      display: block;
+      display : block;
     }
   }
   ul {
@@ -42,6 +43,9 @@ nav {
       }
     }
   }
+  .title:not(:only-child) {
+    display : none;
+  }
   &:after {
     clear   : both;
     content : "";
@@ -50,10 +54,10 @@ nav {
 
 // Mobile
 @media all and (max-width : @container-width) {
-  //nav {
-  //  .title {
-  //    display : block;
-  //  }
+  nav {
+    .title {
+      display : block;
+    }
   //  > .container > div {
   //    display : none;
   //  }
@@ -79,5 +83,5 @@ nav {
   //      width    : auto;
   //    }
   //  }
-  //}
+  }
 }
