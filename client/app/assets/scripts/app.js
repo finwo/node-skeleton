@@ -4,15 +4,20 @@ define([ 'api', 'notify-tt', 'rivets', 'translate', 'jquery', 'data-script' ], f
   api.on('error', function () { console.error(arguments) });
 
   // Configure rivets
-  rivets.formatters = rivets.formatters || {};
-  rivets.formatters.or        = function(value, arg) { return value || arg; };
-  rivets.formatters.prefix    = function(value, arg) { return value && ( '' + (arg||'') + value ); };
-  rivets.formatters.translate = function(value)      { return t( value ); };
+  rivets.formatters           = rivets.formatters || {};
+  rivets.formatters.or        = function ( value, arg ) { return value || arg; };
+  rivets.formatters.prefix    = function ( value, arg ) { return value && ( '' + (arg || '') + value ); };
+  rivets.formatters.translate = t;
 
   // More complex binders
-  rivets.formatters.exclude = function(value, arg) {
-    arg   = Array.isArray(arg)   ? arg   : (arg||'').split(',');
-    value = Array.isArray(value) ? value : (value||'').split(',');
+  rivets.formatters.exclude = function ( value, arg ) {
+    if ( !(arg&&value) ) return value||'';
+    if ( 'string' == typeof value ) value = value.split(',');
+    if ( 'number' == typeof value ) value = [ value ];
+    if ( 'object' == typeof value && !Array.isArray(value) ) return value;
+    if ( 'string' == typeof arg ) arg = arg.split(',');
+    if ( 'number' == typeof arg ) arg = [ arg ];
+    if ( 'object' == typeof arg && !Array.isArray(arg) ) arg = Object.keys(arg).filter(function ( key ) {return arg[ key ];});
     return value
       .filter(function(testValue) {
         return arg.indexOf(testValue) < 0;
@@ -25,14 +30,16 @@ define([ 'api', 'notify-tt', 'rivets', 'translate', 'jquery', 'data-script' ], f
 
   // Keep track of login status
   var authenticated = undefined;
-  function updateAuth(status) {
-    if (status.then) return status.then(updateAuth);
+
+  function updateAuth( status ) {
+    if ( status.then ) return status.then(updateAuth);
     authenticated = !!status;
-    $(document.body).toggleClass('auth'  , authenticated);
+    $(document.body).toggleClass('auth', authenticated);
     $(document.body).toggleClass('unauth', !authenticated);
   }
-  api.on('login' , updateAuth.bind(null,true));
-  api.on('logout', updateAuth.bind(null,false));
+
+  api.on('login', updateAuth.bind(null, true));
+  api.on('logout', updateAuth.bind(null, false));
   updateAuth(api.user.isLoggedIn());
 
   //// Register notifications
@@ -68,7 +75,6 @@ define([ 'api', 'notify-tt', 'rivets', 'translate', 'jquery', 'data-script' ], f
   //  api.on('logout', function () { authenticated = false; updateAuth(); });
   //  updateAuth();
   //})();
-
 
   ////// Fix label clicks
   ////$("input[type=checkbox], input[type=radio]").each(function() {

@@ -7,20 +7,18 @@ define([ 'query', 'events', 'sockjs', 'bluebird', 'uid', 'rivets' ], function ( 
   }
 
   // SockJS connection
-  var sock, connected = false;
-
+  var sock = false;
   function sock_init() {
     var sockurl = window.location.protocol + '//' + window.location.hostname;
     if ( window.location.port.length ) sockurl += ':' + window.location.port;
     sockurl += '/socket';
+    if ( sock ) return;
     sock           = new SockJS(sockurl);
     sock.onopen    = function () {
-      connected = true;
       api.emit('connect');
     };
     sock.onclose   = function () {
-      sock      = false;
-      connected = false;
+      sock = false;
       api.emit('disconnect');
     };
     sock.onmessage = function ( e ) {
@@ -105,12 +103,7 @@ define([ 'query', 'events', 'sockjs', 'bluebird', 'uid', 'rivets' ], function ( 
           options        = options || {};
           options.method = options.method || 'POST';
           options.body   = options.body || options.data || '';
-          return api.get(url, options);
-        },
-        put   : function ( url, options ) {
-          options        = options || {};
-          options.method = options.method || 'PUT';
-          return api.post(url, options);
+          return api.routed(url, options);
         },
 
         // NAV model
@@ -153,7 +146,24 @@ define([ 'query', 'events', 'sockjs', 'bluebird', 'uid', 'rivets' ], function ( 
                 })
             }
             return loading['user.me'];
-          }
+          },
+          login: function(data) {
+            return api.post( '/api/user/login', { data: data })
+              .then(function( token ) {
+                if (Array.isArray(token)) token = token.shift();
+                if ( token ) {
+                  api.emit('login', token);
+                  return token;
+                }
+                throw "login-failed";
+              });
+          },
+          logout: function() {
+            return new Promise(function(resolve) {
+              api.emit('logout');
+              resolve(true);
+            });
+          },
         })
       });
 
@@ -164,17 +174,21 @@ define([ 'query', 'events', 'sockjs', 'bluebird', 'uid', 'rivets' ], function ( 
     api.nav.data    = {};
     api.user.data   = {};
     document.cookie = 'auth=; path=/';
+    api.nav.emit('data:all');
+    api.user.emit('data:me');
   });
   api.on('login', function ( token ) {
     loading         = {};
     api.nav.data    = {};
     api.user.data   = {};
     document.cookie = 'auth=' + token + '; path=/';
+    api.nav.emit('data:all');
+    api.user.emit('data:me');
   });
 
   // Bubble events to the server
   api.on('*', function ( name ) {
-    if ( [ 'connect', 'disconnect', 'queue' ].indexOf(name) >= 0 ) return;
+    if ( [ 'connect', 'disconnect', 'queue', 'login', 'logout' ].indexOf(name) >= 0 ) return;
     if ( !this.bubble ) return;
     var data = arguments;
     data     = Object.keys(data).map(function ( key ) {return data[ key ];});
@@ -185,7 +199,7 @@ define([ 'query', 'events', 'sockjs', 'bluebird', 'uid', 'rivets' ], function ( 
   // Handle outbox & connect if needed
   api.on('queue', function () {
     if ( !sock ) return setTimeout(sock_init, 100);
-    if ( !connected ) setTimeout(api.emit.bind(api, 'queue'), 100);
+    if ( sock.readyState !== SockJS.OPEN ) return setTimeout(api.emit.bind(api, 'queue'), 100);
     var msg = outbox.shift();
     if ( !msg ) return;
     sock.send(msg);
@@ -230,33 +244,6 @@ define([ 'query', 'events', 'sockjs', 'bluebird', 'uid', 'rivets' ], function ( 
 //
 //    // Collections
 //    user: {
-//      login: function(data) {
-//        return api.post( '/api/user/login', { data: data })
-//          .then(function( token ) {
-//            if (Array.isArray(token)) token = token.shift();
-//            if ( token ) {
-//              api.emit.call({ bubble: false }, 'login', token );
-//              return token;
-//            }
-//            throw "login-failed";
-//          });
-//      },
-//      logout: function() {
-//        return new Promise(function(resolve) {
-//          api.emit.call({ bubble: false }, 'logout' );
-//          resolve(true);
-//        });
-//      },
-//
-//      me: function() {
-//        if ( !api.user.isLoggedIn() ) return Promise.reject(false);
-//        if ( cache['user.me'] ) return Promise.resolve(cache['user.me']);
-//        return cache['user.me'] = api.get( '/api/user/me')
-//          .then(function(result) {
-//            if (!result) throw result;
-//            return cache['user.me'] = result;
-//          });
-//      }
 //    }
 //
 //  };

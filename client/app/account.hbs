@@ -4,11 +4,11 @@
     <h1>{{i18n "unauthorized-header"}}</h1>
     {{i18n "unauthorized-body"}}
 </div>
-<div class="container auth">
-    <h1>{username}</h1>
+<div class="container auth" >
+    <h1>{user:me.username}</h1>
     <div class="grid">
         <div class="card">
-            ID: {_id}
+            ID: {user:me._id}
         </div>
     </div>
 </div>
