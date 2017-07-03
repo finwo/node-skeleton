@@ -8,7 +8,7 @@ module.exports = {
     Nav.findAll()
       .then(function(list) {
         return list.filter(function(entry) {
-          var perms = entry.perms.split(',');
+          var perms = (entry.perms||'').split(',');
           perms = perms
             .filter(function(perm) {return !!perm;})
             .filter(auth.optionFilter(req));
