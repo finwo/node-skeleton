@@ -1,14 +1,14 @@
 {
   "nav": [
-    { "url": "/"      , "name": "index"  , "class": "auth", "perms": ""         },
-    { "url": "stats"  , "name": "stats"  , "class": "auth", "perms": "stats"    },
-    { "url": "cpl"    , "name": "cpl"    , "class": "auth", "perms": "cpl"      },
-    { "url": ""
-    { "url": "account", "name": "account", "class": "auth", "sub": [
+    { "url"  : "/"      , "name": "index"  , "class": "auth"  , "perms": ""      },
+    { "url"  : "stats"  , "name": "stats"  , "class": "auth"  , "perms": "stats" },
+    { "url"  : "cpl"    , "name": "cpl"    , "class": "auth"  , "perms": "cpl"   },
+    { "modal": "login"  , "name": "login"  , "class": "unauth", "perms": ""      }
+    { "url"  : "account", "name": "account", "class": "auth"  , "sub": [
         { "url": "account", "name": "account-overview" },
         { "url": "logout" , "name": "logout"           }
       ] },
-    { "url": "admin"  , "name": "admin"  , "class": "auth", "perms": "admin"    }
+    { "url"  : "admin"  , "name": "admin"  , "class": "auth"  , "perms": "admin"   }
   ],
   "user": [
     {
