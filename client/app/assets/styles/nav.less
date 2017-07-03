@@ -43,7 +43,8 @@ nav {
       }
     }
   }
-  .title:not(:only-child) {
+  .title,
+  .icon {
     display : none;
   }
   &:after {
@@ -55,7 +56,7 @@ nav {
 // Mobile
 @media all and (max-width : @container-width) {
   nav {
-    .title {
+    .title, .icon {
       display : block;
     }
   //  > .container > div {

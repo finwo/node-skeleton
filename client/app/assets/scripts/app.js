@@ -1,15 +1,39 @@
-define([ 'api', 'notify-tt', 'rivets', 'translate' ], function ( api, notify, rivets, t ) {
+define([ 'api', 'notify-tt', 'rivets', 'translate', 'jquery', 'data-script' ], function ( api, notify, rivets, t, $ ) {
 
   // Log errors to the console (for now)
   api.on('error', function () { console.error(arguments) });
 
   // Configure rivets
   rivets.formatters = rivets.formatters || {};
-  rivets.formatters.prefix    = function(value, arg) { return '' + (arg||'') + value; }
-  rivets.formatters.translate = function(value) { return t( value ); };
+  rivets.formatters.or        = function(value, arg) { return value || arg; };
+  rivets.formatters.prefix    = function(value, arg) { return value && ( '' + (arg||'') + value ); };
+  rivets.formatters.translate = function(value)      { return t( value ); };
+
+  // More complex binders
+  rivets.formatters.exclude = function(value, arg) {
+    arg   = Array.isArray(arg)   ? arg   : (arg||'').split(',');
+    value = Array.isArray(value) ? value : (value||'').split(',');
+    return value
+      .filter(function(testValue) {
+        return arg.indexOf(testValue) < 0;
+      })
+      .join(',');
+  };
 
   // Bind the interface to the API
   rivets.bind(document.body, api);
+
+  // Keep track of login status
+  var authenticated = undefined;
+  function updateAuth(status) {
+    if (status.then) return status.then(updateAuth);
+    authenticated = !!status;
+    $(document.body).toggleClass('auth'  , authenticated);
+    $(document.body).toggleClass('unauth', !authenticated);
+  }
+  api.on('login' , updateAuth.bind(null,true));
+  api.on('logout', updateAuth.bind(null,false));
+  updateAuth(api.user.isLoggedIn());
 
   //// Register notifications
   //(function () {

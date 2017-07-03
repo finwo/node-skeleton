@@ -1,14 +1,14 @@
 {
   "nav": [
-    { "url"  : "/"      , "name": "index"  , "class": "auth"  , "perms": ""      },
-    { "url"  : "stats"  , "name": "stats"  , "class": "auth"  , "perms": "stats" },
-    { "url"  : "cpl"    , "name": "cpl"    , "class": "auth"  , "perms": "cpl"   },
-    { "modal": "login"  , "name": "login"  , "class": "unauth", "perms": ""      },
-    { "url"  : "account", "name": "account", "class": "auth"  , "sub": [
-        { "url": "account", "name": "account-overview" },
-        { "url": "logout" , "name": "logout"           }
-      ] },
-    { "url"  : "admin"  , "name": "admin"  , "class": "auth"  , "perms": "admin"   }
+    { "url"  : "/"           , "name": "index"  , "auth"  : false, "perms": ""      },
+    { "url"  : "stats"       , "name": "stats"  , "auth"  : true , "perms": "stats" },
+    { "url"  : "cpl"         , "name": "cpl"    , "auth"  : true , "perms": "cpl"   },
+    { "modal": "#modal-login", "name": "login"  , "unauth": true , "perms": ""      },
+    { "url"  : "admin"       , "name": "admin"  , "auth"  : true , "perms": "admin" },
+    { "modal": "#!"          , "name": "account", "auth"  : true , "sub": [
+      { "url"  : "account"       , "name": "account-overview" },
+      { "modal": "#modal-logout" , "name": "account-logout"   }
+    ] }
   ],
   "user": [
     {

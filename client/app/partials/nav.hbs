@@ -1,32 +1,18 @@
-<style>[rv-each-*] { display:none;}</style>
-
 <nav data-script="helpers/nav">
     <div class="container">
         <span class="inline title">{{i18n "title" __pageName}}</span>
-        <div rv-each-entry="nav:all">
-            <a rv-href="entry.url | prefix '/{{_lang}}/'" rv-text="entry.name | prefix 'nav-' | translate"></a>
+        <div
+                rv-each-entry="nav:all"
+                rv-class-hidden="entry.perms | exclude user:me.options"
+                rv-class-auth="entry.auth | or ''"
+                rv-class-unauth="entry.unauth | or ''"
+        >
+            <a rv-href="entry.url | prefix '/{{_lang}}/' | or entry.modal | or ''" rv-text="entry.name | prefix 'nav-' | translate" rv-data-script="'helpers/nav-element'"></a>
+            <ul rv-if="entry.sub">
+                <li rv-each-sub="entry.sub">
+                    <a rv-href="sub.url | prefix '/{{_lang}}/' | or sub.modal | or ''" rv-text="sub.name | prefix 'nav-' | translate"></a>
+                </li>
+            </ul>
         </div>
     </div>
-    <!--<div class="container" data-bind="api.nav.all">-->
-        <!--<div rv-each-item="nav:all">-->
-            <!--HELLO-->
-        <!--</div>-->
-
-        <!--&lt;!&ndash;&lt;!&ndash; unauthenticated &ndash;&gt;&ndash;&gt;-->
-        <!--&lt;!&ndash;<div class="unauth"><a href="#modal-login">{{i18n "nav-login"}}</a></div>&ndash;&gt;-->
-
-        <!--&lt;!&ndash;&lt;!&ndash; authenticated &ndash;&gt;&ndash;&gt;-->
-        <!--&lt;!&ndash;<div class="auth"><a href="/{{_lang}}/{{i18n "stats"}}" class="auth">{{i18n "nav-stats"}}</a></div>&ndash;&gt;-->
-        <!--&lt;!&ndash;<div class="auth"><a href="/{{_lang}}/{{i18n "cpl"}}" class="auth">{{i18n "nav-cpl"}}</a></div>&ndash;&gt;-->
-        <!--&lt;!&ndash;<div class="auth">&ndash;&gt;-->
-            <!--&lt;!&ndash;<a href="#!" class="auth">{{i18n "nav-account"}}</a>&ndash;&gt;-->
-            <!--&lt;!&ndash;<ul>&ndash;&gt;-->
-                <!--&lt;!&ndash;<li><a href="/{{_lang}}/{{i18n "account"}}">Overview</a></li>&ndash;&gt;-->
-                <!--&lt;!&ndash;<li><a href="#!" data-script="helpers/logout">Logout</a></li>&ndash;&gt;-->
-            <!--&lt;!&ndash;</ul>&ndash;&gt;-->
-        <!--&lt;!&ndash;</div>&ndash;&gt;-->
-
-        <!--&lt;!&ndash;&lt;!&ndash;<a href="#!" class="auth" data-script="helpers/logout">{{i18n "nav-logout"}}</a>&ndash;&gt;&ndash;&gt;-->
-        <!--&lt;!&ndash;<div class="auth"><a href="/{{_lang}}/{{i18n "admin"}}">{{i18n "nav-admin"}}</a></div>&ndash;&gt;-->
-    <!--</div>-->
 </nav>

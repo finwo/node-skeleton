@@ -70,7 +70,7 @@ define([ 'query', 'events', 'sockjs', 'bluebird', 'uid', 'rivets' ], function ( 
 
         // Raw call
         raw: function ( data ) {
-          data._id             = uid();
+          data._id            = uid();
           data.headers        = data.headers || {};
           data.headers.cookie = data.headers.cookie || document.cookie;
           if ( data.callback ) {
@@ -90,9 +90,9 @@ define([ 'query', 'events', 'sockjs', 'bluebird', 'uid', 'rivets' ], function ( 
             options.headers  = options.headers || {};
             options.callback = function ( data ) {
               if ( data.status && ( data.status >= 300 || data.status < 200 ) ) {
-                reject( (data&&data.body) || (data&&data.data) || data );
+                reject((data && data.body) || (data && data.data) || data);
               } else {
-                resolve( (data&&data.body) || (data&&data.data) || data );
+                resolve((data && data.body) || (data && data.data) || data);
               }
             };
             api.raw(options);
@@ -116,12 +116,36 @@ define([ 'query', 'events', 'sockjs', 'bluebird', 'uid', 'rivets' ], function ( 
         // NAV model
         nav: EventEmitter.mixin({
           data: {},
-          all: function () {
+          all : function () {
             return api
               .get('/api/nav/all')
-              .then(function(data) {
+              .then(function ( data ) {
                 api.nav.emit('data:all', data);
                 api.nav.data.all = data;
+                return data;
+              })
+          }
+        }),
+
+        // USER model
+        user: EventEmitter.mixin({
+          data: {},
+          isLoggedIn: function() {
+            var cookie = getCookie('auth'),
+                result = !!(cookie && cookie.length || false);
+            api.user.emit('data:isLoggedIn', result);
+            api.user.data.isLoggedIn = result;
+            return Promise.resolve(result);
+          },
+          me  : function () {
+            if (api.user.data.hasOwnProperty('me')){
+              return Promise.resolve(api.user.data.me);
+            }
+            return api
+              .get('/api/user/me')
+              .then(function ( data ) {
+                api.user.emit('data:me', data);
+                api.user.data.me = data;
                 return data;
               })
           }
@@ -132,10 +156,12 @@ define([ 'query', 'events', 'sockjs', 'bluebird', 'uid', 'rivets' ], function ( 
   api.on('connect', api.emit.bind(api, 'queue'));
   api.on('logout', function () {
     cache           = {};
+    api.user.data   = {};
     document.cookie = 'auth=; path=/';
   });
   api.on('login', function ( token ) {
     cache           = {};
+    api.user.data   = {};
     document.cookie = 'auth=' + token + '; path=/';
   });
 
@@ -160,22 +186,22 @@ define([ 'query', 'events', 'sockjs', 'bluebird', 'uid', 'rivets' ], function ( 
   });
 
   // Tell rivets how to use our api
-  rivets.adapters[':'] = {
-    observe: function(obj, keypath, callback) {
-      obj.on('data:'+keypath, callback);
+  rivets.adapters[ ':' ] = {
+    observe  : function ( obj, keypath, callback ) {
+      obj.on('data:' + keypath, callback);
     },
-    unobserve: function(obj, keypath, callback) {
-      obj.off('data:'+keypath, callback);
+    unobserve: function ( obj, keypath, callback ) {
+      obj.off('data:' + keypath, callback);
     },
-    get: function( obj, keypath ) {
-      if(!obj.data[keypath]) {
-        obj[keypath]();
+    get      : function ( obj, keypath ) {
+      if ( !obj.data[ keypath ] ) {
+        obj[ keypath ]();
       }
-      return obj.data[keypath];
+      return obj.data[ keypath ];
     },
-    set: function( obj, keypath, value ) {
-      obj.data[keypath] = value;
-      obj.emit('data:'+keypath, value);
+    set      : function ( obj, keypath, value ) {
+      obj.data[ keypath ] = value;
+      obj.emit('data:' + keypath, value);
     }
   };
 
@@ -197,10 +223,6 @@ define([ 'query', 'events', 'sockjs', 'bluebird', 'uid', 'rivets' ], function ( 
 //
 //    // Collections
 //    user: {
-//      isLoggedIn: function() {
-//        var cookie = getCookie('auth');
-//        return !!(cookie && cookie.length || false);
-//      },
 //      login: function(data) {
 //        return api.post( '/api/user/login', { data: data })
 //          .then(function( token ) {

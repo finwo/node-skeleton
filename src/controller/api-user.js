@@ -9,8 +9,7 @@ module.exports = {
   'get /api/user/me': function*( req, res ) {
     var user = req.auth && req.auth.usr || false;
     if ( !user ) {
-      res.writeHeader( 403 );
-      return res.end(false);
+      return res.end({});
     }
     res.end( user );
   }
