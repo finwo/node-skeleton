@@ -64,7 +64,7 @@ define([ 'query', 'events', 'sockjs', 'bluebird', 'uid', 'rivets' ], function ( 
   // Build the api object
   var callbacks = {},
       outbox    = [],
-      observers = [],
+      loading   = {},
       api       = EventEmitter.mixin({
         bubble: true,
 
@@ -117,13 +117,17 @@ define([ 'query', 'events', 'sockjs', 'bluebird', 'uid', 'rivets' ], function ( 
         nav: EventEmitter.mixin({
           data: {},
           all : function () {
-            return api
-              .get('/api/nav/all')
-              .then(function ( data ) {
-                api.nav.emit('data:all', data);
-                api.nav.data.all = data;
-                return data;
-              })
+            if ( !loading['nav.all'] ) {
+              loading['nav.all'] = api
+                .get('/api/nav/all')
+                .then(function ( data ) {
+                  api.nav.data.all   = data;
+                  api.nav.emit('data:all', data);
+                  loading['nav.all'] = false;
+                  return data;
+                })
+            }
+            return loading['nav.all'];
           }
         }),
 
@@ -138,16 +142,17 @@ define([ 'query', 'events', 'sockjs', 'bluebird', 'uid', 'rivets' ], function ( 
             return Promise.resolve(result);
           },
           me  : function () {
-            if (api.user.data.hasOwnProperty('me')){
-              return Promise.resolve(api.user.data.me);
+            if ( !loading['user.me'] ) {
+              loading['user.me'] = api
+                .get('/api/user/me')
+                .then(function ( data ) {
+                  api.user.data.me   = data;
+                  api.user.emit('data:me', data);
+                  loading['user.me'] = false;
+                  return data;
+                })
             }
-            return api
-              .get('/api/user/me')
-              .then(function ( data ) {
-                api.user.emit('data:me', data);
-                api.user.data.me = data;
-                return data;
-              })
+            return loading['user.me'];
           }
         })
       });
@@ -155,12 +160,14 @@ define([ 'query', 'events', 'sockjs', 'bluebird', 'uid', 'rivets' ], function ( 
   // Track states
   api.on('connect', api.emit.bind(api, 'queue'));
   api.on('logout', function () {
-    cache           = {};
+    loading         = {};
+    api.nav.data    = {};
     api.user.data   = {};
     document.cookie = 'auth=; path=/';
   });
   api.on('login', function ( token ) {
-    cache           = {};
+    loading         = {};
+    api.nav.data    = {};
     api.user.data   = {};
     document.cookie = 'auth=' + token + '; path=/';
   });

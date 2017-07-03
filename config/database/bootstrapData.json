@@ -1,6 +1,6 @@
 {
   "nav": [
-    { "url"  : "/"           , "name": "index"  , "auth"  : false, "perms": ""      },
+    { "url"  : "#"           , "name": "index"  , "auth"  : false, "perms": ""      },
     { "url"  : "stats"       , "name": "stats"  , "auth"  : true , "perms": "stats" },
     { "url"  : "cpl"         , "name": "cpl"    , "auth"  : true , "perms": "cpl"   },
     { "modal": "#modal-login", "name": "login"  , "unauth": true , "perms": ""      },
